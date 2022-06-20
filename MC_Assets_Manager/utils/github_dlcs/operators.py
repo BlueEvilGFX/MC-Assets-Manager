@@ -75,8 +75,7 @@ class UpdateInstall(bpy.types.Operator):
 
         for x in github_gReaderReference.dlc_list:
             if x.name == self.data:
-                x.update_available = False
-                x.already_installed = True
+                x.status = connect.StatusEnum.INSTALLED
                 name = x.name
         github_gReaderReference.check_for_new()
 

@@ -1,20 +1,29 @@
 import requests, os, json, urllib
+from enum import Enum, auto
 
 from .. import utils
 from .icons import read_github_dlc_icons
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-class DLCObject():
+class StatusEnum(Enum):
+    INSTALLED = auto()
+    UPDATEABLE = auto()
+    INSTALLABLE = auto()
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+class DLCObject:
     def __init__(self, data, dlc) -> None:
         self.name = dlc
         self.type = data["type"]
         self.creator = data["creator"]
         self.version = data["version"]
-        self.already_installed = None
-        self.update_available = None
+        self.status = None
 
-class GithubReader():
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+class GithubReader:
     sta_url = "https://github.com"
     api_url = "https://api.github.com"
     raw_url = "https://raw.githubusercontent.com"
@@ -65,20 +74,18 @@ class GithubReader():
 
         for dlc in self.dlc_list:
             if not dlc.name in jData:
-                dlc.already_installed = False
+                dlc.status = StatusEnum.INSTALLABLE
             else:
-                dlc.already_installed = True
                 i_version = eval(jData[dlc.name]["version"])
                 g_version = eval(dlc.version)
 
                 for idx, x  in enumerate(i_version):
                     if x < g_version[idx]:
-                        update = True
+                        dlc.status = StatusEnum.UPDATEABLE
                         break
                     else:
-                        update = False
+                        dlc.status = StatusEnum.INSTALLED
                 
-                dlc.update_available = update
 
     def fetch_icons(self):
         addon_path = utils.AddonPathManagement.getAddonPath()
