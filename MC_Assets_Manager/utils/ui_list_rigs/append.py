@@ -29,13 +29,21 @@ class RIG_OT_APPEND(Operator):
             blendfile = os.path.join(utils.AddonPathManagement.getAddonPath(), "files", "own_rigs", item.name + ".blend")
         else:
             blendfile = item.path
-
+        
         with bpy.data.libraries.load(blendfile, link=False) as (data_from, data_to):
+            data_to.objects = data_from.objects
             data_to.collections = data_from.collections
 
-        for coll in data_to.collections:
-            if coll is not None:
-                bpy.context.scene.collection.children.link(coll)
+        if data_to.collections: 
+            for coll in data_to.collections:
+                if coll is not None:
+                    bpy.context.scene.collection.children.link(coll)
+        else:
+            for obj in data_to.objects:
+                if obj is not None:
+                    bpy.context.scene.collection.objects.link(obj)
+
+
         self.report({'INFO'}, "rig successully appended")
         return{'FINISHED'}
     

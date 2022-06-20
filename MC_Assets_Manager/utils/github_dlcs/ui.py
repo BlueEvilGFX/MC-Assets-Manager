@@ -1,5 +1,6 @@
 from ..icons import basicMCAM_icon_collection
 from .icons import github_dlc_icon_collections
+from . import connect
 
 def display_github_dlc(self, context, element=None):
     from .operators import github_gReaderReference, github_internetConnection
@@ -48,19 +49,18 @@ def display_github_dlc(self, context, element=None):
             except:
                 custom_icon = 51
                 
-            if dlc.already_installed:
-                #   installed
-                if not dlc.update_available:
-                    display = col1.row()
-                    display.label(text=dlc.name, icon_value = custom_icon)
-                #   update
-                else:
-                    display = col2.row()
-                    display.label(text=dlc.name, icon_value = custom_icon)
-                    button = display.operator("mcam.githubindupdateinstall", icon="FILE_REFRESH")
-                    button.data = dlc.name
-            #   not installed
-            else:
+            #   display of DLCs
+            if dlc.status == connect.StatusEnum.INSTALLED:
+                display = col1.row()
+                display.label(text=dlc.name, icon_value = custom_icon)
+
+            elif dlc.status == connect.StatusEnum.UPDATEABLE:
+                display = col2.row()
+                display.label(text=dlc.name, icon_value = custom_icon)
+                button = display.operator("mcam.githubindupdateinstall", icon="FILE_REFRESH")
+                button.data = dlc.name
+                
+            elif dlc.status == connect.StatusEnum.INSTALLABLE:
                 display = col3.row()
                 display.label(text=dlc.name, icon_value = custom_icon)
                 button = display.operator("mcam.githubindupdateinstall", icon = "IMPORT")
