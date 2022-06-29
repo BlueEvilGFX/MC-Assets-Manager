@@ -1,4 +1,4 @@
-# MC Assets Manager **(Beta Version)** [![PyPI status](https://img.shields.io/pypi/status/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) [![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/BlueEvilGFX/MC-Assets-Manager/releases/) 
+# MC Assets Manager [![PyPI status](https://img.shields.io/pypi/status/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/) [![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/BlueEvilGFX/MC-Assets-Manager/releases/) 
 
 ![artwork](./wallpaper.png)
 
