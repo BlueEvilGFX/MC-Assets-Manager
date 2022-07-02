@@ -8,7 +8,7 @@ from bpy.types import Operator
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class PRESET_OT_Reload(Operator):
-    bl_idname = "preset_list.reload"
+    bl_idname = "mcam.preset_list_reload"
     bl_label = "reload"
 
     @reloadDLCIcons(0)

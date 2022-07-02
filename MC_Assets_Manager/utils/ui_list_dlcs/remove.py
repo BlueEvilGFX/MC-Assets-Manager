@@ -11,7 +11,7 @@ from bpy.types import Operator
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class DLC_OT_Remove(Operator):
-    bl_idname = "dlc_list.remove"
+    bl_idname = "mcam.dlc_list_remove"
     bl_label = "remove"
 
     @classmethod

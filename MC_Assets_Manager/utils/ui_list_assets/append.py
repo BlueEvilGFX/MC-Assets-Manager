@@ -8,7 +8,7 @@ from bpy.types import Operator
 
 class ASSET_OT_APPEND(Operator):
     bl_description = "append an asset"
-    bl_idname = "asset_list.append"
+    bl_idname = "mcam.asset_list_append"
     bl_label = "append asset"
     bl_options = {'REGISTER', 'UNDO'}
 

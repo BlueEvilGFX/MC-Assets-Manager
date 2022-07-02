@@ -8,7 +8,7 @@ from bpy.types import Operator
 
 class RIG_OT_APPEND(Operator):
     bl_description = "append a rig"
-    bl_idname = "rig_list.append"
+    bl_idname = "mcam.rig_list_append"
     bl_label = "append rig"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -42,7 +42,6 @@ class RIG_OT_APPEND(Operator):
             for obj in data_to.objects:
                 if obj is not None:
                     bpy.context.scene.collection.objects.link(obj)
-
 
         self.report({'INFO'}, "rig successully appended")
         return{'FINISHED'}

@@ -46,6 +46,13 @@ class ASSET_UL_List(UIList):
         #   set icon
         if item.path == "":
             custom_icon = 56
+        elif item.path == "$$$":
+            try:
+                pcoll = asset_icon_collections["Assets"]
+                ic = "ownAsset_" + item.name
+                custom_icon = pcoll[ic].icon_id
+            except:
+                custom_icon = 56
         else:
             try:    
                 # if this icon exists --> use it else: use dlc icon

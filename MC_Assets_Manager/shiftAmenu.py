@@ -19,9 +19,9 @@ class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout
         col = layout.column()
-        col.operator("preset_list.append", icon="COMMUNITY")
-        col.operator("asset_list.append", icon="ASSET_MANAGER")
-        col.operator("rig_list.append", icon="ARMATURE_DATA")
+        col.operator("mcam.preset_list_append", icon="COMMUNITY")
+        col.operator("mcam.asset_list_append", icon="ASSET_MANAGER")
+        col.operator("mcam.rig_list_append", icon="ARMATURE_DATA")
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register

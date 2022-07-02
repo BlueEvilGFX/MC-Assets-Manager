@@ -29,6 +29,11 @@ class ReadIcons:
                 for icon in os.listdir(icon_path):
                     path = os.path.join(icon_path, icon)                                #   get path to icon
                     pcoll.load(name+"_"+os.path.splitext(icon)[0], path, "IMAGE")       #   load icon a: nameOfDLC_iconName
+        
+        own_icons_path = os.path.join(addon_path, "files", "own_presets", "icons")
+        for icon in os.listdir(own_icons_path):
+            path = os.path.join(own_icons_path, icon)                                   #   get path to icon
+            pcoll.load("ownPreset_"+os.path.splitext(icon)[0], path, "IMAGE")           #   load icon a: ownPreset_iconName
 
     @staticmethod
     def readAssetIcons(pcoll):
@@ -42,6 +47,11 @@ class ReadIcons:
                 for icon in os.listdir(icon_path):
                     path = os.path.join(icon_path, icon)                                #   get path to icon
                     pcoll.load(name+"_"+os.path.splitext(icon)[0], path, "IMAGE")       #   load icon a: nameOfDLC_iconName
+        
+        own_icons_path = os.path.join(addon_path, "files", "own_assets", "icons")
+        for icon in os.listdir(own_icons_path):
+            path = os.path.join(own_icons_path, icon)                                   #   get path to icon
+            pcoll.load("ownAsset_"+os.path.splitext(icon)[0], path, "IMAGE")            #   load icon a: ownAsset_iconName
 
     @staticmethod
     def readRigIcons(pcoll):
@@ -55,6 +65,11 @@ class ReadIcons:
                 for icon in os.listdir(icon_path):
                     path = os.path.join(icon_path, icon)                                #   get path to icon
                     pcoll.load(name+"_"+os.path.splitext(icon)[0], path, "IMAGE")       #   load icon a: nameOfDLC_iconName
+        
+        own_icons_path = os.path.join(addon_path, "files", "own_rigs", "icons")
+        for icon in os.listdir(own_icons_path):
+            path = os.path.join(own_icons_path, icon)                                   #   get path to icon
+            pcoll.load("ownRig_"+os.path.splitext(icon)[0], path, "IMAGE")              #   load icon a: ownRig_iconName
 
     @staticmethod
     def readBasicMcAMIcons(pcoll):

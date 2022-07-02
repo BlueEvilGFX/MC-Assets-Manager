@@ -8,7 +8,7 @@ from bpy.types import Operator
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class RIG_OT_Reload(Operator):
-    bl_idname = "rig_list.reload"
+    bl_idname = "mcam.rig_list_reload"
     bl_label = "reload"
 
     @reloadDLCIcons(0)

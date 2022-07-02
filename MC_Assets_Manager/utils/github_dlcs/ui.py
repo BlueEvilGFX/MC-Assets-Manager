@@ -3,11 +3,10 @@ from .icons import github_dlc_icon_collections
 from . import connect
 
 def display_github_dlc(self, context, element=None):
-    from .operators import github_gReaderReference, github_internetConnection
+    from .operators import (github_gReaderReference,
+                            github_internetConnection)
 
-    if element == None:
-        element = self.layout
-    layout = element
+    layout = element if self.layout is None else self.layout
 
     box = layout.box()
     box.label(text="Github DLC connector : shows only original DLCs")
@@ -18,10 +17,10 @@ def display_github_dlc(self, context, element=None):
         pcoll = basicMCAM_icon_collection["McAM"]
         ic = "McAM_github"
         custom_icon = pcoll[ic].icon_id
+        row.alert = False
         row.operator("wm.url_open", text="open website", icon_value = custom_icon).url = "https://github.com/BlueEvilGFX/McAM-DLCs"
     else:
         box.operator("mcam.githubconnect", text="connect", icon="WORLD_DATA")
-       
 
     if not github_internetConnection or github_gReaderReference == None:
         layout.label(text="please connect to github")

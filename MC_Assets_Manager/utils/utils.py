@@ -38,7 +38,7 @@ class AddonPathManagement():
         return dlcDirPath
 
     @classmethod
-    def getDlcList(cls) -> tuple:
+    def getDlcList(cls) -> list:
         '''get list of dlcs'''
         dlcList = os.listdir(cls.getDlcDirPath())                                       #   get list of dlcs
         return dlcList
@@ -59,8 +59,9 @@ class AddonPathManagement():
     @classmethod
     def getOwnPresets(cls) -> list:
         '''get list of own presets'''
-        ownAssetList = os.listdir(cls.getOwnPresetsDirPath())                           #   get list of own presets
-        return ownAssetList
+        dirList = os.listdir(cls.getOwnPresetsDirPath())
+        ownPresetList = [preset for preset in dirList if preset.endswith(".blend")]     #   get list of own presets
+        return ownPresetList
 
     #━━━━━━━━━━━━━━━    assets
     @classmethod
@@ -72,7 +73,8 @@ class AddonPathManagement():
     @classmethod
     def getOwnAssets(cls) -> list:
         '''get list of own assets'''
-        ownAssetList = os.listdir(cls.getOwnAssetsDirPath())                            #   get list of own assets
+        dirList = os.listdir(cls.getOwnAssetsDirPath())
+        ownAssetList = [asset for asset in dirList if asset.endswith(".blend")]         #   get list of own assets
         return ownAssetList
 
     @classmethod
@@ -85,14 +87,15 @@ class AddonPathManagement():
     @classmethod
     def getOwnRigsDirPath(cls) -> os.path:
         '''get path to own rigs'''
-        path = os.path.join(cls.getAddonPath(), "files", "own_rigs")                  #    get path to own rigs dir
+        path = os.path.join(cls.getAddonPath(), "files", "own_rigs")                    #    get path to own rigs dir
         return path
 
     @classmethod
     def getOwnRigs(cls) -> list:
         '''get list of own rigs'''
-        ownAssetList = os.listdir(cls.getOwnRigsDirPath())                            #   get list of own rigs
-        return ownAssetList
+        dirList = os.listdir(cls.getOwnRigsDirPath())
+        ownRigList = [rig for rig in dirList if rig.endswith(".blend")]               #   get list of own assets
+        return ownRigList
 
 
 
@@ -160,9 +163,14 @@ class AddonReloadManagement:
         preset_list.clear()
         
         #   add own presets
+        addon_path = AddonPathManagement.getAddonPath()
+        icon_dir = os.path.join(addon_path, "files", "own_presets", "icons")
+        icons = [icon for icon in os.listdir(icon_dir)]
         for p in own_presets_list:
             item = preset_list.add()                                                        #   add file to preset_list 
             item.name = os.path.splitext(p)[0]                                              #   set name
+            if item.name+".png" in icons:                                                   #   set to $$$ if icon exists
+                item.path = "$$$"
 
 
         #   reload dlc presets from dlc presets[dlc_json_file]                                  ━━━━━━━━━━━━━━━
@@ -197,10 +205,14 @@ class AddonReloadManagement:
         asset_list.clear()
         
         #   add own assets
+        addon_path = AddonPathManagement.getAddonPath()
+        icon_dir = os.path.join(addon_path, "files", "own_assets", "icons")
+        icons = [icon for icon in os.listdir(icon_dir)]
         for p in own_assets_list:
             item = asset_list.add()                                                         #   add file to preset_list 
             item.name = os.path.splitext(p)[0]                                              #   set name
-
+            if item.name+".png" in icons:                                                   #   set to $$$ if icon exists
+                item.path = "$$$"
 
         #   reload dlc assets from dlc assets[dlc_json_file]                                  ━━━━━━━━━━━━━━━
         with open(cls.dlcMainJson, "r") as json_file:
@@ -229,18 +241,22 @@ class AddonReloadManagement:
     def reloadRigList(cls) -> None:
         '''reload rig ui list'''
         # get data - assets && DLCs                                   
-        own_assets_list = AddonPathManagement.getOwnRigs()
+        own_rig_list = AddonPathManagement.getOwnRigs()
         #   ━━━━━━━━━━━━━━━                                                                     ━━━━━━━━━━━━━━━
         dlc_dir = AddonPathManagement.getDlcDirPath()
         dlc_list = AddonPathManagement.getDlcList()
         rig_list = bpy.context.scene.mcAssetsManagerProps.rig_list                          #   get preset_list property
         rig_list.clear()
         
-        #   add own assets
-        for p in own_assets_list:
+        #   add own rigs
+        addon_path = AddonPathManagement.getAddonPath()
+        icon_dir = os.path.join(addon_path, "files", "own_rigs", "icons")
+        icons = [icon for icon in os.listdir(icon_dir)]
+        for p in own_rig_list:
             item = rig_list.add()                                                           #   add file to preset_list 
             item.name = os.path.splitext(p)[0]                                              #   set name
-
+            if item.name+".png" in icons:                                                   #   set to $$$ if icon exists
+                item.path = "$$$"
 
         #   reload dlc rigs from dlc assets[dlc_json_file]                                      ━━━━━━━━━━━━━━━
         with open(cls.dlcMainJson, "r") as json_file:
@@ -251,8 +267,7 @@ class AddonReloadManagement:
                 has_rigs = os.path.exists(rig_dir_path)                                     #   if dlc has rigs
 
                 if data[dlc]["active"] and has_rigs:
-                    # pr_pa = os.path.join(cls.addonPath, "files", "DLCs", dlc, "rigs")    #   get directory of rig dlc
-                    rigs = os.listdir(rig_dir_path)                                             #   get list of rigs of the dlc
+                    rigs = os.listdir(rig_dir_path)                                         #   get list of rigs of the dlc
 
                     for p in rigs:
                         if p.endswith(".blend"):

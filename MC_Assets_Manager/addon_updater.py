@@ -989,7 +989,8 @@ class Singleton_updater(object):
 					if fnmatch.filter([file],ptrn):
 						try:
 							fl = os.path.join(path,file)
-							os.remove(fl)
+							if os.path.dirname(path) != os.path.join(base, "files", "DLCs"):
+								os.remove(fl)
 							if self._verbose: print("Pre-removed file "+file)
 						except OSError:
 							print("Failed to pre-remove "+file)

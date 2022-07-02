@@ -7,7 +7,7 @@ from bpy.types import Operator
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class DLC_OT_Reload(Operator):
-    bl_idname = "dlc_list.reload"
+    bl_idname = "mcam.dlc_list_reload"
     bl_label = "reload"
 
     @reloadDLCIcons(0)

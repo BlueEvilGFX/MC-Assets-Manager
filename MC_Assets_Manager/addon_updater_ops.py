@@ -1573,7 +1573,7 @@ def register(bl_info):
 	# file name removed exists in the update, then it acts as if pattern
 	# is placed in the overwrite_patterns property. Note this is effectively
 	# ignored if clean=True in the run_update method
-	updater.remove_pre_update_patterns = ["*.pyc"]
+	updater.remove_pre_update_patterns = ["*.pyc", "*.py"]
 	# Note setting ["*"] here is equivalent to always running updates with
 	# clean = True in the run_update method, ie the equivalent of a fresh,
 	# new install. This would also delete any resources or user-made/modified

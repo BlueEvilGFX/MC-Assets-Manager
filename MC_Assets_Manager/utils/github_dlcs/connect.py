@@ -19,6 +19,7 @@ class DLCObject:
         self.type = data["type"]
         self.creator = data["creator"]
         self.version = data["version"]
+        self.download_link = data["download_link"] if "download_link" in data else None
         self.status = None
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -34,7 +35,13 @@ class GithubReader:
         self.dlc_list = []
         self.network_error = None
 
-    def internet_connection(self):
+        self.check_internet_connection()
+        if self.network_error: return
+        self.fetch_data()
+        self.check_dlcs()
+        self.fetch_icons()
+
+    def check_internet_connection(self) -> bool:
         try:
             urllib.request.urlopen("https://github.com")
             self.network_error = False
@@ -44,11 +51,9 @@ class GithubReader:
             self.network_error = True
             return False
 
-    def fetch_data(self):
-        if self.network_error:
-            return
+    def fetch_data(self) -> None:
+        if self.network_error: return
 
-        # api_url = "%s/repos/%s/%s/branches/main" % (self.api_url, self.rep_owner, self.repo)
         raw_url = "%s/%s/%s/main" % (self.raw_url, self.rep_owner, self.repo)
         dlc_url = "%s/dlc.json" % raw_url
 
@@ -60,9 +65,8 @@ class GithubReader:
             data = requests.get(data_url).json()
             self.dlc_list.append(DLCObject(data, dlc))
 
-    def check_for_new(self):
-        if self.network_error:
-            return
+    def check_dlcs(self) -> None:
+        if self.network_error: return
 
         file_path = os.path.realpath(__file__)
         utils_path = os.path.dirname(file_path)
@@ -85,9 +89,8 @@ class GithubReader:
                         break
                     else:
                         dlc.status = StatusEnum.INSTALLED
-                
 
-    def fetch_icons(self):
+    def fetch_icons(self) -> None:
         addon_path = utils.AddonPathManagement.getAddonPath()
         icons_dir = os.path.join(addon_path, "utils", "github_dlcs", "icons")
         if os.path.exists(icons_dir):
@@ -105,4 +108,3 @@ class GithubReader:
                 pass
 
         read_github_dlc_icons()
-        

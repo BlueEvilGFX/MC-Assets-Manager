@@ -8,7 +8,6 @@ from bpy.props import *
 from bpy.types import PropertyGroup
 from . import utils
 
-
 class MCAssetsManagerProperties(PropertyGroup):
 
     class DlcListItem(PropertyGroup):

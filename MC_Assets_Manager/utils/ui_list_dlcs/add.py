@@ -14,7 +14,7 @@ from bpy_extras.io_utils import ImportHelper
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class DLC_OT_Add(Operator, ImportHelper):
-    bl_idname = "dlc_list.add"
+    bl_idname = "mcam.dlc_list_add"
     bl_label = "add"
 
     filter_glob : StringProperty(default = "*.dlc", options = {"HIDDEN"})
@@ -29,8 +29,6 @@ class DLC_OT_Add(Operator, ImportHelper):
         handle = zipfile.ZipFile(target)
         handle.extractall(path = preDirPath)
         handle.close()
-
-        self.report({'INFO'}, "dlc successully added")
 
     def execute(self, context):
         for file in self.files:
@@ -57,12 +55,13 @@ class DLC_OT_Add(Operator, ImportHelper):
         init_path = utils.AddonPathManagement.getInitPath(dlc)[1]
 
         if init_path:
-            bpy.ops.dlc_list.message('INVOKE_DEFAULT')
+            bpy.ops.mcam.dlc_list_message('INVOKE_DEFAULT')
+        self.report({'INFO'}, "dlc successully added")
 
         return{'FINISHED'}
 
 class MessageBox(bpy.types.Operator):
-    bl_idname = "dlc_list.message"
+    bl_idname = "mcam.dlc_list_message"
     bl_label = ""
  
     def execute(self, context):

@@ -35,9 +35,16 @@ class PRESET_UL_List(UIList):
         #   set icon
         if item.path == "":
             custom_icon = 15
+        elif item.path == "$$$":
+            try:
+                pcoll = preset_icon_collections["Presets"]
+                ic = "ownPreset_" + item.name
+                custom_icon = pcoll[ic].icon_id
+            except:
+                custom_icon = 15
         else:
-            try:    
-                # if this icon exists --> use it else: use dlc icon
+            # if this icon exists --> use it; else: use dlc icon
+            try:
                 pcoll = preset_icon_collections["Presets"]
                 ic = item.icon
                 custom_icon = pcoll[ic].icon_id 

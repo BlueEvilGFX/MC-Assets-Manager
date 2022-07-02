@@ -7,7 +7,7 @@ from . import utils
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class ADDON_OT_RELOAD(Operator):
-    bl_idname = "assetsaddon.reload"
+    bl_idname = "mcam.main_reload"
     bl_label = "reload"
     
     @reloadDLCIcons(0)
@@ -28,10 +28,6 @@ class ADDON_OT_RELOAD(Operator):
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-classes = (
-            ADDON_OT_RELOAD,
-          )
           
 def register(): 
     bpy.utils.register_class(ADDON_OT_RELOAD)

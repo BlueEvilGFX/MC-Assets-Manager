@@ -4,7 +4,7 @@ import os, importlib, json
 from .utils import utils
 from .utils import github_dlcs
 
-from bpy.props import EnumProperty, StringProperty, IntProperty, BoolProperty, PointerProperty
+from bpy.props import *
 from bpy.types import AddonPreferences
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -14,13 +14,13 @@ class AddonPref(AddonPreferences):
     bl_idname = __package__
 
     #   creates the menu enum (navbar)
-    menu : EnumProperty(default = "0", items = [("0", "Presets", ""), ("1", "DLCs", ""), ("2", "Assets", ""), ("3", "Online", "")])
+    menu : EnumProperty(default = "0", items = [("0", "Assets", ""), ("1", "DLCs", ""), ("2", "Online", "")])
 
     #   creates the menu enum (assetsbar)
     assets_menu : EnumProperty(default = "0", items = [
-        ('0', 'Items', 'Items', 'DOCUMENTS',0),
-        ('1', 'Rigs', 'Rigs', 'OUTLINER_OB_ARMATURE',1),
-        ('2', 'Others', 'Others', 'PARTICLE_DATA',2)
+        ('0', 'Presets', 'Presets', 'OUTLINER_OB_ARMATURE',0),
+        ('1', 'Assets', 'Assets', 'DOCUMENTS',1),
+        ('2', 'Rigs', 'Rigs', 'ARMATURE_DATA',2)
         ])
 
     online_menu : EnumProperty(default = "0", items = [
@@ -83,43 +83,91 @@ class AddonPref(AddonPreferences):
                 pass
             # bpy.ops.wm.save_userpref
             pointerProperty = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"       #   --> dlc_propGroup: acces to property group
-            exec(f'{dlc+"_propGroup"} : {pointerProperty}')                                             #   create PointerProperty to PropertyGroup    
+            exec(f'{dlc+"_propGroup"} : {pointerProperty}')                                             #   create PointerProperty to PropertyGroup
 
     def draw(self, context):
         layout = self.layout
         header = layout.row()
         header.prop(self, "menu", expand = True)
-        header.operator("assetsaddon.reload", text = "", icon = "FILE_REFRESH")
+        header.operator("mcam.main_reload", text = "", icon = "FILE_REFRESH")
 
         #━━━━━━━━━━━━━
         scene = context.scene
 
         if self.menu == "0":
-            def presets_tab():
+            def assets_tab():
+                lowerEnum = layout.row()
+                lowerEnum.prop(self, "assets_menu", expand = True)
+                # lowerEnum.label(text="", icon = "BLANK1")
+                lowerEnum.operator("mcam.add_main_file", text="", icon="RNA_ADD")
                 smallHeader = layout.row()
-                smallHeader.scale_y = 0.5
-                row = smallHeader.box().row()
-                row.label(text="Name")
-                row.label(text="Source")
-                smallHeader.label(text="", icon = "BLANK1")
 
-                row = layout.row()
-                row.template_list("PRESET_UL_List", "The_List", scene.mcAssetsManagerProps, "preset_list", scene.mcAssetsManagerProps, "preset_index")
+                sm = smallHeader.column()
+                smBox = sm.box()
+                smr = smBox.row()
+                smr.scale_y = 0.5
+                smr.label(text="Name")
+                smr.label(text="Source")
 
-                colMain = row.column()
-                colFir = colMain.column()
-                colFir.operator("preset_list.reload", text = "", icon = "FILE_REFRESH")
-                colSec = colMain.column(align = True)
-                colSec.operator("preset_list.add", text = "", icon = "ADD")
-                colSec.operator("preset_list.remove", text = "", icon = "REMOVE")
-                colThi = colMain.column(align = True)
-                colThi.operator("preset_list.export", text = "", icon = "EXPORT")
+                right = smallHeader.row().column()
 
-                colFou = colMain.column(align = True)
-                if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
-                else: lock = "UNLOCKED"
-                colFou.prop(context.scene.mcAssetsManagerProps, "item_unlock", text="", icon=lock)
-            presets_tab()
+                #   presets
+                if self.get("assets_menu") == 0:
+                    row = sm
+                    row.template_list("PRESET_UL_List", "The_List", scene.mcAssetsManagerProps, "preset_list", scene.mcAssetsManagerProps, "preset_index")
+
+                    colMain = right.column()
+                    colFir = colMain.column()
+                    colFir.operator("mcam.preset_list_reload", text = "", icon = "FILE_REFRESH")
+                    colSec = colMain.column(align = True)
+                    colSec.operator("mcam.preset_list_add", text = "", icon = "ADD")
+                    colSec.operator("mcam.preset_list_remove", text = "", icon = "REMOVE") 
+
+                    colThi = colMain.column(align = True)
+                    if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
+                    else: lock = "UNLOCKED"
+                    colThi.prop(context.scene.mcAssetsManagerProps, "item_unlock", text="", icon=lock)
+
+                    colFou = colMain.column(align = True)
+                    colFou.operator("mcam.preset_list_export", text = "", icon = "EXPORT")
+                #   assets
+                elif self.get("assets_menu") == 1:
+                    row = sm
+                    smr.label(text="Category")
+                    row.template_list("ASSET_UL_List", "The_List", scene.mcAssetsManagerProps, "asset_list", scene.mcAssetsManagerProps, "asset_index")
+                    colMain = right.column()
+                    colFir = colMain.column()
+                    colFir.operator("mcam.asset_list_reload", text = "", icon = "FILE_REFRESH")
+                    colSec = colMain.column(align = True)
+                    colSec.operator("mcam.asset_list_add", text = "", icon = "ADD")
+                    colSec.operator("mcam.asset_list_remove", text = "", icon = "REMOVE")
+
+                    colThi = colMain.column(align = True)
+                    if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
+                    else: lock = "UNLOCKED"
+                    colThi.prop(context.scene.mcAssetsManagerProps, "item_unlock", text="", icon=lock)
+
+                    colFou = colMain.column(align = True)
+                    colFou.operator("mcam.asset_list_export", text = "", icon = "EXPORT")
+                #   rigs
+                elif self.get("assets_menu") == 2:
+                    row = sm
+                    row.template_list("RIG_UL_List", "The_List", scene.mcAssetsManagerProps, "rig_list", scene.mcAssetsManagerProps, "rig_index")
+                    colMain = right.column()
+                    colFir = colMain.column()
+                    colFir.operator("mcam.rig_list_reload", text = "", icon = "FILE_REFRESH")
+                    colSec = colMain.column(align = True)
+                    colSec.operator("mcam.rig_list_add", text = "", icon = "ADD")
+                    colSec.operator("mcam.rig_list_remove", text = "", icon = "REMOVE")
+
+                    colThi = colMain.column(align = True)
+                    if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
+                    else: lock = "UNLOCKED"
+                    colThi.prop(context.scene.mcAssetsManagerProps, "item_unlock", text="", icon=lock)
+
+                    colFou = colMain.column(align = True)
+                    colFou.operator("mcam.rig_list_export", text = "", icon = "EXPORT")
+            assets_tab()
 
         elif self.menu == "1":
             def dlc_tab():
@@ -137,10 +185,10 @@ class AddonPref(AddonPreferences):
 
                 colMain = row.column()
                 colFir = colMain.column()
-                colFir.operator("dlc_list.reload", text = "", icon = "FILE_REFRESH")
+                colFir.operator("mcam.dlc_list_reload", text = "", icon = "FILE_REFRESH")
                 colSec = colMain.column(align = True)
-                colSec.operator("dlc_list.add", text = "", icon = "ADD")
-                colSec.operator("dlc_list.remove", text = "", icon = "REMOVE")
+                colSec.operator("mcam.dlc_list_add", text = "", icon = "ADD")
+                colSec.operator("mcam.dlc_list_remove", text = "", icon = "REMOVE")
 
                 colThi = colMain.column(align = True)
                 if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
@@ -174,66 +222,8 @@ class AddonPref(AddonPreferences):
                             if selected_dlc == dlc_name and active:                                     #   if selection is dlc from iteration
                                 locals()[dlc].CustomAddonPreferences.display(self)                      #   draw addon preferences from dlc
             showDlcPreferences()
-                                
+
         elif self.menu == "2":
-            def assets_tab():
-                lowerEnum = layout.row()
-                lowerEnum.prop(self, "assets_menu", expand = True)
-                lowerEnum.label(text="", icon = "BLANK1")
-                smallHeader = layout.row()
-
-                sm = smallHeader.column()
-                smBox = sm.box()
-                smr = smBox.row()
-                smr.scale_y = 0.5
-                smr.label(text="Name")
-                smr.label(text="Source")
-
-                right = smallHeader.row().column()
-
-                #   assets
-                if self.get("assets_menu") == 0:
-                    row = sm
-                    smr.label(text="Category")
-                    row.template_list("ASSET_UL_List", "The_List", scene.mcAssetsManagerProps, "asset_list", scene.mcAssetsManagerProps, "asset_index")
-                    colMain = right.column()
-                    colFir = colMain.column()
-                    colFir.operator("asset_list.reload", text = "", icon = "FILE_REFRESH")
-                    colSec = colMain.column(align = True)
-                    colSec.operator("asset_list.add", text = "", icon = "ADD")
-                    colSec.operator("asset_list.remove", text = "", icon = "REMOVE")
-                    colSec.operator("asset_list.export", text ="", icon = "EXPORT")
-
-                    colThi = colMain.column(align = True)
-                    if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
-                    else: lock = "UNLOCKED"
-                    colThi.prop(context.scene.mcAssetsManagerProps, "item_unlock", text="", icon=lock)
-                #   rigs
-                elif self.get("assets_menu") == 1:
-                    row = sm
-                    row.template_list("RIG_UL_List", "The_List", scene.mcAssetsManagerProps, "rig_list", scene.mcAssetsManagerProps, "rig_index")
-                    colMain = right.column()
-                    colFir = colMain.column()
-                    colFir.operator("rig_list.reload", text = "", icon = "FILE_REFRESH")
-                    colSec = colMain.column(align = True)
-                    colSec.operator("rig_list.add", text = "", icon = "ADD")
-                    colSec.operator("rig_list.remove", text = "", icon = "REMOVE")
-                    colSec.operator("rig_list.export", text ="", icon = "EXPORT")
-
-                    colThi = colMain.column(align = True)
-                    if context.scene.mcAssetsManagerProps.item_unlock == False: lock = "LOCKED"
-                    else: lock = "UNLOCKED"
-                    colThi.prop(context.scene.mcAssetsManagerProps, "item_unlock", text="", icon=lock)
-                #   others
-                else:
-                    row = sm
-                    row.label(text="thats 2 now")
-                    row.label(text="thats 2 now")
-                    row.label(text="thats 2 now")
-                    row.label(text="thats 2 now")
-            assets_tab()
-
-        elif self.menu == "3":
             lowerEnum = layout.row()
             lowerEnum.prop(self, "online_menu", expand = True)
             lowerEnum.label(text="", icon = "BLANK1")
@@ -248,16 +238,8 @@ class AddonPref(AddonPreferences):
 #                   (un)register
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-classes = (
-            AddonPref,
-          )
-          
 def register():
-    from bpy.utils import register_class
-    for cls in classes:
-        register_class(cls)
+    bpy.utils.register_class(AddonPref)
   
 def unregister():
-    from bpy.utils import unregister_class
-    for cls in reversed(classes):
-        unregister_class(cls)
+    bpy.utils.unregister_class(AddonPref)

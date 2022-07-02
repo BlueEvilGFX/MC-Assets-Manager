@@ -29,7 +29,7 @@ class McAMDlc(bpy.types.Panel):
             box = layout.box()
             row = box.row()
             row.prop(context.scene.mcAssetsManagerProps, "scriptUIEnum")
-            row.operator("dlc_list.reload", text = "", icon = "FILE_REFRESH")
+            row.operator("mcam.dlc_list_reload", text = "", icon = "FILE_REFRESH")
         header()
 
         def showDLCsUI():

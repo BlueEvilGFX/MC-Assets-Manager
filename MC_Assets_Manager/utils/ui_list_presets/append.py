@@ -1,6 +1,5 @@
 import bpy
 import os
-
 from .. import utils
 
 from bpy.types import Operator
@@ -9,7 +8,7 @@ from bpy.types import Operator
 
 class PRESET_OT_APPEND(Operator):
     bl_description = "append a preset"
-    bl_idname = "preset_list.append"
+    bl_idname = "mcam.preset_list_append"
     bl_label = "append preset"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -43,10 +42,10 @@ class PRESET_OT_APPEND(Operator):
             for obj in data_to.objects:
                 if obj is not None:
                     bpy.context.scene.collection.objects.link(obj)
+
         self.report({'INFO'}, "preset successully appended")
         return{'FINISHED'}
     
-
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

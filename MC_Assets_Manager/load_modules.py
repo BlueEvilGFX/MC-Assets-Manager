@@ -4,44 +4,7 @@ import bpy
 
 #━━━━━━━━━━━━━ Utils
 
-from .utils import icons
-
-from .utils import github_dlcs
-
-if "properties" in locals():
-    importlib.reload(properties)
-else:
-    from .utils import properties
-
-if "ui_list_presets" in locals():
-    importlib.reload(ui_list_presets)
-else:
-    from .utils import ui_list_presets
-
-if "ui_list_assets" in locals():
-    importlib.reload(ui_list_assets)
-else:
-    from .utils import ui_list_assets
-
-if "ui_list_rigs" in locals():
-    importlib.reload(ui_list_rigs)
-else:
-    from .utils import ui_list_rigs
-
-if "ui_list_dlcs" in locals():
-    importlib.reload(ui_list_dlcs)
-else:
-    from .utils import ui_list_dlcs
-
-if "addonReloader" in locals():
-    importlib.reload(addonReloader)
-else:
-    from .utils import addonReloader
-
-if "utils" in locals():
-    importlib.reload(utils)
-else:
-    from .utils import utils
+from . import utils
 
 #━━━━━━━━━━━━━ Main
 
@@ -60,10 +23,7 @@ if "ui" in locals():
 else:
     from . import ui
 
-#━━━━━━━━━━━━━ reg Lists
-
-utilRegModules = (icons, properties, ui_list_presets, ui_list_assets,
-            ui_list_rigs, ui_list_dlcs, addonReloader, github_dlcs)
+#━━━━━━━━━━━━━ reg List
 
 mainRegModules = (addonPreferences, shiftAmenu, ui)
 
@@ -103,9 +63,11 @@ def un_registering_dlcs(ure=True):
 #                   (un)register
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+def unregister_prefs():
+    addonPreferences.unregister()
+
 def register():
-    for mod in utilRegModules:
-        mod.register()
+    utils.register()
 
     for mod in mainRegModules:
         mod.register()
@@ -118,5 +80,4 @@ def unregister():
     for mod in reversed(mainRegModules):
         mod.unregister()
 
-    for mod in reversed(utilRegModules):
-        mod.unregister()
+    utils.unregister()
