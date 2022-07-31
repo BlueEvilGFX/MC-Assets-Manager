@@ -7,6 +7,7 @@ import bpy
 from bpy.props import *
 from bpy.types import PropertyGroup
 from . import utils
+from .. import addonPreferences
 
 class MCAssetsManagerProperties(PropertyGroup):
 
@@ -36,6 +37,7 @@ class MCAssetsManagerProperties(PropertyGroup):
                             locals()[dlc].unregister()                                              #   unregister module
                     except:
                         pass
+                    addonPreferences.reload()
 
             with open(main_file, "w") as json_file:
                 json.dump(data, json_file, indent=4)  
@@ -60,7 +62,7 @@ class MCAssetsManagerProperties(PropertyGroup):
         active: BoolProperty(
             name="",
             description="toggles the dlc on and off",
-            default = False,
+            default = True,
             update=update_active)
 
         version: StringProperty(

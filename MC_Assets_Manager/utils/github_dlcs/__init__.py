@@ -1,8 +1,4 @@
-from . import icons
-from . import operators
-from . import connect
-from . import ui
-
+from . import icons, operators, ui, connect, auto_check
 
 def register():
     icons.register()

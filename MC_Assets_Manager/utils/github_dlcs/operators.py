@@ -2,9 +2,24 @@ import bpy, urllib, os, zipfile
 
 from . import connect
 from .. import utils
+from ... import addonPreferences
 
 github_gReaderReference = None
 github_internetConnection = None
+github_NEWS = False
+def set_github_data(reference, connection, news) -> None:
+    global github_gReaderReference
+    global github_internetConnection
+    global github_NEWS
+
+    github_gReaderReference = reference
+    github_internetConnection = connection
+    github_NEWS = news
+
+def set_news(news):
+    global github_NEWS
+    github_NEWS = news
+
 class GITHUB_OT_connect(bpy.types.Operator):
     bl_idname = "mcam.githubconnect"
     bl_label = ""
@@ -23,24 +38,6 @@ class GITHUB_OT_connect(bpy.types.Operator):
         self.get_data()
         self.report({'INFO'}, "Successfull connection to Github")
         return{'FINISHED'}
-
-class MessageBox(bpy.types.Operator):
-    bl_idname = "mcam.githubmessagebox"
-    bl_label = ""
- 
-    def execute(self, context):
-        return {'FINISHED'}
- 
-    def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self, width = 450)
- 
-    def draw(self, context):
-        layout = self.layout
-        layout.alert = True
-        layout.operator(
-            "wm.quit_blender",
-            text="Restart blender and then activate the dlc in the addon preferences",
-            icon="BLANK1")
 
 class UpdateInstall(bpy.types.Operator):
     bl_idname = "mcam.githubindupdateinstall"
@@ -91,17 +88,26 @@ class UpdateInstall(bpy.types.Operator):
         
         init_path = utils.AddonPathManagement.getInitPath(name)[1]
         if init_path:
-            bpy.ops.mcam.githubmessagebox('INVOKE_DEFAULT')
+            addonPreferences.reload()
             
         self.report({'INFO'}, "%s successfully updated/installed" % self.data)
         return {'FINISHED'}
 
+class GITHUB_OT_IGNORE(bpy.types.Operator):
+    bl_idname = "mcam.githubignore"
+    bl_label = "ignore"
+
+    def execute(self, context):
+        global github_NEWS
+        github_NEWS = False
+        return{'FINISHED'}
+
 def register():
-    bpy.utils.register_class(MessageBox)
     bpy.utils.register_class(GITHUB_OT_connect)
     bpy.utils.register_class(UpdateInstall)
+    bpy.utils.register_class(GITHUB_OT_IGNORE)
 
 def unregister():
+    bpy.utils.unregister_class(GITHUB_OT_IGNORE)
     bpy.utils.unregister_class(UpdateInstall)
     bpy.utils.unregister_class(GITHUB_OT_connect)
-    bpy.utils.unregister_class(MessageBox)

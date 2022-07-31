@@ -1,6 +1,5 @@
 from . import setup
 setup.setup()
-
 from . import addon_updater_ops
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -10,12 +9,12 @@ from . import addon_updater_ops
 bl_info = {
     "name": "[Minecraft Assets Manager]",
     "author": "BlueEvilGFX",
-    "version": (0, 1, 6),
+    "version": (0, 1, 7),
     "blender": (2, 90, 0),
     }  
 
 # ━━━━━━━
-if "load_modules" in locals():          #   if already loaded
+if "load_modules" in locals():          #   check if already loaded
     import importlib
     importlib.reload(load_modules)      #   reload module
 else:
@@ -29,7 +28,6 @@ def register():
 def unregister():
     load_modules.unregister()
     addon_updater_ops.unregister()
-
     
 if __name__ == "__main__":
     register(bl_info)

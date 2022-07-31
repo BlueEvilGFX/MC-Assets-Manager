@@ -3,6 +3,7 @@ from bpy.types import Operator
 
 from .icons import reloadDLCIcons, reloadPresetIcons, reloadAssetIcons, reloadRigIcons
 from . import utils
+from .. import addonPreferences
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -16,6 +17,7 @@ class ADDON_OT_RELOAD(Operator):
     @reloadRigIcons(0)
     def execute(self, context):
 
+        addonPreferences.reload()
         utils.AddonReloadManagement.reloadDlcJson()
         utils.AddonReloadManagement.reloadDlcList()
         utils.AddonReloadManagement.reloadPresetList()

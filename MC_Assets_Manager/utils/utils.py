@@ -4,9 +4,22 @@ import bpy
 
 
 #━━━━━━━━━━━━━━━    functions / classes    ━━━━━━━━━━━━━━━━━━━━━━━
+class AddonPreferencesProperties:
+    @classmethod
+    def getAddonName(cls) -> str:
+        return "[Minecraft Assets Manager]"
 
+    @classmethod
+    def getPackage(cls) -> str:
+        return __package__.split(".")[0]
 
-class AddonPathManagement():
+    @classmethod
+    def getAddonPropAcces(cls) -> bpy:
+        '''f'addon.{dlc_name}_propGroup'''
+        addon = bpy.context.preferences.addons.get(cls.getPackage()).preferences
+        return addon
+
+class AddonPathManagement:
 
     #━━━━━━━━━━━━━━━    addonPath
     @staticmethod
@@ -121,8 +134,9 @@ class AddonReloadManagement:
                     dlcJsonList[dlc] = data
 
                     if mainData.get(dlc) is None:                                       #   if does not exist : newly added DLC
-                        init_check = AddonPathManagement.getInitPath(dlc)[1]            #   if dlc is script based : deactivate
-                        dlcJsonList[dlc]["active"] = False if init_check==True else True
+                        dlcJsonList[dlc]["active"] = True
+                        # init_check = AddonPathManagement.getInitPath(dlc)[1]            #   if dlc is script based : deactivate
+                        # dlcJsonList[dlc]["active"] = False if init_check==True else True
                     else:
                         active = mainData[dlc]["active"]
                         dlcJsonList[dlc]["active"] = active                             #   use active status from before

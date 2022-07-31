@@ -4,6 +4,7 @@ from . import addon_updater_ops
 
 import importlib, os
 from .utils import utils
+from .utils import github_dlcs
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -24,6 +25,7 @@ class McAMDlc(bpy.types.Panel):
         layout = self.layout
 
         addon_updater_ops.update_notice_box_ui(self, layout)
+        github_dlcs.ui.ui_notice_dlc_update(self)
 
         def header():
             box = layout.box()

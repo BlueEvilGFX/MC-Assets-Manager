@@ -1,17 +1,18 @@
 from ..icons import basicMCAM_icon_collection
 from .icons import github_dlc_icon_collections
 from . import connect
+from .. import utils
 
 def display_github_dlc(self, context, element=None):
     from .operators import (github_gReaderReference,
                             github_internetConnection)
 
-    layout = element if self.layout is None else self.layout
+    layout = self.layout if element is None else element.column()
 
     box = layout.box()
     box.label(text="Github DLC connector : shows only original DLCs")
+    row = box.row()
     if not github_gReaderReference == None:
-        row = box.row()
         row.operator("mcam.githubconnect", text="refresh", icon="FILE_REFRESH")
 
         pcoll = basicMCAM_icon_collection["McAM"]
@@ -20,7 +21,8 @@ def display_github_dlc(self, context, element=None):
         row.alert = False
         row.operator("wm.url_open", text="open website", icon_value = custom_icon).url = "https://github.com/BlueEvilGFX/McAM-DLCs"
     else:
-        box.operator("mcam.githubconnect", text="connect", icon="WORLD_DATA")
+        row.operator("mcam.githubconnect", text="connect", icon="WORLD_DATA")
+    row.prop(self, "auto_check_dlc", text="", icon="TEMP")
 
     if not github_internetConnection or github_gReaderReference == None:
         layout.label(text="please connect to github")
@@ -64,3 +66,12 @@ def display_github_dlc(self, context, element=None):
                 display.label(text=dlc.name, icon_value = custom_icon)
                 button = display.operator("mcam.githubindupdateinstall", icon = "IMPORT")
                 button.data = dlc.name
+
+def ui_notice_dlc_update(self, element=None) -> None:
+    from .operators import github_NEWS
+    if github_NEWS:
+        layout = self.layout.box() if element is None else element
+        layout = layout.row()
+        layout.label(text="NEW DLCS OR DLCS UPDATABLE")
+        layout.operator("mcam.githubignore")
+        layout.operator("mcam.openaddonprefs", icon="PROPERTIES")

@@ -1,10 +1,9 @@
-from struct import pack
 import bpy
-import importlib
 import os
 import zipfile
 from .. import utils
 from ..icons import reloadDLCIcons, reloadPresetIcons
+from ... import addonPreferences
 
 from bpy.props import StringProperty, CollectionProperty
 from bpy.types import Operator
@@ -37,17 +36,6 @@ class DLC_OT_Add(Operator, ImportHelper):
 
             self.add(filepath)
 
-            #   importing the __init__ file and call its register function from dlc if there is one
-            # dlc = os.path.splitext(os.path.basename(self.filepath))[0]
-            # existence = utils.AddonPathManagement.getInitPath(dlc)[0]
-            # if existence:
-            #     package = os.path.splitext(__package__)[0]
-            #     package = os.path.splitext(package)[0]
-            #     module_name = ".files.DLCs."+dlc
-                # locals()[dlc] = importlib.import_module(name = module_name, package = package)
-
-                # locals()[dlc].register()
-
         utils.AddonReloadManagement.reloadDlcJson()
         utils.AddonReloadManagement.reloadDlcList()
 
@@ -55,37 +43,17 @@ class DLC_OT_Add(Operator, ImportHelper):
         init_path = utils.AddonPathManagement.getInitPath(dlc)[1]
 
         if init_path:
-            bpy.ops.mcam.dlc_list_message('INVOKE_DEFAULT')
+            addonPreferences.reload()
         self.report({'INFO'}, "dlc successully added")
 
         return{'FINISHED'}
-
-class MessageBox(bpy.types.Operator):
-    bl_idname = "mcam.dlc_list_message"
-    bl_label = ""
- 
-    def execute(self, context):
-        return {'FINISHED'}
- 
-    def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self, width = 450)
- 
-    def draw(self, context):
-        alert_row = self.layout
-        alert_row.alert = True
-        alert_row.operator(
-            "wm.quit_blender",
-            text="Restart blender and then activate the dlc in the addon preferences",
-            icon="BLANK1")
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def register():
-    bpy.utils.register_class(MessageBox)
     bpy.utils.register_class(DLC_OT_Add)
   
 def unregister():
     bpy.utils.unregister_class(DLC_OT_Add)
-    bpy.utils.unregister_class(MessageBox)

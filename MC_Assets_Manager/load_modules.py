@@ -1,6 +1,4 @@
-import importlib
-import json
-import bpy
+import importlib, json, bpy
 
 #━━━━━━━━━━━━━ Utils
 
@@ -63,9 +61,6 @@ def un_registering_dlcs(ure=True):
 #                   (un)register
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-def unregister_prefs():
-    addonPreferences.unregister()
-
 def register():
     utils.register()
 
@@ -73,6 +68,7 @@ def register():
         mod.register()
 
     un_registering_dlcs()
+    utils.github_dlcs.auto_check.create_auto_check_thread()
 
 def unregister():
     un_registering_dlcs(False)

@@ -1,6 +1,7 @@
 import requests, os, json, urllib
 from enum import Enum, auto
 
+from . import operators
 from .. import utils
 from .icons import read_github_dlc_icons
 
@@ -89,6 +90,7 @@ class GithubReader:
                         break
                     else:
                         dlc.status = StatusEnum.INSTALLED
+        operators.set_news(False)
 
     def fetch_icons(self) -> None:
         addon_path = utils.AddonPathManagement.getAddonPath()
