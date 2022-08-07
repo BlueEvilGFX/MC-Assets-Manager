@@ -27,7 +27,7 @@ class RIG_OT_APPEND(Operator):
         item = scene.mcAssetsManagerProps.rig_list[scene.mcAssetsManagerProps.rig_index]
         collection = (item.collection != "")
 
-        if item.path == "":
+        if item.path == "" or item.path == "$$$":
             name = item.name if not collection else f'{item.name}&&{item.collection}'
             blendfile = os.path.join(utils.AddonPathManagement.getAddonPath(), "files", "own_rigs", name + ".blend")
             file_name = name+".blend"

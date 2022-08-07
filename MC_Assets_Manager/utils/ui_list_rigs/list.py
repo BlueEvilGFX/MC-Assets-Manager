@@ -39,7 +39,10 @@ class RIG_UL_List(UIList):
         elif item.path == "$$$":
             try:
                 pcoll = rig_icon_collections["Rigs"]
-                ic = "ownRig_" + item.name
+                if item.collection == "":
+                    ic = "ownRig_" + item.name
+                else:
+                    ic = f'ownRig_{item.name}&&{item.collection}'
                 custom_icon = pcoll[ic].icon_id
             except:
                 custom_icon = 172
