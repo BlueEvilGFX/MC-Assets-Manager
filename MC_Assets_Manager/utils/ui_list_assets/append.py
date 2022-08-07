@@ -32,10 +32,22 @@ class ASSET_OT_APPEND(Operator):
                 data_to.objects = data_from.objects
                 data_to.collections = data_from.collections
 
-            if data_to.collections: 
+            if data_to.collections:
+                main_collection = None
+                sub_collections = []
+                
                 for coll in data_to.collections:
-                    if coll is not None:
-                        bpy.context.scene.collection.children.link(coll)
+                    if main_collection is None:
+                        main_collection = coll
+                    else:
+                        sub_collections.append(coll)
+                    bpy.context.scene.collection.children.link(coll)
+                
+                collection = bpy.context.view_layer.layer_collection.collection
+                if collection:
+                    for coll in sub_collections:
+                        collection.children.unlink(coll)
+
             else:
                 for obj in data_to.objects:
                     if obj is not None:

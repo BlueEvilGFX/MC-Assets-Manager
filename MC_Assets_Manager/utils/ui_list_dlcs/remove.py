@@ -6,6 +6,8 @@ import shutil
 from .. import utils
 from ..icons import reloadDLCIcons, reloadPresetIcons
 
+from ...load_modules import PACKAGE_NAME
+
 from bpy.types import Operator
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -38,10 +40,8 @@ class DLC_OT_Remove(Operator):
         path_exists = os.path.exists(init_path)
         
         if path_exists:
-            package = os.path.splitext(__package__)[0]
-            package = os.path.splitext(package)[0]
             module_name = ".files.DLCs."+dlc
-            locals()[dlc] = importlib.import_module(name = module_name, package = package)
+            locals()[dlc] = importlib.import_module(name = module_name, package = PACKAGE_NAME)
             jFile = utils.AddonPathManagement.getDlcMainJson()
             with open(jFile) as dataFile:
                 data = json.load(dataFile)
@@ -54,6 +54,8 @@ class DLC_OT_Remove(Operator):
         context.scene.mcAssetsManagerProps.dlc_index = min(max(0, index - 1), len(dlc_list) - 1)
         utils.AddonReloadManagement.reloadDlcJson()
         utils.AddonReloadManagement.reloadPresetList()
+        utils.AddonReloadManagement.reloadAssetList()
+        utils.AddonReloadManagement.reloadRigList()
         self.report({'INFO'}, "dlc successully removed")
         return{'FINISHED'}
 

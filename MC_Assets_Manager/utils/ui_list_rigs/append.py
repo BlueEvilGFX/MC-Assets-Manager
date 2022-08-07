@@ -25,23 +25,48 @@ class RIG_OT_APPEND(Operator):
     def execute(self, context):
         scene = context.scene
         item = scene.mcAssetsManagerProps.rig_list[scene.mcAssetsManagerProps.rig_index]
+        collection = (item.collection != "")
+
         if item.path == "":
-            blendfile = os.path.join(utils.AddonPathManagement.getAddonPath(), "files", "own_rigs", item.name + ".blend")
+            name = item.name if not collection else f'{item.name}&&{item.collection}'
+            blendfile = os.path.join(utils.AddonPathManagement.getAddonPath(), "files", "own_rigs", name + ".blend")
+            file_name = name+".blend"
         else:
             blendfile = item.path
-        
-        with bpy.data.libraries.load(blendfile, link=False) as (data_from, data_to):
-            data_to.objects = data_from.objects
-            data_to.collections = data_from.collections
+            file_name = item.name+".blend"
 
-        if data_to.collections: 
-            for coll in data_to.collections:
-                if coll is not None:
+                
+        if not collection:
+            with bpy.data.libraries.load(blendfile, link=False) as (data_from, data_to):
+                data_to.objects = data_from.objects
+                data_to.collections = data_from.collections
+
+            if data_to.collections:
+                main_collection = None
+                sub_collections = []
+                
+                for coll in data_to.collections:
+                    if main_collection is None:
+                        main_collection = coll
+                    else:
+                        sub_collections.append(coll)
                     bpy.context.scene.collection.children.link(coll)
+                
+                collection = bpy.context.view_layer.layer_collection.collection
+                if collection:
+                    for coll in sub_collections:
+                        collection.children.unlink(coll)
+            else:
+                for obj in data_to.objects:
+                    if obj is not None:
+                        bpy.context.scene.collection.objects.link(obj)
         else:
-            for obj in data_to.objects:
-                if obj is not None:
-                    bpy.context.scene.collection.objects.link(obj)
+            col_name = item.collection
+            bpy.ops.wm.append(
+                filepath=file_name,
+                directory=f'{blendfile}\\Collection\\',
+                filename=col_name,
+                active_collection=True)
 
         self.report({'INFO'}, "rig successully appended")
         return{'FINISHED'}

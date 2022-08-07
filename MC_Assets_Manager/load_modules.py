@@ -2,6 +2,7 @@ import importlib, json, bpy
 
 #━━━━━━━━━━━━━ Utils
 
+PACKAGE_NAME = __package__
 from . import utils
 
 #━━━━━━━━━━━━━ Main
@@ -50,7 +51,7 @@ def un_registering_dlcs(ure=True):
                         importlib.reload(eval(dlc))
                     else:
                         mod_name = ".files.DLCs.%s" % dlc
-                        locals()[dlc] = importlib.import_module(name=mod_name, package=__package__)
+                        locals()[dlc] = importlib.import_module(name=mod_name, package=PACKAGE_NAME)
 
                     if ure:
                         locals()[dlc].register()

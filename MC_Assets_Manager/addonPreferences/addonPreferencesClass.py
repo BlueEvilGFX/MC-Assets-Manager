@@ -6,9 +6,8 @@ from ..utils.icons import basicMCAM_icon_collection
 from bpy.props import *
 from bpy.types import AddonPreferences
 
+from ..load_modules import PACKAGE_NAME
 
-
-PACKAGE_NAME = os.path.basename(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 @addon_updater_ops.make_annotations
 class AddonPref(AddonPreferences):
     bl_idname = PACKAGE_NAME

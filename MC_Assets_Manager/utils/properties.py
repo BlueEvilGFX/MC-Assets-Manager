@@ -9,6 +9,8 @@ from bpy.types import PropertyGroup
 from . import utils
 from .. import addonPreferences
 
+from ..load_modules import PACKAGE_NAME
+
 class MCAssetsManagerProperties(PropertyGroup):
 
     class DlcListItem(PropertyGroup):
@@ -27,9 +29,7 @@ class MCAssetsManagerProperties(PropertyGroup):
 
                 if init_exists:
                     module_name = ".files.DLCs."+dlc
-                    package = os.path.splitext(__package__)[0]                                      #   get addon name as package --> MC_Assets_Manager
-
-                    locals()[dlc] = importlib.import_module(name = module_name, package = package)  #   import module of dlc
+                    locals()[dlc] = importlib.import_module(name = module_name, package = PACKAGE_NAME)  #   import module of dlc
                     try:
                         if self.active:                                                             #   if module active:
                             locals()[dlc].register()                                                #   register module
@@ -129,13 +129,19 @@ class MCAssetsManagerProperties(PropertyGroup):
 
         path: StringProperty(
             name="Path",
-            description = "the path to the preset DLC, empty if no DLC",
-            default = "")
+            description="the path to the preset DLC, empty if no DLC",
+            default="")
 
         icon : StringProperty(
             name="icon",
-            description = "the name of the icon, [dlc name +] preset name",
-            default = "")
+            description="the name of the icon, [dlc name +] preset name",
+            default="")
+        
+        collection : StringProperty(
+            name="collection",
+            description="the name of the collection which will be appended. If None --> everything will be appended",
+            default=""
+        )
     
     dlc_index : IntProperty(name = "Index for dlc_list", default = 0)
     preset_index : IntProperty(name = "Index for preset_list", default = 0)

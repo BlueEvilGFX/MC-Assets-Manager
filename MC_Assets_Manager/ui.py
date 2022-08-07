@@ -6,6 +6,8 @@ import importlib, os
 from .utils import utils
 from .utils import github_dlcs
 
+from .load_modules import PACKAGE_NAME
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 @persistent
@@ -52,12 +54,12 @@ class McAMDlc(bpy.types.Panel):
                             importlib.reload(eval(dlc))                                             #   reload module
                         else:
                             module_name = ".files.DLCs."+dlc                                        #   get module name for importing
-                            locals()[dlc] = importlib.import_module(name = module_name, package = __package__) 
+                            locals()[dlc] = importlib.import_module(name = module_name, package = PACKAGE_NAME) 
                         
                         dlc_name = os.path.splitext(locals()[dlc].__name__)[-1][1:]                 #   get dlc name from selection
                         enumSelection = context.scene.mcAssetsManagerProps.scriptUIEnum             #   get seletion from enum
 
-                        if enumSelection == dlc_name and active:                                    #   if selection is dlc from iteration
+                        if enumSelection == dlc_name:                                               #   if selection is dlc from iteration
                             row = self.layout.row()
                             row.label(text="")
                             row.scale_y = 0.5
