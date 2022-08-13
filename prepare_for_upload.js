@@ -8,7 +8,7 @@ const bar_length = 6;
 const bars = '━'.repeat(bar_length);
 var addon_path = null;
 
-function get_newest_local_version(){
+async function get_newest_local_version(){
     let _path = path.join(__dirname, 'versions');
     
     // create dict of all available versions
@@ -68,6 +68,11 @@ function remove_files(){
     let o_assets = path.join(files_dir, "own_assets");
     let o_presets = path.join(files_dir, "own_presets");
     let o_rigs = path.join(files_dir, "own_rigs");
+	let addon_updater = path.join(addon_path, "mc_assets_manager_updater");
+
+    if(fs.existsSync(addon_updater)){
+        fs.rm(addon_updater, { recursive: true, force: true }, (error) => {});
+    };
 
     fs.rm(DLCs_dir, { recursive: true, force: true }, (error) => {});
     fs.rm(o_assets, { recursive: true, force: true }, (error) => {});
@@ -115,8 +120,16 @@ function zip_addon(){
     archive.finalize();
 }
 
-get_newest_local_version();
-remove_pycache();
-remove_files();
-clear_dlc_json();
-zip_addon();
+async function prepare_all(){
+    async function prep_all(){
+        await get_newest_local_version();
+        remove_pycache();
+        remove_files();
+        clear_dlc_json();
+    }
+    
+    await prep_all()
+    zip_addon();
+  }
+
+prepare_all()
