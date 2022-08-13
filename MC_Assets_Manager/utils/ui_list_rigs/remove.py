@@ -18,7 +18,7 @@ class RIG_OT_Remove(Operator):
         scene = context.scene
         try: 
             item = scene.mcAssetsManagerProps.rig_list[scene.mcAssetsManagerProps.rig_index]                    #   check if a rig is selected
-            if scene.mcAssetsManagerProps.item_unlock and item.path == "":                                      #    check if remove unlocked and own
+            if scene.mcAssetsManagerProps.item_unlock and (item.path == "" or item.path == "$$$"):              #    check if remove unlocked and own
                 return True
         except: return False
 

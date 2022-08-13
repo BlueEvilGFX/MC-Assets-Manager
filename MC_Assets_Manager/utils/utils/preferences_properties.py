@@ -1,18 +1,22 @@
 import bpy
 
+#━━━━━━━━━━━━━━━    constant variables     ━━━━━━━━━━━━━━━━━━━━━━━
+
+ADDON_NAME = "[Minecraft Assets Manager]"
+PACKAGE = __package__.split(".")[0]
 
 #━━━━━━━━━━━━━━━    functions / classes    ━━━━━━━━━━━━━━━━━━━━━━━
+
 class AddonPreferencesProperties:
-    @classmethod
-    def getAddonName(cls) -> str:
-        return "[Minecraft Assets Manager]"
+    @staticmethod
+    def getAddonName() -> str:
+        return ADDON_NAME
 
-    @classmethod
-    def getPackage(cls) -> str:
-        return __package__.split(".")[0]
+    @staticmethod
+    def getPackage() -> str:
+        return PACKAGE
 
-    @classmethod
-    def getAddonPropAcces(cls) -> bpy:
+    @staticmethod
+    def getAddonPropAccess() -> bpy:
         '''f'addon.{dlc_name}_propGroup'''
-        addon = bpy.context.preferences.addons.get(cls.getPackage()).preferences
-        return addon
+        return bpy.context.preferences.addons.get(PACKAGE).preferences

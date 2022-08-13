@@ -15,7 +15,7 @@ class OpenAddonPrefs(bpy.types.Operator):
         bpy.data.window_managers['WinMan']['addon_search'] = search
         bpy.ops.preferences.addon_expand(module = PACKAGE_NAME)
         
-        prefProps = utils.AddonPreferencesProperties.getAddonPropAcces()
+        prefProps = utils.AddonPreferencesProperties.getAddonPropAccess()
         prefProps.menu = "2"
         prefProps.online_menu = "1"
         from ..utils.github_dlcs.operators import set_news

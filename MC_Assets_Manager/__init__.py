@@ -1,5 +1,5 @@
+#   initializing setup and addon updater
 from . import setup
-setup.setup()
 from . import addon_updater_ops
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -9,7 +9,7 @@ from . import addon_updater_ops
 bl_info = {
     "name": "[Minecraft Assets Manager]",
     "author": "BlueEvilGFX",
-    "version": (0, 1, 8),
+    "version": (0, 2, 0),
     "blender": (2, 90, 0),
     }  
 

@@ -58,20 +58,29 @@ def display_github_dlc(self, context, element=None):
             elif dlc.status == connect.StatusEnum.UPDATEABLE:
                 display = col2.row()
                 display.label(text=dlc.name, icon_value = custom_icon)
-                button = display.operator("mcam.githubindupdateinstall", icon="FILE_REFRESH")
+                button = display.operator("mcam.githubupdateinstall", icon="FILE_REFRESH")
                 button.data = dlc.name
                 
             elif dlc.status == connect.StatusEnum.INSTALLABLE:
                 display = col3.row()
                 display.label(text=dlc.name, icon_value = custom_icon)
-                button = display.operator("mcam.githubindupdateinstall", icon = "IMPORT")
+                button = display.operator("mcam.githubupdateinstall", icon = "IMPORT")
                 button.data = dlc.name
+
+        #   display of update/install all DLCs
+        sub_row = layout.row()
+        if all(dlc.status == connect.StatusEnum.INSTALLED for dlc in github_gReaderReference.dlc_list):
+            sub_row.enabled = False
+        else:
+            sub_row.enabled = True
+        sub_row.operator("mcam.githubupdateinstallall")
 
 def ui_notice_dlc_update(self, element=None) -> None:
     from .operators import github_NEWS
     if github_NEWS:
         layout = self.layout.box() if element is None else element
-        layout = layout.row()
-        layout.label(text="NEW DLCS OR DLCS UPDATABLE")
-        layout.operator("mcam.githubignore")
-        layout.operator("mcam.openaddonprefs", icon="PROPERTIES")
+        row = layout.row()
+        row.label(text="NEW DLCS OR DLCS UPDATABLE")
+        row.operator("mcam.githubignore")
+        row.operator("mcam.openaddonprefs", icon="PROPERTIES")
+        layout.operator("mcam.githubupdateinstallall")

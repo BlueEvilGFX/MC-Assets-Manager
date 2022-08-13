@@ -167,6 +167,7 @@ class MCAssetsManagerProperties(PropertyGroup):
                     enum.append(d)
         return enum
     scriptUIEnum : EnumProperty(items=scanUIdlc, name ="")
+    scriptUIEnum2 : EnumProperty(items=scanUIdlc, name="")
 
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

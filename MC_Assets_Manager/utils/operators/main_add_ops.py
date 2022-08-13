@@ -1,7 +1,6 @@
 import bpy
 import os
 
-from .. import utils
 from . import main_add
 
 from bpy.props import StringProperty, CollectionProperty, BoolProperty, EnumProperty

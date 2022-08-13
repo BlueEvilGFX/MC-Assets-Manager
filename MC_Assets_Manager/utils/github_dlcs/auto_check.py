@@ -22,7 +22,7 @@ def auto_check() -> None:
     set_github_data(reference, connection, news)    
 
 def create_auto_check_thread() -> None:
-    preferences = utils.AddonPreferencesProperties.getAddonPropAcces()
+    preferences = utils.AddonPreferencesProperties.getAddonPropAccess()
     if preferences.auto_check_dlc:
         t = Thread(target=auto_check)
         t.start()

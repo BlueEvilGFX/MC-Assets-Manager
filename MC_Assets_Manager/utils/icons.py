@@ -74,7 +74,7 @@ class ReadIcons:
     @staticmethod
     def readBasicMcAMIcons(pcoll):
         addon_path = utils.AddonPathManagement.getAddonPath()
-        iconsDir = os.path.join(addon_path, "icons")                                    #   get path to DLCs
+        iconsDir = os.path.join(addon_path, "files", "icons")                           #   get path to DLCs
 
         for icon in os.listdir(iconsDir):
             path = os.path.join(iconsDir, icon)                                         #   get path to icon  

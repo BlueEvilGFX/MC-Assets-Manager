@@ -4,6 +4,7 @@ import bpy
 from .path_management import AddonPathManagement
 
 #━━━━━━━━━━━━━━━    functions / classes    ━━━━━━━━━━━━━━━━━━━━━━━
+
 class AddonReloadManagement:
 
     addonPath = AddonPathManagement.getAddonPath()
@@ -182,11 +183,10 @@ class AddonReloadManagement:
                     for p in rigs:
                         if p.endswith(".blend"):
                             item = rig_list.add()                                           #   add preset to ui list
-                            item.name = os.path.splitext(p)[0]                              #   set name
                             item.path = os.path.join(rig_dir_path, p)                       #   set path
                             file_name = os.path.splitext(p)[0]                              #   get whole file_name
-                            if "&&" in item.name:                                           #   check if collection restriction
+                            if "&&" in file_name:                                           #   check if collection restriction
                                 item.name, item.collection = file_name.split("&&")          #   set the collection to append
                             else:
                                 item.name = file_name
-                            item.icon = dlc + "_" + item.name                               #   set icon path [dlcName & preset.name]
+                            item.icon = f'{dlc}_{file_name}'
