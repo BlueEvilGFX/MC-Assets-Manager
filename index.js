@@ -69,15 +69,19 @@ async function getNewestLocalVersion() {
 }
 
 function removePycache() {
-    fs.readdir(addonPath, {withFileTypes: true}, (error, files) => {
-        const subDirectories = files.filter(item => item.isDirectory()).map(item => item.name);
+    function listDirsPycache() {
+        fs.readdir(addonPath, {withFileTypes: true}, (error, files) => {
+            const subDirectories = files.filter(item => item.isDirectory()).map(item => item.name);
 
-        subDirectories.forEach(name => {
-            const dir = path.join(addonPath, name);
-            if (name !== '__pycache__') listDirsPycache(dir)
-            else fs.rmSync(dir, {recursive: true, force: true});
+            subDirectories.forEach(name => {
+                const dir = path.join(addonPath, name);
+                if (name !== '__pycache__') listDirsPycache(dir)
+                else fs.rmSync(dir, {recursive: true, force: true});
+            })
         })
-    })
+    }
+
+    listDirsPycache(addonPath)
 
     console.log(bars);
     console.log('   removed pycache');
