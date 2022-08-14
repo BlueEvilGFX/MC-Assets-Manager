@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-function removePycache(callback, addonPath, bars) {
+function removePycache(callback, addonPath) {
     function deleteDirsPycache(_path) {
         fs.readdir(_path, {withFileTypes: true}, (error, files) => {
             if (files == undefined) {return};
@@ -18,12 +18,11 @@ function removePycache(callback, addonPath, bars) {
 
     deleteDirsPycache(addonPath);
 
-    console.log(bars);
     console.log('   > removed pycache');
     callback();
 }
 
-function removeFiles(callback, addonPath, bars) {
+function removeFiles(callback, addonPath) {
     let files_dir = path.join(addonPath, 'files');
     let DLCs_dir = path.join(files_dir, 'DLCs');
     let o_assets = path.join(files_dir, 'own_assets');
@@ -37,7 +36,6 @@ function removeFiles(callback, addonPath, bars) {
     fs.rmSync(o_presets, {recursive: true, force: true});
     fs.rmSync(o_rigs, {recursive: true, force: true});
 
-    console.log(bars);
     console.log('   > removed files');
     callback();
 }

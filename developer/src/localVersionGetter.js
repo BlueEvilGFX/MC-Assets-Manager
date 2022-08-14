@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-function getNewestLocalVersion(callback, addonName, bars) {
+function getNewestLocalVersion(callback, addonName) {
     const versionsPath = path.join(path.dirname(path.dirname(__dirname)), 'versions');
     const versions = fs.readdirSync(versionsPath);
 
@@ -20,10 +20,9 @@ function getNewestLocalVersion(callback, addonName, bars) {
     let addonPath = null;
     if (addonName != null) {
         addonPath = path.join(versionsPath, newestVersion, addonName)
-    console.log(bars);
+
     console.log(`   > new version: ${newestVersion}`);
     console.log(`   > path: ${addonPath}`);}
-
 
     if (callback != null) {callback()};
     return [addonPath, newestVersion]

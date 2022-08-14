@@ -2,7 +2,7 @@ const archiver = require('archiver');
 const path = require('path');
 const fs = require('fs');
 
-async function zipAddon(callback, addonPath, addonName, bars) {
+async function zipAddon(callback, addonPath, addonName) {
 
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     await sleep(1);
@@ -11,10 +11,7 @@ async function zipAddon(callback, addonPath, addonName, bars) {
     const output = fs.createWriteStream(destination);
     const archive = archiver('zip', {});
 
-    output.on('close', () => {
-        console.log(bars);
-        console.log('   > zipped addon');
-    });
+    output.on('close', () => {console.log('   > zipped addon')});
 
     archive.on('error', (err) => {console.log(error);throw err;});
 

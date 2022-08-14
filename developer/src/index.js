@@ -33,7 +33,8 @@ function getCmdInput(query) {
 // ━━━━━━━━━━━━ main function
 async function main() {
     console.clear();
-    let input = await getCmdInput('\n   > Import addon version (y) or use locally stored version (n)?   y/n: ');
+    console.log(bars);
+    let input = await getCmdInput('   > Import addon version (y) or use locally stored version (n)?   y/n: ');
 
     switch (input) {
         case 'y':
@@ -75,12 +76,13 @@ async function main() {
 
 // ━━━━━━━━━━━━ function which executes all preperation
 function prepareAll() {
+    console.log(bars);
     async.series([
-        function (callback) {addonPath = getNewestLocalVersion(callback, addonName, bars)[0]},
-        function (callback) {removePycache(callback, addonPath, bars)},
-        function (callback) {removeFiles(callback, addonPath, bars)},
-        function (callback) {clearDlcJson(callback, addonPath, bars)},
-        function (callback) {zipAddon(callback, addonPath, addonName, bars)}
+        function (callback) {addonPath = getNewestLocalVersion(callback, addonName)[0]},
+        function (callback) {removePycache(callback, addonPath)},
+        function (callback) {removeFiles(callback, addonPath)},
+        function (callback) {clearDlcJson(callback, addonPath)},
+        function (callback) {zipAddon(callback, addonPath, addonName)}
     ],
     function(error, result){});
 }
