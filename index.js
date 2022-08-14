@@ -124,7 +124,7 @@ function zipAddons() {
         console.log('   zipped addon');
     });
 
-    archive.on('error', err => throw err);
+    archive.on('error', err => {throw err});
     archive.pipe(output);
     // append files from a sub-directory, putting its contents at the root of archive
     archive.directory(addonPath, false);
@@ -145,4 +145,4 @@ async function prepareAll() {
     zipAddons();
 }
 
-await main();
+main();
