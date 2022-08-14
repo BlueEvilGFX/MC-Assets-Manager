@@ -3,7 +3,7 @@ const path = require('path');
 
 const { getNewestLocalVersion } = require("./localVersionGetter");
 
-function importAddon() {
+function importAddon(srcDir) {
     let version = getNewestLocalVersion(null, null, null)[1];
     let versionArray = version.split('.');
 
@@ -26,8 +26,7 @@ function importAddon() {
     const versionName = versionArray.join('.');
     console.log(`   > ${versionName}`);
 
-    const srcDir = String.raw`C:\Users\Kinder\AppData\Roaming\Blender Foundation\Blender\3.0\scripts\addons\MC_Assets_Manager`;
-    const destDir = path.join(String.raw`F:\[ BlueEvil ]\Blender x Photo\MC_Assets_Manager\versions`, versionName, "MC_Assets_Manager");
+    const destDir = path.join(path.dirname(path.dirname(__dirname)), "versions", versionName, "MC_Assets_Manager");
 
     console.log("   > copying...");
     fse.copySync(srcDir, destDir);
