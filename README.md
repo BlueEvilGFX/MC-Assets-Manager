@@ -3,7 +3,7 @@
 ![artwork](./visuals/wallpaper.png)
 
 ## Purpose
-The Addon manages Minecraft Assets, Rigs, Presets and more. The easy to use DLCs are an optimal file structure for Minecraft Assets publisher. These packs full of items can be directly installed into the addon in the addons preferences. Additionally, script based DLCs can be installed as well. The addon also handles the way of appending these items and rigs. The user can access the append operator in the shift a menu. Searching for the right rig should be no problem since the UI lists contain a search and a filter function.
+The MC-Assets-Manager (McAM) manages Minecraft Assets, Rigs, Presets and more. The easy to use DLCs are an optimal file structure for Minecraft Assets publisher. These packs full of items can be directly installed into the addon in the addons preferences. Additionally, script based DLCs can be installed as well. The addon also handles the way of appending these items and rigs. The user can access the append operator in the shift a menu. Searching for the right rig should be no problem since the UI lists contain a search and a filter function.
 
 ## Installing
 For the download click this [link](https://github.com/BlueEvilGFX/MC-Assets-Manager/releases/latest/download/Mc_Assets_Manager.zip).
