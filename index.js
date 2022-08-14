@@ -23,7 +23,7 @@ async function main() {
             break;
         case 'n':
             console.log('   > proceeding with preparing for upload...');
-            await prepare_all();
+            await prepareAll();
             break;
         default:
             input = main();
@@ -83,7 +83,7 @@ function removePycache() {
     console.log('   removed pycache');
 }
 
-function remove_files() {
+function removeFiles() {
     let files_dir = path.join(addonPath, 'files');
     let DLCs_dir = path.join(files_dir, 'DLCs');
     let o_assets = path.join(files_dir, 'own_assets');
@@ -104,13 +104,13 @@ function remove_files() {
 function clearDlcJson() {
     let files_dir = path.join(addonPath, 'files');
     let json_path = path.join(files_dir, 'dlcs.json')
-    fs.writeFile(json_path, '{}', err => {
+    fs.writeFile(json_path, '{}', () => {
         console.log(bars);
         console.log('   cleared dlc json');
     });
 }
 
-function zip_addon() {
+function zipAddons() {
     const destination = path.join(path.dirname(addonPath), `${addonName}.zip`);
     const output = fs.createWriteStream(destination);
     const archive = archiver('zip', {});
@@ -129,16 +129,16 @@ function zip_addon() {
     archive.finalize();
 }
 
-async function prepare_all() {
-    async function prep_all() {
+async function prepareAll() {
+    async function prepAll() {
         await getNewestLocalVersion();
         removePycache();
-        remove_files();
+        removeFiles();
         clearDlcJson();
     }
 
-    await prep_all()
-    zip_addon();
+    await prepAll()
+    zipAddons();
 }
 
 await main();
