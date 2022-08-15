@@ -26,7 +26,7 @@ class SETUP:
         o_rigs_icons = os.path.join(o_rigs, "icons")
         o_presets_icons = os.path.join(o_presets, "icons")
 
-        paths = {dlcs, o_assets, o_rigs, o_presets, o_assets_icons, o_rigs_icons, o_presets_icons}
+        paths = (dlcs, o_assets, o_rigs, o_presets, o_assets_icons, o_rigs_icons, o_presets_icons)
 
         for p in paths:
             if not os.path.exists(p):
