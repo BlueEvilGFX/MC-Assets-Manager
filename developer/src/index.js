@@ -80,15 +80,20 @@ async function main() {
             //  replaces () with {}
             //  remove ,
             //  result: { version: [i, i, i] }
-            let versionLine = `{${allFileContents
-                .split(/\r?\n/)[11]
-                .replace(/\s/g, '')
-                .replace('(', '[')
-                .replace(')', ']')
-                .slice(0, -1)}}`;
-            
-            let obj = JSON.parse(versionLine);
-            var version = Object.values(obj)[0].join('.');
+            try {
+                var versionLine = `{${allFileContents
+                    .split(/\r?\n/)[11]
+                    .replace(/\s/g, '')
+                    .replace('(', '[')
+                    .replace(')', ']')
+                    .slice(0, -1)}}`;
+                
+                let obj = JSON.parse(versionLine);
+                var version = Object.values(obj)[0].join('.');
+            } catch (error) {
+                console.log('   > could not read addon version');
+                return;
+            }
             
             //  importing
             console.log('   > proceeding with importing...');
