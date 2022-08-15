@@ -37,6 +37,14 @@ class SETUP:
         - setup after addon has updated\n
         - hard coded for every file change
         """
+        #   removed prepare_for_upload.py file
+        try:
+            prepare_for_upload_py = os.path.join(self.main_path, "utils", "prepare_for_upload.py")
+            if os.path.exists(prepare_for_upload_py):
+                shutil.rmtree(prepare_for_upload_py)
+        except:
+            print(f'{self.error_message} old_reloadAddon_py')
+
         #   moved reloadAddon operator file
         try:
             old_reloadAddon_py = os.path.join(self.main_path, "utils", "addonReloader.py")
