@@ -1,34 +1,15 @@
+const fs = require('fs');
 const fse = require('fs-extra');
 const path = require('path');
 
-const { getNewestLocalVersion } = require("./localVersionGetter");
+function importAddon(srcDir, versionName) {
+    console.log(`   > detected version: ${versionName}`);
 
-function importAddon(srcDir) {
-    let version = getNewestLocalVersion(null, null, null)[1];
-    let versionArray = version.split('.');
-
-    const lastDigit = versionArray[2];
-
-    if (lastDigit != 9) {
-        versionArray[2]  = parseInt(lastDigit)+1;
-    } else {
-        const middleDigit = versionArray[1];
-        versionArray[2]  = 0;
-        if (middleDigit != 9) {
-            versionArray[1]  = parseInt(middleDigit)+1;
-        } else {
-            const firstDigit = versionArray[0];
-            versionArray[1] = 0;
-            versionArray[0] = parseInt(firstDigit)+1
-        }
-    }
-
-    const versionName = versionArray.join('.');
-    console.log(`   > new version: ${versionName}`);
-
-    const destDir = path.join(path.dirname(path.dirname(__dirname)), "versions", versionName, "MC_Assets_Manager");
+    const versionDir = path.join(path.dirname(path.dirname(__dirname)), "versions", versionName);
+    const destDir = path.join(versionDir, "MC_Assets_Manager");
 
     console.log("   > copying...");
+    fs.rmSync(versionDir, {recursive: true, force: true});
     fse.copySync(srcDir, destDir);
 }
 

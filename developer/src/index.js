@@ -1,3 +1,14 @@
+/*━━━━━━━━━━━━ file structure
+    > developer
+    > versions
+        > x.x.x
+            > MC_Assets_Manager
+            > MC_Assets_Manager.zip
+        > x.x.x
+            > MC_Assets_Manager
+            > MC_Assets_Manager.zip
+*/
+
 // ━━━━━━━━━━━━ import normal libraries
 const readline = require('readline');
 const async = require('async');
@@ -38,15 +49,21 @@ async function main() {
 
     switch (input) {
         case 'y':
-            // ━━━━━━━━━━━━ get source directory
+            //  ━━━━━━━━━━━━ import 
+            //  first import addon from the Blender Addons directory
+            //  then prepare this version for uploading to githgub;
+            //  the addon versions is read from the __init__.py file
+            //  line by line. The Version number is in a specific line
+            //  hardcoded!
+            console.log(bars);
             let blenderDir = path.join(process.env.APPDATA, "Blender Foundation", "Blender");
             let versions = fs.readdirSync(blenderDir);
 
             var blenderVersion;
-            // if only one blender version: use this
+            //  if only one blender version: use this
             if (versions.length == 1) {
                 blenderVersion = versions[0]
-            // multilple blender versions: ask user
+            //  multilple blender versions: ask user
             } else {
                 console.log(versions);
                 let _input = null;
@@ -55,16 +72,36 @@ async function main() {
                 blenderVersion = _input;
             }
 
-            // importing
+            //  reads in the __init__ file of the addon to get the correct version
+            let __init__File = path.join(blenderDir, blenderVersion, "scripts", "addons", "MC_Assets_Manager", "__init__.py");
+            const allFileContents = fs.readFileSync(__init__File, 'utf-8');
+            //  gets the line 12, containing the information
+            //  removes spaces
+            //  replaces () with {}
+            //  remove ,
+            //  result: { version: [i, i, i] }
+            let versionLine = `{${allFileContents
+                .split(/\r?\n/)[11]
+                .replace(/\s/g, '')
+                .replace('(', '[')
+                .replace(')', ']')
+                .slice(0, -1)}}`;
+            
+            let obj = JSON.parse(versionLine);
+            var version = Object.values(obj)[0].join('.');
+            
+            //  importing
             console.log('   > proceeding with importing...');
             let srcDir = path.join(blenderDir, blenderVersion, "scripts", "addons", "MC_Assets_Manager");
-            importAddon(srcDir);
-            // prepping
-            console.log('   > proceeding with preparing for upload...');
+            importAddon(srcDir, version);
+            //  prepping
             prepareAll();
             break;
-            // ━━━━━━━━━━━━ only prepping
         case 'n':
+            //  ━━━━━━━━━━━━ prep
+            //  this only preps the latest addon version found 
+            //  in the versions directory
+            console.log(bars);
             console.log('   > proceeding with preparing for upload...');
             prepareAll();
             break;
@@ -74,7 +111,7 @@ async function main() {
 
 }
 
-// ━━━━━━━━━━━━ function which executes all preperation
+// ━━━━━━━━━━━━  function which executes all preperation
 function prepareAll() {
     console.log(bars);
     async.series([
