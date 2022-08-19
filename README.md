@@ -20,7 +20,7 @@ If there are any questions about the addon and managing minecraft rigs with it, 
 
 ## Quick Manual
 
-For better formatting, please click on this (link)[https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md] to open it in full
+For better formatting, please click on this [link}(https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md) to open it in full
 
 ### Adding/Removing Assets
 <img align="right" src="./visuals/preferences_assets.png">
