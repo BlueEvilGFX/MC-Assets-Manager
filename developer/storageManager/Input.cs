@@ -8,6 +8,10 @@ namespace storageManager
 {
     internal class Input
     {
+        /// <summary>This method returns the console output if the input is in *restrictions*.
+        /// It deletes the written input on the console otherwise and asks again. CursorPosition
+        /// is needed to be able to delete the not matching user input before running the function again.
+        /// </summary>
         public static string GetInput(string[] restrictions, (int l, int t) cursorPosition)
         {
             Console.SetCursorPosition(cursorPosition.l, cursorPosition.t);

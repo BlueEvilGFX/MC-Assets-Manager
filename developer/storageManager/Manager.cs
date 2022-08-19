@@ -20,6 +20,9 @@ namespace storageManager
             application = GetApplication();
         }
 
+        /// <summary>This method returns the installed Blender version.
+        /// If more than one are installed, it will ask the user which one to use.
+        /// </summary>
         private string GetBlenderVersion()
         {
             string roamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -36,6 +39,9 @@ namespace storageManager
             return printer.InputInit(instruction, blenderVersions);
         }
 
+        /// <summary>This method returns the application after asking the user
+        /// which program to run
+        /// </summary>
         private string GetApplication()
         {
             string[] options = { "a", "d"};

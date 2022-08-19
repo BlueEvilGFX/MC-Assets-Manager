@@ -26,6 +26,9 @@ namespace storageManager
             Space
         }
 
+        /// <summary>This method prints a "one-liner" to the console.
+        /// It adds the right indentation with or without lines as indentation.
+        /// </summary>
         public void PrintOneLiner(string line, int indent = 0, bool clean = false)
         {
             ConnectorType connectorType = clean ? ConnectorType.Space : ConnectorType.Connect;
@@ -33,6 +36,11 @@ namespace storageManager
             Console.Write(String.Concat(spaces, ConnectorDict[ConnectorType.Branch], dot, line));
         }
 
+        /// <summary>This method displays the instruction what the user should
+        /// write into the console and the options which operations can be run (Listing method).
+        /// It is like choosing settings. OptionDefinitions can be written instead of the items,
+        /// which are the items the input will be checked against (Input.GetUserInput method).
+        /// </summary>
         public string InputInit(string instruction, string[] items, string[]? optionDefinitions = null, int indent = 0, bool clean = false)
         {
             ConnectorType connectorType = clean ? ConnectorType.Space : ConnectorType.Connect;
@@ -49,7 +57,8 @@ namespace storageManager
 
             return Input.GetInput(items, cursorPosition);
         }
-
+        /// <summary>This method outputs the array of strings to the console.
+        /// </summary>
         public void Listing(string[] items, int indent = 0, bool clean = false)
         {
             ConnectorType connectorType = clean ? ConnectorType.Space : ConnectorType.Connect;
