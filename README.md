@@ -30,21 +30,29 @@ For removing you will have to first unlock the remove operator with the little l
 
 Last but not least for adding assets is the "main-add" operator. It is the button that looks like a DNA helix and a small +. With this, you can add either a preset, asset or a rig. But you have to choose to which group you want to add it. Furthermore, you are able to add an icon to it too. Just follow the instructions that are written in the add operator when you choose your file. This setting is optional!
 
+
+
 ## Adding DLCs
 <img align="right" src="./visuals/preferences_dlcs.png">
 
 The same system of adding an assets applies to adding a DLC. The only exception is that you cannot export any DLCs! DLCs are asset packs created by users or even me. If a DLC has any settings of its own they will be displayed beneath the whole UI list. You can disable a DLC by clicking on its checkmark box. This will disable all functionalities of it.  
+
+
 
 ## Addon Updater
 <img align="right" src="./visuals/preferences_online_1.png">
 
 This is the place where you will find the addon updater settings. It will check for updates in the background if the settings "Auto-check for Update" is enabled. Or you check manually for it with the dedicated button.
 
+
+
 ## Original DLC Manager
 <img align="right" src="./visuals/preferences_online_2.png">
 
 The original DLCs are created by BlueEvilGFX (the developer of this addon). Because of that, you can access and download his DLCs directly through the addon. The installation is very easy since you can install it with one click if you are connected to the internet. It will download the DLC source file from the dedicated [GitHub Repo](https://github.com/BlueEvilGFX/McAM-DLCs).
 You can also just update/install all of them with the operator at the bottom.
+
+
 
 ## Appending
 <img align="right" src="./visuals/appending_menu.png">
@@ -53,10 +61,14 @@ You can also just update/install all of them with the operator at the bottom.
 To append any asset you have to open the "shift-a" menu. You will find all the appending related operators there.
 When you then have opened any append list, you can open the small triangle on the left bottom side. You have now access to the filtering and search functions of the list. You can search for items, invert the search and search for a DLC. For appending any item you select the asset you want in the UI list and click on OK. Your item should now be in your scene.
 
+
+
 ## UI
-<img align="right" src="./visuals/n_panel.pngg">
+<img align="right" src="./visuals/n_panel.png">
 
 In the n panel are the UIs of the DLCs. You can have two slots for different dlc UIs. You can display any UI of the scripted DLCs --> choose with the dropdown list! The double sided arrow marks the operator for changing both slots.
+
+
 
 ## Settings
 <img align="right" src="./visuals/preferences_settings.png">
