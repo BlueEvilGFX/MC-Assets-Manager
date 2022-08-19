@@ -29,11 +29,27 @@ namespace storageManager
         /// <summary>This method prints a "one-liner" to the console.
         /// It adds the right indentation with or without lines as indentation.
         /// </summary>
-        public void PrintOneLiner(string line, int indent = 0, bool clean = false)
+        public void PrintOneLiner(string line, int indent = 0, bool clean = false, bool sub = false)
         {
+            int _indent = indent > 0 ? indent - 1 : 0;
             ConnectorType connectorType = clean ? ConnectorType.Space : ConnectorType.Connect;
-            string spaces = String.Concat(Enumerable.Repeat(ConnectorDict[connectorType], indent));
-            Console.Write(String.Concat(spaces, ConnectorDict[ConnectorType.Branch], dot, line));
+            if (sub == false)
+            {
+                string spaces = String.Concat(Enumerable.Repeat(ConnectorDict[connectorType], _indent));
+                if (indent < 1)
+                    Console.WriteLine(String.Concat(spaces, dot, line));
+                else
+                    Console.WriteLine(String.Concat(spaces, ConnectorDict[ConnectorType.Branch], dot, line));
+            }
+            else
+            {
+                string spaces = String.Concat(Enumerable.Repeat(ConnectorDict[connectorType], _indent));
+                if (indent < 1)
+                    Console.WriteLine(String.Concat(spaces, ConnectorDict[ConnectorType.Last], line));
+                else
+                    Console.WriteLine(String.Concat(spaces, ConnectorDict[ConnectorType.Last], line));
+            }
+
         }
 
         /// <summary>This method displays the instruction what the user should

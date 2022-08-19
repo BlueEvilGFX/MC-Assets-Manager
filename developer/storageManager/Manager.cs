@@ -10,19 +10,54 @@ namespace storageManager
     internal class Manager
     {
         public Printer printer;
+        public string? localDir;
+        public string? storagePath;
         public string? blenderVersion;
         public string? application;
 
         public Manager(Printer printer)
         {
             this.printer = printer;
+
+            localDir = GetLocalDir();
+            storagePath = GetStoragePath();
             blenderVersion = GetBlenderVersion();
             application = GetApplication();
+
+            switch (application)
+            {
+                case "a":
+                    break;
+                case "i":
+                    break;
+                default:
+                    Console.WriteLine("ERROR, application initialiation error [0])");
+                    break;
+            }
+        }
+
+        /// <summary>returns current directory | check needed for vs run</summary>
+        private string GetLocalDir()
+        {
+            string? localDir = Directory.GetCurrentDirectory();
+            string? possibleBinDir = Path.GetDirectoryName(Path.GetDirectoryName(localDir));
+            if (Path.GetFileName(possibleBinDir) == "bin")
+                localDir = Path.GetDirectoryName(possibleBinDir);
+            return localDir!;
+        }
+
+        /// <summary>return the Storage Path</summary>
+        private string GetStoragePath()
+        {
+            string _storagePath = Path.Combine(Path.GetDirectoryName(localDir)!, "storage");
+            printer.PrintOneLiner("storage path:", 1);
+            printer.PrintOneLiner(_storagePath, 2, sub:true);
+            return _storagePath;
         }
 
         /// <summary>This method returns the installed Blender version.
         /// If more than one are installed, it will ask the user which one to use.
-        /// </summary>
+        /// </summary>s
         private string GetBlenderVersion()
         {
             string roamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -31,7 +66,7 @@ namespace storageManager
 
             if (blenderVersions.Length == 1)
             {
-                printer.PrintOneLiner($"Blender version: {blenderVersions[0]}");
+                printer.PrintOneLiner($"Blender version: {blenderVersions[0]}", 1);
                 return blenderVersions[0];
             }
 
