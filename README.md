@@ -19,6 +19,9 @@ The addon should remain a zip folder. Otherwise it cannot be installed correctly
 If there are any questions about the addon and managing minecraft rigs with it, feel free to contact us on our Discord server. You can join [here](https://discord.com/invite/3mybvgB6wE).
 
 ## Quick Manual
+
+For better formatting, please click on this (link)[https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md] to open it in full
+
 ### Adding/Removing Assets
 <img align="right" src="./visuals/preferences_assets.png">
 
