@@ -168,4 +168,4 @@ prop_access = eval(f'addon.preferences.{"preset_helper"}_propGroup')
 self.layout.prop(prop_access, "presets_wip_enum", expand=true)
 ```
         
-Except this, you can build your script like you want. This were the only restrictions / guidelines you need to follow.
+Except this, you can build your script like you want. This are the only restrictions / guidelines you need to follow.
