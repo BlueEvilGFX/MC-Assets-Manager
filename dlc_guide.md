@@ -12,8 +12,11 @@
 
 ## 🏷 Summary
 * [File Structure](#file-structure)
+  * [Main File Structure](#main-file-structure)
 
 ## File Structure
+
+### Main File Structure
 
 ```
 DLC.dlc                   // every dlc must be converted into a .dlc file
