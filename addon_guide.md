@@ -6,7 +6,13 @@
 
 
 ## 🏷 Summary
-* [Adding/Removing Assets](#ading/removing-asss)  
+* [Adding/Removing Assets](#adding/removing-assets)
+* [Adding DLCs](#adding-dlcs)
+* [Adding Updater](#addon-updater)
+* [Original DLC Manager](#original-dlc-manager)
+* [Appending](#appending)
+* [UI](#ui)
+* [Settings](#settings)
 
 
 ### Adding/Removing Assets
