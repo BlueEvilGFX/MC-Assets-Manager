@@ -102,7 +102,6 @@ A DLC can contain script elements. When you want to use this you must follow cer
 class PreferencesProperty(PropertyGroup):
     # here will be your code for creating addon preferences
     pass
-    ...
 ```
 
 ```py
@@ -112,7 +111,6 @@ class CustomAddonPreferences():
     def display(self, element=None):
         # here will be your code for your preferences UI
         pass
-        ...
 ```
 
 ```py
@@ -132,5 +130,4 @@ class Panel():
 
         layout = self.layout
         obj = context.object
-        ...
 ```
