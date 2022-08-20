@@ -82,6 +82,17 @@ Now to the more complex assets structure.
 {
     "PickAxe1" : {"type" : "Object", "category" : "tools"},
     "PickAxe2" : {"type" : "Object", "category" : "tools"},
-    "Hammer" : {"type" : "Object", "category" : "tools"}
+    "Hammer" : {"type" : "Collection", "category" : "tools"}
 }
 ```
+
+Every asset must be listed in the `asset.json` file. The name of the `object` or `collection` will also be the name which will be displayed in McAM. It is the name of the collection if `type` is set to `Collection`. Vice versa if the `type` is set to `Object` it is the name of the object. This is followed by the property `category`. You can set the category to following values which are listed in the `assetCategories.json` of the addon:
+```json
+[
+    "tools",
+    "food",
+    "weapons"
+]
+```
+
+You can use icons for this as well. Just make sure to name the items exactly like the corresponding asset name.
