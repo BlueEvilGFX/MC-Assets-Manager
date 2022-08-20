@@ -5,7 +5,7 @@
     ●
     <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/addon_guide.md>Addon Guide</a>
     ●
-    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/dlc-guide.md>DLC Guide</a> 
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/dlc_guide.md>DLC Guide</a> 
   </div>
 </div>
 
