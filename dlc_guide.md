@@ -11,7 +11,8 @@
   * [Assets](#assets)
 * [Scripts](#scripts)
   * [Introduction to Scripts](#introduction-to-scripts)
-  * [Multifile Scripts](#mutlifile-scripts) 
+  * [Multifile Scripts](#mutlifile-scripts)
+  * [Accessing the DLCs addon preferences](#accessing-the-dlcs-addon-preferences) 
 
 # File Structure
 
@@ -153,4 +154,18 @@ from .panel import Panel
 ```
 The names of the files can be changed. The class names must be the same though.
 
+## Accessing the DLCs addon preferences
+
+To access the DLCs addon preference properties you have created in the `PreferencesProperty` class you will need to do it this way:
+```py
+addon = bpy.context.preferences.addons.get("MC_Assets_Manager")
+prop_access = eval(f'addon.preferences.{<the dlc name>}_propGroup')
+```
+Example of using:
+```py
+addon = bpy.context.preferences.addons.get("MC_Assets_Manager")
+prop_access = eval(f'addon.preferences.{"preset_helper"}_propGroup')
+self.layout.prop(prop_access, "presets_wip_enum", expand=true)
+```
+        
 Except this, you can build your script like you want. This were the only restrictions / guidelines you need to follow.
