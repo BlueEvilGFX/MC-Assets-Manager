@@ -13,6 +13,9 @@
 ## 🏷 Summary
 * [File Structure](#file-structure)
   * [Main File Structure](#main-file-structure)
+  * [Data Json File](#data-json-file)
+  * [Rigs & Presets](#rigs--presets)
+  * [Assets](#assets)
 
 ## File Structure
 
@@ -50,6 +53,8 @@ DLC
 └── icon.png            // the icon for the DLC
 ```
 
+### Data Json File
+
 Your DLC does not need to contain all of the things above. Though it must contain the `data.json` file, otherwise an error will raise and your DLC cannot be read in by McAM. The data.json structure looks like following:
 
 ```json
@@ -62,11 +67,15 @@ Your DLC does not need to contain all of the things above. Though it must contai
 
 The icon of the DLC is also optional. If you want to use one though it must be named `icon.png`. If the DLC does not contain an icon, Blender will use another Blender internal icon.
 
+### Rigs & Presets
+
 For the rigs and presets you just put the blend files into the right directory. If you want to use icons for them you need to name them exactly like the rig/asset.\
 For example: `Pathfinder.blend` and `Pathfinder.png`. McAM will now display this rig with this icon.
 
 Important side node: normally, McAM will append the while Blend file. But if you want only to append one collection of the blend file you can restrict the appending to one collection only. This does **only** work **for rigs**!\
 For Example: `Pathfinder&&CollectionName.blend` and `Pathfinder&&CollectionName.png`. The rig will appear under the name `Pathfinder` in the rig UI list. The Addon will only append the collection `CollectionName`. The icon for this file still has to have the exact same name.
+
+### Assets
 
 Now to the more complex assets structure.
 ```json
