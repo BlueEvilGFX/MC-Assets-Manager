@@ -1,6 +1,6 @@
 # 🧭 Navigation
 <div align="center">
-  <div style="display: flex;">
+  <div style="display: flex; gap: 2rem;">
     <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
     ●
     <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/addon_guide.md>Addon Guide</a>
@@ -16,6 +16,8 @@
   * [Data Json File](#data-json-file)
   * [Rigs & Presets](#rigs--presets)
   * [Assets](#assets)
+* [Scripts](#scripts)
+  * [Scripts Introduction](#scripts-indtroduction) 
 
 # File Structure
 
@@ -96,3 +98,43 @@ Every asset must be listed in the `asset.json` file. The name of the `object` or
 ```
 
 You can use icons for this as well. Just make sure to name the items exactly like the corresponding asset name.
+
+# Scripts
+
+## Scripts Introduction
+
+A DLC can contain script elements. When you want to use this you must follow certain guidelines. Especially when you want to implement the UI to the McAM UI and if you want to use addon preferences properties. Therefore, here are important things you need to comply to. All of these classes must be in the `__init__.py` file. They can either be imported to it or be written directly in the `__init__.py` file:
+
+```py
+class PreferencesProperty(PropertyGroup):
+    # here will your code for creating addon preferences be
+    pass
+```
+
+```py
+class CustomAddonPreferences():
+    '''Creates a Panel in the User Preferences -> Addon Preferences'''
+
+    def display(self, element=None):
+        # here will your code for your preferences UI be
+        pass
+```
+
+```py
+class Panel():
+    """Creates a Panel for the DLC in McAMUI"""
+    
+    @classmethod
+    def poll(self, context):
+        # here will your code for polling your UI be
+        pass
+
+    def draw(self, context):
+        # here will your code for your UI be
+        # this calls the polling: if the polling returns false
+        # the UI will not be drawn 
+        if not __class__.poll(context): return
+
+        layout = self.layout
+        obj = context.object
+```
