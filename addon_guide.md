@@ -1,8 +1,8 @@
 
 ## 🧭 Navigation
 * [Addon Overview](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md)
-* [Addon Guide](#installing)
-* [DLC Guide](#support-and-help)  
+* [Addon Guide]([#installing](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/addon_guide.md))
+* [DLC Guide]([#support-and-help](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/dlc_guide.md))  
 
 
 ## 🏷 Summary
