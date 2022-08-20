@@ -1,4 +1,4 @@
-## 🧭 Navigation
+# 🧭 Navigation
 <div align="center">
   <div style="display: flex;">
     <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
@@ -9,7 +9,7 @@
   </div>
 </div>
 
-## 🏷 Summary
+# 🏷 Summary
 * [Adding/Removing Assets](#addingremoving-assets)
 * [Adding DLCs](#adding-dlcs)
 * [Adding Updater](#addon-updater)
@@ -18,9 +18,7 @@
 * [UI](#ui)
 * [Settings](#settings)
 
----
-
-### Adding/Removing Assets
+## Adding/Removing Assets
 <img align="right" src="./visuals/preferences_assets.png">
 
 For adding assets you will go to the Assets tab as shown in the picture. There you will find three differnt sub-tabs, each dedicated to their own group of assets --> presets, assets and rigs.
@@ -32,18 +30,14 @@ For removing you will have to first unlock the remove operator with the little l
 Last but not least for adding assets is the "main-add" operator. It is the button that looks like a DNA helix and a small +. With this, you can add either a preset, asset or a rig. But you have to choose to which group you want to add it. Furthermore, you are able to add an icon to it too. Just follow the instructions that are written in the add operator when you choose your file. This setting is optional!
 <br/><br/>
 
----
-
-### Adding DLCs
+## Adding DLCs
 <img align="right" src="./visuals/preferences_dlcs.png">
 
 The same system of adding an assets applies to adding a DLC. The only exception is that you cannot export any DLCs! DLCs are asset packs created by users or even me. If a DLC has any settings of its own they will be displayed beneath the whole UI list. You can disable a DLC by clicking on its checkmark box. This will disable all functionalities of it.  
 <br/><br/>
 <br/><br/>
 
----
-
-### Addon Updater
+## Addon Updater
 <img align="right" src="./visuals/preferences_online_1.png">
 
 This is the place where you will find the addon updater settings. It will check for updates in the background if the settings "Auto-check for Update" is enabled. Or you check manually for it with the dedicated button.
@@ -52,9 +46,7 @@ This is the place where you will find the addon updater settings. It will check 
 <br/><br/>
 <br/><br/>
 
----
-
-### Original DLC Manager
+## Original DLC Manager
 <img align="right" src="./visuals/preferences_online_2.png">
 
 The original DLCs are created by BlueEvilGFX (the developer of this addon). Because of that, you can access and download his DLCs directly through the addon. The installation is very easy since you can install it with one click if you are connected to the internet. It will download the DLC source file from the dedicated [GitHub Repo](https://github.com/BlueEvilGFX/McAM-DLCs).
@@ -63,8 +55,6 @@ You can also just update/install all of them with the operator at the bottom.
 <br/><br/>
 <br/><br/>
 <br/><br/>
-
----
 
 ### Appending
 <img align="right" src="./visuals/appending_menu.png">
@@ -75,18 +65,14 @@ When you then have opened any append list, you can open the small triangle on th
 <br/><br/>
 <br/><br/>
 
----
-
-### UI
+## UI
 <img align="right" src="./visuals/n_panel.png">
 
 In the n panel are the UIs of the DLCs. You can have two slots for different dlc UIs. You can display any UI of the scripted DLCs --> choose with the dropdown list! The double sided arrow marks the operator for changing both slots.
 <br/><br/>
 <br/><br/>
 
----
-
-### Settings
+## Settings
 <img align="right" src="./visuals/preferences_settings.png">
 
 You will find some main settings of McAM here.
