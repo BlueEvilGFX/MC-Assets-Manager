@@ -10,7 +10,8 @@
   * [Rigs & Presets](#rigs--presets)
   * [Assets](#assets)
 * [Scripts](#scripts)
-  * [Scripts Introduction](#scripts-info) 
+  * [Introduction to Scripts](#introduction-to-scripts)
+  * [Multifile Scripts](#mutlifile-scripts) 
 
 # File Structure
 
@@ -94,7 +95,7 @@ You can use icons for this as well. Just make sure to name the items exactly lik
 
 # Scripts
 
-## Scripts Info
+## Introduction to Scripts
 
 A DLC can contain script elements. When you want to use this you must follow certain guidelines. Especially when you want to implement the UI to the McAM UI and if you want to use addon preferences properties. Therefore, here are important things you need to comply to. All of these classes must be in the `__init__.py` file. They can either be imported to it or be written directly in the `__init__.py` file:
 
@@ -131,3 +132,23 @@ class Panel():
         layout = self.layout
         obj = context.object
 ```
+
+## Multilfile Script
+
+Especially when there is much code in a DLC i recommend using different files. Instead of putting everything in the `__init__.py` file you can import the needed components from other files in the same directory or in subdirectories of the DLC --> python importing modules and files knowledge is needed here
+
+Example (reduced to script files only):\
+```py
+DLC
+├── __init__.py
+├── PreferenesProperty.py
+├── CustomAddonPreferences.py
+└── Panel.py
+```
+This would be an example of using different files for the script. Please do not forget to import the needed classes from the other file to the `__init__.py` file. Here, it would be like this:\
+```py
+from .PreferencesProperty import PreferencesProperty
+from .CustomAddonPreferences import CustomAddomPreferences
+from .Panel import Panel
+```
+The names of the files can be changed. The class names must be the same though.
