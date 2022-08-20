@@ -1,3 +1,18 @@
+<div align="center">
+    <pre>
+        <a href=./README.md>Addon Overview</a>
+    </pre>
+    <pre>
+        <a href=./addon_guide.md>Addon Overview</a>
+      </pre>
+    <pre>
+        <a href=./dlc_guide.md>Addon Overview</a>
+    </pre>
+</div> 
+
+
+
+
 # 🧭 Navigation
 <div align="center">
   <div style="display: flex; gap: 2rem;">
@@ -107,7 +122,7 @@ A DLC can contain script elements. When you want to use this you must follow cer
 
 ```py
 class PreferencesProperty(PropertyGroup):
-    # here will your code for creating addon preferences be
+    # here will be your code for creating addon preferences
     pass
 ```
 
@@ -116,7 +131,7 @@ class CustomAddonPreferences():
     '''Creates a Panel in the User Preferences -> Addon Preferences'''
 
     def display(self, element=None):
-        # here will your code for your preferences UI be
+        # here will be your code for your preferences UI
         pass
 ```
 
@@ -126,11 +141,11 @@ class Panel():
     
     @classmethod
     def poll(self, context):
-        # here will your code for polling your UI be
+        # here will be your code for polling your UI
         pass
 
     def draw(self, context):
-        # here will your code for your UI be
+        # here will be your code for your UI
         # this calls the polling: if the polling returns false
         # the UI will not be drawn 
         if not __class__.poll(context): return
