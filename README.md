@@ -4,7 +4,7 @@
 
 ## 🧭 Navigation
 <div align="center">
-    <pre><a href="README.md">Addon Overview</a>    ●    <a href="addon_guide.md">DLC Guide</a>    ●    <a href="dlc_guide.md">DLC Guide</a></pre>
+    <pre><a href="README.md">Addon Overview</a>    ●    <a href="addon_guide.md">Addon Guide</a>    ●    <a href="dlc_guide.md">DLC Guide</a></pre>
 </div> 
 
 ## 🏷 Summary
