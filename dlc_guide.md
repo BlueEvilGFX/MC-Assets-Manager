@@ -1,3 +1,12 @@
+<div align="center">
+  <div style="display: flex;">
+    <li><a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a></li>
+    <li><a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a></li> 
+    <li><a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a></li> 
+  </div>
+</div>
+
+
 ## 🧭 Navigation
 * [Addon Overview](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md)
 * [Addon Guide](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/addon_guide.md)
@@ -40,7 +49,7 @@ DLC
 └── icon.png            // the icon for the DLC
 ```
 
-Your DLC does not need to contain all of the things above. Though it must contain the data.json file, otherwise an error will raise and your DLC cannot be read in by McAM. The data.json structure looks like following:
+Your DLC does not need to contain all of the things above. Though it must contain the `data.json` file, otherwise an error will raise and your DLC cannot be read in by McAM. The data.json structure looks like following:
 
 ```json
 {
@@ -52,4 +61,7 @@ Your DLC does not need to contain all of the things above. Though it must contai
 
 The icon of the DLC is also optional. If you want to use one though it must be named `icon.png`. If the DLC does not contain an icon, Blender will use another Blender internal icon.
 
-For the rigs and presets you just put the blend files into the right directory. If you 
+For the rigs and presets you just put the blend files into the right directory. If you want to use icons for them you need to name them exactly like the rig/asset.
+For example: `Pathfinder.blend` and `Pathfinder.png`. McAM will now display this righ with this icon.
+
+Now to the more complex assets structure.
