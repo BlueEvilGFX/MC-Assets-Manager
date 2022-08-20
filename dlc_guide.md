@@ -152,3 +152,5 @@ from .customAddonPreferences import CustomAddomPreferences
 from .panel import Panel
 ```
 The names of the files can be changed. The class names must be the same though.
+
+Except this, you can build your script like you want. This were the only restrictions / guidelines you need to follow.
