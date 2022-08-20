@@ -137,7 +137,7 @@ class Panel():
 
 Especially when there is much code in a DLC i recommend using different files. Instead of putting everything in the `__init__.py` file you can import the needed components from other files in the same directory or in subdirectories of the DLC --> python importing modules and files knowledge is needed here
 
-Example (reduced to script files only):\
+Example (reduced to script files only):
 ```py
 DLC
 ├── __init__.py
@@ -145,7 +145,7 @@ DLC
 ├── CustomAddonPreferences.py
 └── Panel.py
 ```
-This would be an example of using different files for the script. Please do not forget to import the needed classes from the other file to the `__init__.py` file. Here, it would be like this:\
+This would be an example of using different files for the script. Please do not forget to import the needed classes from the other file to the `__init__.py` file. Here, it would be like this:
 ```py
 from .PreferencesProperty import PreferencesProperty
 from .CustomAddonPreferences import CustomAddomPreferences
