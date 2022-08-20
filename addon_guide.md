@@ -56,7 +56,7 @@ You can also just update/install all of them with the operator at the bottom.
 <br/><br/>
 <br/><br/>
 
-### Appending
+## Appending
 <img align="right" src="./visuals/appending_menu.png">
 <img align="right" src="./visuals/appending.png">
 
