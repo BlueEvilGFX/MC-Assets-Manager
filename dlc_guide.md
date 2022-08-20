@@ -36,8 +36,20 @@ DLC
 │  └── rig_2.blend
 │  
 ├── data.json           // contains all DLC data including version number, creator and type of DLC 
-└── __init__py           // if DLC has its own script you need to initialize it here
+├── __init__.py         // if DLC has its own script you need to initialize it here
+└── icon.png            // the icon for the DLC
 ```
 
+Your DLC does not need to contain all of the things above. Though it must contain the data.json file, otherwise an error will raise and your DLC cannot be read in by McAM. The data.json structure looks like following:
 
+```json
+{
+    "type" : "presets",
+    "creator" : "Grandpa Evil",
+    "version" : "[0, 1, 0]"
+}
+```
 
+The icon of the DLC is also optional. If you want to use one though it must be named `icon.png`. If the DLC does not contain an icon, Blender will use another Blender internal icon.
+
+For the rigs and presets you just put the blend files into the right directory. If you 
