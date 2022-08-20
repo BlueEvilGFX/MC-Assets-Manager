@@ -165,6 +165,9 @@ Example of using:
 ```py
 addon = bpy.context.preferences.addons.get("MC_Assets_Manager")
 prop_access = eval(f'addon.preferences.{"preset_helper"}_propGroup')
+
+value = prop_access.presets_wip_enum
+
 self.layout.prop(prop_access, "presets_wip_enum", expand=true)
 ```
         
