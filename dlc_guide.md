@@ -1,11 +1,10 @@
 <div align="center">
   <div style="display: flex;">
-    <li><a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a></li>
-    <li><a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a></li> 
-    <li><a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a></li> 
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a> 
   </div>
 </div>
-
 
 ## 🧭 Navigation
 * [Addon Overview](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md)
@@ -31,7 +30,7 @@ DLC
 │  └── assets.json        // asset data file --> stores all assets date
 │  
 ├──● presets              // will be explained below...
-│  ├── icons
+│  ├──● icons
 │  │  ├── icon_1.png
 │  │  └── icon_2.png
 │  ├── preset_1.blend
@@ -62,7 +61,7 @@ Your DLC does not need to contain all of the things above. Though it must contai
 The icon of the DLC is also optional. If you want to use one though it must be named `icon.png`. If the DLC does not contain an icon, Blender will use another Blender internal icon.
 
 For the rigs and presets you just put the blend files into the right directory. If you want to use icons for them you need to name them exactly like the rig/asset.\
-For example: `Pathfinder.blend` and `Pathfinder.png`. McAM will now display this righ with this icon.
+For example: `Pathfinder.blend` and `Pathfinder.png`. McAM will now display this rig with this icon.
 
 Important side node: normally, McAM will append the while Blend file. But if you want only to append one collection of the blend file you can restrict the appending to one collection only. This does **only** work **for rigs**!\
 For Example: `Pathfinder&&CollectionName.blend` and `Pathfinder&&CollectionName.png`. The rig will appear under the name `Pathfinder` in the rig UI list. The Addon will only append the collection `CollectionName`. The icon for this file still has to have the exact same name.
