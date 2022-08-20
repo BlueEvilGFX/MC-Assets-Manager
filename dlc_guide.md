@@ -10,7 +10,7 @@
   * [Rigs & Presets](#rigs--presets)
   * [Assets](#assets)
 * [Scripts](#scripts)
-  * [Scripts Introduction](#scripts-indtroduction) 
+  * [Scripts Introduction](#scripts-info) 
 
 # File Structure
 
@@ -94,7 +94,7 @@ You can use icons for this as well. Just make sure to name the items exactly lik
 
 # Scripts
 
-## Scripts Introduction
+## Scripts Info
 
 A DLC can contain script elements. When you want to use this you must follow certain guidelines. Especially when you want to implement the UI to the McAM UI and if you want to use addon preferences properties. Therefore, here are important things you need to comply to. All of these classes must be in the `__init__.py` file. They can either be imported to it or be written directly in the `__init__.py` file:
 
@@ -102,6 +102,7 @@ A DLC can contain script elements. When you want to use this you must follow cer
 class PreferencesProperty(PropertyGroup):
     # here will be your code for creating addon preferences
     pass
+    ...
 ```
 
 ```py
@@ -111,6 +112,7 @@ class CustomAddonPreferences():
     def display(self, element=None):
         # here will be your code for your preferences UI
         pass
+        ...
 ```
 
 ```py
@@ -130,4 +132,5 @@ class Panel():
 
         layout = self.layout
         obj = context.object
+        ...
 ```
