@@ -3,9 +3,15 @@
 ![artwork](./visuals/wallpaper.png)
 
 ## 🧭 Navigation
-* [Addon Overview](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md)
-* [Addon Guide](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/addon_guide.md)
-* [DLC Guide](https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/dlc_guide.md)
+<div align="center">
+  <div style="display: flex;">
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
+    ●
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
+    ●
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a> 
+  </div>
+</div>
 
 ## 🏷 Summary
 * [Purpose](#purpose)
