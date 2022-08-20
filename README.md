@@ -7,9 +7,9 @@
   <div style="display: flex;">
     <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
     ●
-    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a>
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/addon_guide.md>Addon Guide</a>
     ●
-    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/README.md>Addon Overview</a> 
+    <a href=https://github.com/BlueEvilGFX/MC-Assets-Manager/blob/main/dlc-guide.md>DLC Guide</a> 
   </div>
 </div>
 
