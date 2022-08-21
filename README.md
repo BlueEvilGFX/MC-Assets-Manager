@@ -19,7 +19,6 @@ RoadMap to v0.2.2
 * [ ] asset browser implementation
 * [ ] choosable DLC and file storage location
 * [x] improved file structure regarding the UI list files and utils files
-* [ ] `mcam_main` directory to have a dedicated directory for all the files concerning the addon --> addon updater (theDuckCow) will not be included in that
 * [ ] better error handling for scripted DLCs: UI | AddonPreferences | AddonPreferencesProperties
 
 ## 💡 Purpose
