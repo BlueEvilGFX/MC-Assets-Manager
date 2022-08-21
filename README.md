@@ -18,6 +18,7 @@
 RoadMap to v0.2.2
 * [ ] asset browser implementation
     * [ ] update DLCs
+* [ ] custom keymap
 * [x] choosable DLC and file storage location
 * [x] improved file structure regarding the UI list files and utils files
 * [x] better error handling for scripted DLCs: UI | AddonPreferences | AddonPreferencesProperties
