@@ -8,12 +8,12 @@
 </div> 
 
 ## 🏷 Summary
-* [Roadmap](#roadmap)
+* [Roadmap](%EF%B8%8F-roadmap)
 * [Purpose](#purpose)
 * [Installing](#installing)
 * [Support and Help](#support-and-help)
 
-## RoadMap
+## 🛠️ RoadMap
 
 RoadMap to v0.2.2
 * [ ] asset browser implementation
