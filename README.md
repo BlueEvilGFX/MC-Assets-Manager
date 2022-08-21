@@ -17,7 +17,7 @@
 
 RoadMap to v0.2.2
 * [ ] asset browser implementation
-* [ ] choosable DLC and file storage location
+* [x] choosable DLC and file storage location
 * [x] improved file structure regarding the UI list files and utils files
 * [ ] better error handling for scripted DLCs: UI | AddonPreferences | AddonPreferencesProperties
 
