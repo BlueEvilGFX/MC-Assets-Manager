@@ -159,12 +159,12 @@ The names of the files can be changed. The class names must be the same though.
 To access the DLCs addon preference properties you have created in the `PreferencesProperty` class you will need to do it this way:
 ```py
 addon = bpy.context.preferences.addons.get("MC_Assets_Manager")
-prop_access = eval(f'addon.preferences.{<the dlc name>}_propGroup')
+prop_access = addon.preferences.<the dlc name>_propGroup
 ```
 Example of using:
 ```py
 addon = bpy.context.preferences.addons.get("MC_Assets_Manager")
-prop_access = eval(f'addon.preferences.{"preset_helper"}_propGroup')
+prop_access = addon.preferences.preset_helper_propGroup
 
 value = prop_access.presets_wip_enum
 
