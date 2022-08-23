@@ -9,6 +9,7 @@ namespace storageManager
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Printer printer = new Printer();
             Manager manager = new Manager(printer);
+            printer.EndLine();
             Console.ReadKey();
         }
     }
