@@ -71,10 +71,12 @@ In the n panel are the UIs of the DLCs. You can have two slots for different dlc
 <img align="right" src="./visuals/preferences_settings.png">
 
 You will find some main settings of McAM here.
+<br/><br/>
+<br/><br/>
 
 ## Hotkeys
 <img align="right" src="./visuals/appending_menu.png">
-<img align="right" src="./visuals/assetbrowser.png">
+<img align="right" src="./visuals/asset_browser.gif">
 
 Coming in version 0.2.2!
 For opening the pie menu press `shift ctrl a`
