@@ -77,9 +77,10 @@ You will find some main settings of McAM here.
 <br/><br/>
 
 ## Hotkeys
-<img align="right" src="./visuals/hotkey_menu.png">
-<img align="right" src="./visuals/asset_browser.gif">
+<img align="right" src="./visuals/hotkey_menu.png" width=40% height=40%>
+<img align="right" src="./visuals/asset_browser.gif" width=40% height=40%>
 
 Coming in version 0.2.2!
+
 For opening the pie menu press `shift ctrl a`.
 You can open and close the asset browser with this operator in the pie menu.
