@@ -77,7 +77,7 @@ You will find some main settings of McAM here.
 <br/><br/>
 
 ## Hotkeys
-<img align="right" src="./visuals/appending_menu.png">
+<img align="right" src="./visuals/hotkey_menu.png">
 <img align="right" src="./visuals/asset_browser.gif">
 
 Coming in version 0.2.2!
