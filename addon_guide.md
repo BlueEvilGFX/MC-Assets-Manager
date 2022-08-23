@@ -73,10 +73,13 @@ In the n panel are the UIs of the DLCs. You can have two slots for different dlc
 You will find some main settings of McAM here.
 <br/><br/>
 <br/><br/>
+<br/><br/>
+<br/><br/>
 
 ## Hotkeys
 <img align="right" src="./visuals/appending_menu.png">
 <img align="right" src="./visuals/asset_browser.gif">
 
 Coming in version 0.2.2!
-For opening the pie menu press `shift ctrl a`
+For opening the pie menu press `shift ctrl a`.
+You can open and close the asset browser with this operator in the pie menu.
