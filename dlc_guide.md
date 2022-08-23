@@ -143,13 +143,13 @@ Example (reduced to script files only):
 DLC
 ├── __init__.py
 ├── preferenes_property.py
-├── customAddon_preferences.py
+├── custom_addon_preferences.py
 └── panel.py
 ```
 This would be an example of using different files for the script. Please do not forget to import the needed classes from the other file to the `__init__.py` file. Here, it would be like this:
 ```py
 from .preferences_property import PreferencesProperty
-from .customAddon_preferences import CustomAddomPreferences
+from .custom_addon_preferences import CustomAddomPreferences
 from .panel import Panel
 ```
 The names of the files can be changed. The class names must be the same though.
