@@ -17,7 +17,7 @@
 
 RoadMap to v0.2.2
 * [ ] asset browser implementation
-    * [ ] update DLCs
+    * [x] update DLCs
 * [ ] custom keymap
 * [x] choosable DLC and file storage location
 * [x] improved file structure regarding the UI list files and utils files
