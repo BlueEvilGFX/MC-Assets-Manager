@@ -23,6 +23,11 @@ namespace storageManager
 
         }
 
+        /// <summary>
+        /// This method return the addon version. It reads the __init__.py file 
+        /// of the addon in the blender directory and checks the bl_info dictionary
+        /// for the addin version.
+        /// </summary>
         private string GetAddonVersion()
         {
             string initPath = Path.Combine(Manager.addonPath!, "__init__.py");
@@ -58,7 +63,7 @@ namespace storageManager
                 }
             }
 
-            // get addon version
+            // get addon version from bl dictionary
             string strVersion = blInfo["version"];
             strVersion = strVersion.Replace("(", String.Empty).Replace(")", String.Empty);
             string version = strVersion.Replace(',', '.');
@@ -67,6 +72,12 @@ namespace storageManager
             return version;
         }
 
+        /// <summary>
+        /// This methods creates in the storage a new directory of the addon named 
+        /// after the addon version. In then copies the all the files except the ones
+        /// that the black list contins. pycache, blend files, DLCs, and addon updater
+        /// files will not be copied
+        /// </summary>
         private void CopyAddon()
         {
             string versionDirectory = Path.Join(Manager.storagePath, "versions", addonVersion);

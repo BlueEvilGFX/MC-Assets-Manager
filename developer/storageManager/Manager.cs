@@ -34,7 +34,8 @@ namespace storageManager
                 case "a":
                     AddonHandler AddonHandler = new(this, printer);
                     break;
-                case "i":
+                case "d":
+                    DlcHandler DlcHandler = new(this, printer);
                     break;
                 default:
                     Console.WriteLine("ERROR, application initialization error [0])");
