@@ -2,12 +2,10 @@ import bpy
 from . import addon_updater_ops
 
 import importlib
-from .utils import utils
-from .utils import github_dlcs
+from .miscs import utils
+from .miscs import github_dlcs
 
 from .load_modules import PACKAGE_NAME
-
-
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -32,7 +30,7 @@ class McAMDlc(bpy.types.Panel):
 
         #   get data
         dlc_list = utils.AddonPathManagement.getDlcList()
-        script_dlc_list = [dlc for dlc in dlc_list if utils.AddonPathManagement.getInitPath(dlc)[1]]
+        script_dlc_list = [dlc for dlc in dlc_list if utils.AddonPathManagement.getDLCInitPath(dlc)[1]]
 
         # ━━━━━━━━━━━━ import all DLC UIs
         for dlc in script_dlc_list:
@@ -53,12 +51,15 @@ class McAMDlc(bpy.types.Panel):
         row.prop(McAMProps, "scriptUIEnum")
         rr = row
         displayOperator(rr)
-        try: locals()[enum_selection_1].Panel.draw(self, context)
-        except: print("McAM: UI - DLC-Panel - Error")
+        
+        try:
+            locals()[enum_selection_1].Panel.draw(self, context)
+        except:
+            print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
         
         # ━━━━━━━━━━━━ 2 UI pananls check
         preferences = utils.AddonPreferencesProperties.getAddonPropAccess()
-        if not preferences.two_dlc_ui_panels: return
+        if not preferences.main_props.two_dlc_ui_panels: return
 
         self.layout.label(text="")
         # ━━━━━━━━━━━━ 2
@@ -67,8 +68,11 @@ class McAMDlc(bpy.types.Panel):
         row.prop(McAMProps, "scriptUIEnum2")
         rr = row
         displayOperator(rr)
-        try: locals()[enum_selection_2].Panel.draw(self, context)
-        except: print("McAM: UI - DLC-Panel - Error")
+
+        try:
+            locals()[enum_selection_2].Panel.draw(self, context)
+        except:
+            print(f"McAM: UI - DLC-Panel-2 - Error: {enum_selection_1}")
 
 def register():
     bpy.utils.register_class(McAMDlc)

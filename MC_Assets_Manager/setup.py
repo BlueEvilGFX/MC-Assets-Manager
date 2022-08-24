@@ -6,8 +6,18 @@ class SETUP:
         self.main_path = os.path.dirname(os.path.realpath(__file__))
         self.error_message = "McAM: setup_addon_update: ERROR >"
 
-        self.setup()
-        self.setup_addon_update()
+        #   creating essential directories
+        try:
+            self.setup()
+        except:
+            print("McAM: ERROR: setup could not be done")
+
+        #   removing unnecessary files which are now
+        #   in no use after the newest addon update
+        try:
+            self.setup_addon_update()
+        except:
+            print("McAM: ERROR: setup_addon_update could not be done")   
 
     def setup(self):
         """
@@ -37,17 +47,25 @@ class SETUP:
         - setup after addon has updated\n
         - hard coded for every file change
         """
+        #   removed utils main dir --> now named: miscs
+        try:
+            utils_dir = os.path.join(self.main_path, "utils")
+            if os.path.exists(utils_dir):
+                shutil.rmtree(utils_dir)
+        except:
+            print(f'{self.error_message} old_utils_dir')
+
         #   removed prepare_for_upload.py file
         try:
-            prepare_for_upload_py = os.path.join(self.main_path, "utils", "prepare_for_upload.py")
+            prepare_for_upload_py = os.path.join(self.main_path, "miscs", "prepare_for_upload.py")
             if os.path.exists(prepare_for_upload_py):
                 shutil.rmtree(prepare_for_upload_py)
         except:
-            print(f'{self.error_message} old_reloadAddon_py')
+            print(f'{self.error_message} old_prepare_for_upload_py_py')
 
         #   moved reloadAddon operator file
         try:
-            old_reloadAddon_py = os.path.join(self.main_path, "utils", "addonReloader.py")
+            old_reloadAddon_py = os.path.join(self.main_path, "miscs", "addonReloader.py")
             if os.path.exists(old_reloadAddon_py):
                 shutil.rmtree(old_reloadAddon_py)
         except:
@@ -63,7 +81,7 @@ class SETUP:
 
         #   change of utils.py to utils_utils module
         try:
-            old_utils_py = os.path.join(self.main_path, "utils", "utils.py")
+            old_utils_py = os.path.join(self.main_path, "miscs", "utils.py")
             if os.path.exists(old_utils_py):
                 os.remove(old_utils_py)
         except:
@@ -77,4 +95,7 @@ class SETUP:
         except:
             print(f'{self.error_message} old_remove_chache_files_py')
 
-SETUP()
+try:
+    SETUP()
+except:
+    print("McAM: CRITICAL ERROR: SETUP could not be done")

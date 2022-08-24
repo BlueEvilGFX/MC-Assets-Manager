@@ -1,6 +1,6 @@
 import os, importlib
 
-from ...utils import utils
+from ...miscs import utils
 from ...load_modules import PACKAGE_NAME
 
 def dlc_tab(self, context, layout, scene):
@@ -39,7 +39,7 @@ def showDlcPreferences(self, context):
         for dlc in dlc_list:
             index = context.scene.mcAssetsManagerProps.dlc_index
             active = context.scene.mcAssetsManagerProps.dlc_list[index].active              #   read active status of dlc
-            init_exists = utils.AddonPathManagement.getInitPath(dlc)[1]                     #   check init path and existence
+            init_exists = utils.AddonPathManagement.getDLCInitPath(dlc)[1]                     #   check init path and existence
 
             if self.data and active and init_exists:                                        #   if dlc exists & active & init file (script based)
                 if dlc in locals():                                                         #   if already loaded
@@ -52,4 +52,8 @@ def showDlcPreferences(self, context):
                 dlc_name = os.path.splitext(locals()[dlc].__name__)[-1][1:]                 #   get dlc name from selection
 
                 if selected_dlc == dlc_name and active:                                     #   if selection is dlc from iteration
-                    locals()[dlc].CustomAddonPreferences.display(self)                      #   draw addon preferences from dlc
+                    try:
+                        locals()[dlc].CustomAddonPreferences.display(self)                  #   draw addon preferences from dlc
+
+                    except:
+                        print(f'McAM: could not display addon preferences panel: {dlc}')
