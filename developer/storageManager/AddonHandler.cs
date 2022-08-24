@@ -20,7 +20,6 @@ namespace storageManager
 
             addonVersion = GetAddonVersion();
             CopyAddon();
-
         }
 
         /// <summary>
