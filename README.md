@@ -15,7 +15,7 @@
 
 ## 🛠️ RoadMap
 
-RoadMap to v0.2.2
+RoadMap to v0.2.3
 * [ ] ?
 
 ## 💡 Purpose
