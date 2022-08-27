@@ -46,7 +46,7 @@ def reload_dlc_list() -> None:
             dlc_data = data["dlc"]
             item = dlc_list.add()
             item.name = dlc
-            item.type = dlc_data["type"]
+            item.asset_type = dlc_data["asset_type"]
             item.creator = dlc_data["creator"]
             item.active = dlc_data["active"]
             item.version = dlc_data["version"]
@@ -59,71 +59,90 @@ class ReloadIntern:
     """
 
     @staticmethod
-    def load_user_list(ui_list_name, type) -> None:
+    def clear_list(ui_list) -> None:
+        ui_list.clear()
+
+    @staticmethod
+    def load_user_files(ui_list, asset_type) -> None:
         """
-        loads the user items into the UI list type: USER_ASSETS | USER_PRESETS
-        | USER_RIGS
+        - ui_list: the ui list to which items will be added
+        - UI list asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS
+        - loads the user items into the list
         - it sets the icon path to '$$$' if it exists
         """
-        files_list = eval(f'bpy.context.scene.{paths.MCAM_PROP_GROUP}.{ui_list_name}')
+        user_files = paths.get_user_sub_assets(asset_type)
+        user_icons = paths.get_user_sub_icons(asset_type)
 
-        # reload user presets
-        user_files = paths.get_user_sub_assets(type)
-        user_icons = paths.get_user_sub_icons(type)
         for file in user_files:
-            item = files_list.add()
+            item = ui_list.add()
             item.name = file
+
             if file in user_icons:
                 item.path = "$$$"
+
+    @staticmethod
+    def load_dlc_files(ui_list, asset_type):
+        """
+        - ui_list_name: UI_LIST_ASSETS | UI_LIST_PRESETS | UI_LIST_RIGS
+        - UI list asset_type: ASSETS | PRESETS | RIGS
+        - loads the dlc items into the list
+        - it sets the icon path to f{dlc}_{item_name} if it exists 
+        """
+        # filtering assets because they are read from the json file
+        if asset_type == paths.ASSETS:
+
+            with open(paths.get_dlc_sub_assets_json(), 'r') as file:
+                data = json.load(file)
+
+                for dlc in paths.get_dlcs():
+                    asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
+
+                    if data[dlc]["active"] and asset_dir:
+                        assets_json = paths.get_dlc_sub_assets_json(dlc, asset_type)
+                        assets_blend = paths.get_dlc_sub_assets_blend(dlc, asset_type)
+                        if not assets_json or not assets_blend:
+                            return
+
+                        with open(assets_json, 'r') as asset_file:
+                            asset_data = json.load(asset_file)
+
+                            for asset in asset_data:
+                                asset_sub_data = asset_data[asset]
+                                item = ui_list.add()
+                                item.name = asset
+                                item.type = asset_sub_data["type"]
+                                item.category = asset_sub_data["category"]
+                                item.path = assets_blend
+                                item.icon = f'{dlc}_{asset}'
+        else:
+            dlc_files = paths.get_dlc_sub_assets(asset_type)
 
 
 #━━━━━━━━━━━━━━━    methods    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def reload_asset_list():
-    pass
+    """
+    reloads the whole asset list
+    """
+    scene = bpy.context.scene
+    asset_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_ASSETS)
+    ReloadIntern.clear_list(asset_list)
+    ReloadIntern.load_user_files(asset_list, paths.USER_ASSETS)
+    ReloadIntern.load_dlc_files(asset_list, paths.ASSETS)
 
 def reload_preset_list():
-    pass
+    """
+    reloads the whole preset list
+    """
+    scene = bpy.context.scene
+    preset_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_PRESETS)
+    ReloadIntern.clear_list(preset_list)
+    ReloadIntern.load_user_files(preset_list, paths.USER_PRESETS)
 
 def reload_rig_list():
-    pass
-
-
-
-
-
-#━━━━━━━━━━━━━━━    reload preset list    ━━━━━━━━━━━━━━━━━
-# def reload_user_list() -> None:
-#     """
-#     reloads the items in the preset ui list\n
-#     - user_presets: if an icon for this preset exists, set the icon property to '$$$'
-#     - dlc presets:
-#     """
-    # preset_list = bpy.context.scene.mc_assets_manager_props
-
-    # reload user presets
-    # user_presets = paths.get_user_sub_assets(paths.USER_PRESETS)
-    # user_icons = paths.get_user_sub_icons(paths.USER_PRESETS)
-    # for preset in user_presets:
-        # item = preset_list.add()
-        # item.name = preset
-        # if preset in user_icons:
-        #     item.path = "$$$"
-
-# def reload_dlc_files_list() -> None:
-#     #   reload dlc presets
-#     dlc_list = paths.get_dlcs()
-#     dlc_json = paths.get_dlc_json()
-    
-#     with open(dlc_json) as file:
-#         data = json.load(file)
-
-#         for dlc in dlc_list:
-#             presets_dir = paths.get_dlc_sub_files_dir(dlc, paths.PRESETS)
-#             if data[dlc]["active"] and presets_dir:
-#                 presets = paths.get_dlc_sub_assets(dlc, paths.PRESETS)
-
-                # for preset in presets:
-                #     item = preset_list.add()
-                #     item.name = os.path.splitext(p)[0]
-                #     item.path = os.path.join(presets_dir, preset)
-                #     item.icon = dlc + "_" + item.name
+    """
+    reloads the whole rig list
+    """
+    scene = bpy.context.scene
+    rig_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_RIGS)
+    ReloadIntern.clear_list(rig_list)
+    ReloadIntern.load_user_files(rig_list, paths.USER_RIGS)

@@ -71,34 +71,34 @@ def get_storage_dir() -> os.path:
     return storage_dir
 
 #━━━━━━━━━━━━━━━    user files
-def get_user_sub_dir(type) -> os.path:
+def get_user_sub_dir(asset_type) -> os.path:
     """
-    type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns the path
+    asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns the path
     to its storage sub dir
     """
-    return os.path.join(get_storage_dir(), type)
+    return os.path.join(get_storage_dir(), asset_type)
 
-def get_user_sub_assets(type) -> list:
+def get_user_sub_assets(asset_type) -> list:
     """
-    type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns a list
+    asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns a list
     with all the user 'assets' without extension
     """
-    dir = get_user_sub_dir(type)
+    dir = get_user_sub_dir(asset_type)
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".blend")]
 
-def get_user_sub_icon_dir(type) -> os.path:
+def get_user_sub_icon_dir(asset_type) -> os.path:
     """
-    type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns the path
+    asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns the path
     to its storage sub icon dir
     """
-    return os.path.join(get_user_sub_dir(type), "icons")
+    return os.path.join(get_user_sub_dir(asset_type), "icons")
 
-def get_user_sub_icons(type) -> list:
+def get_user_sub_icons(asset_type) -> list:
     """
     returns a list with all the user sub icons without extension
     """
-    dir = get_user_sub_icon_dir(type)
+    dir = get_user_sub_icon_dir(asset_type)
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".png")]
 
@@ -143,48 +143,70 @@ def get_dlc_sub_json(dlc) -> os.path:
     """
     return os.path.join(get_dlc_dir(), dlc, "data.json")
 
-def get_dlc_sub_files_dir(dlc, type) -> os.path:
+def get_dlc_sub_assets_dir(dlc, asset_type) -> os.path:
     """
-    takes the dlc name and its asset type as input
-    type: ASSETS | PRESETS | RIGS -> returns the path
+    takes the dlc name and its asset asset_type as input
+    asset_type: ASSETS | PRESETS | RIGS -> returns the path
     to its storage sub dir
     returns "" if path does not exist
     """
-    assets_dir = os.path.join(get_dlc_dir(), dlc, type)
+    assets_dir = os.path.join(get_dlc_dir(), dlc, asset_type)
     if os.path.exists(assets_dir):
         return assets_dir
     return ""
 
-def get_dlc_sub_assets(dlc, type) -> list:
+def get_dlc_sub_assets(dlc, asset_type) -> list:
     """
-    takes the dlc name and its asset type as input
-    type: ASSETS | PRESETS | RIGS -> returns a list
+    takes the dlc name and its asset asset_type as input
+    asset_type: ASSETS | PRESETS | RIGS -> returns a list
     with all the user sub assets without extension
     returns ""  if path does not exist
     """
-    dir = get_dlc_sub_files_dir(dlc, type)
+    dir = get_dlc_sub_assets_dir(dlc, asset_type)
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".blend")]
 
-def get_dlc_sub_assets_icon_dir(dlc ,type) -> os.path:
+def get_dlc_sub_assets_icon_dir(dlc ,asset_type) -> os.path:
     """
-    type: ASSETS | PRESETS | RIGS -> returns the path
+    asset_type: ASSETS | PRESETS | RIGS -> returns the path
     to its storage sub icon dir
     """
-    return os.path.join(get_dlc_sub_files_dir(dlc, type), "icons")
+    return os.path.join(get_dlc_sub_assets_dir(dlc, asset_type), "icons")
 
-def get_dlc_sub_assets_icons(dlc, type) -> list:
+def get_dlc_sub_assets_icons(dlc, asset_type) -> list:
     """
-    type: ASSETS | PRESETS | RIGS -> returns a list
+    asset_type: ASSETS | PRESETS | RIGS -> returns a list
     returns a list with all the user sub icons without extension
     """
-    dir = get_dlc_sub_assets_icon_dir(dlc, type)
+    dir = get_dlc_sub_assets_icon_dir(dlc, asset_type)
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".png")]
 
 
-def get_asset_categories() -> os.path:
+def get_dlc_asset_categories() -> os.path:
     """
     returns the path to the asset_categories.json file
     """
     return os.path.join(get_storage_dir(), "asset_categories.json")
+
+def get_dlc_sub_assets_json(dlc, asset_type) -> os.path:
+    """
+    asset_type: ASSETS | PRESETS | RIGS -> returns the path
+    to the assets json of a dlc\n
+    returns "" if it doesnt exist
+    """
+    assets_json = os.path.join(get_dlc_dir(), dlc, asset_type, "assets.json")
+    if os.path.exists(assets_json):
+        return assets_json
+    return ""
+
+def get_dlc_sub_assets_blend(dlc, asset_type) -> os.path:
+    """
+    asset_type: ASSETS | PRESETS | RIGS -> returns the path
+    to the assets blend file of a dlc\n
+    returns "" if it doesnt exist
+    """
+    assets_blend = os.path.join(get_dlc_dir(), dlc, asset_type, "assets.blend")
+    if os.path.exists(assets_blend):
+        return assets_blend
+    return ""
