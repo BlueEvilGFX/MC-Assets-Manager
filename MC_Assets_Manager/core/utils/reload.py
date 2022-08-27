@@ -1,4 +1,3 @@
-import os
 import json
 import bpy
 
@@ -68,17 +67,17 @@ class ReloadIntern:
         - ui_list: the ui list to which items will be added
         - UI list asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS
         - loads the user items into the list
-        - it sets the icon path to '$$$' if it exists
+        - checks for collection restrictions: unimportant for assets
+        - it sets the icon to '$$$' if it exists
         """
         user_files = paths.get_user_sub_assets(asset_type)
         user_icons = paths.get_user_sub_icons(asset_type)
 
         for file in user_files:
             item = ui_list.add()
-            item.name = file
-
+            item.name, item.collection = file.split("&&")
             if file in user_icons:
-                item.path = "$$$"
+                item.icon = "$$$"
 
     @staticmethod
     def load_dlc_files(ui_list, asset_type):
@@ -90,32 +89,66 @@ class ReloadIntern:
         """
         # filtering assets because they are read from the json file
         if asset_type == paths.ASSETS:
-
-            with open(paths.get_dlc_sub_assets_json(), 'r') as file:
-                data = json.load(file)
-
-                for dlc in paths.get_dlcs():
-                    asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
-
-                    if data[dlc]["active"] and asset_dir:
-                        assets_json = paths.get_dlc_sub_assets_json(dlc, asset_type)
-                        assets_blend = paths.get_dlc_sub_assets_blend(dlc, asset_type)
-                        if not assets_json or not assets_blend:
-                            return
-
-                        with open(assets_json, 'r') as asset_file:
-                            asset_data = json.load(asset_file)
-
-                            for asset in asset_data:
-                                asset_sub_data = asset_data[asset]
-                                item = ui_list.add()
-                                item.name = asset
-                                item.type = asset_sub_data["type"]
-                                item.category = asset_sub_data["category"]
-                                item.path = assets_blend
-                                item.icon = f'{dlc}_{asset}'
+            __class__.load_dlc_assets(ui_list)
         else:
-            dlc_files = paths.get_dlc_sub_assets(asset_type)
+            __class__.load_dlc_presets_rigs(ui_list, asset_type)
+
+    @staticmethod
+    def load_dlc_assets(ui_list):
+        """
+        - loads the assets of the dlcs into the ui list
+        - if an item has no icon: set icon to an empty string | else '$$$'
+        """
+        asset_type = paths.ASSETS
+        with open(paths.get_dlc_json(), 'r') as file:
+            data = json.load(file)
+
+        for dlc in paths.get_dlcs():
+            asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
+
+            if not data[dlc]["active"] or not asset_dir: return
+
+            assets_json = paths.get_dlc_sub_assets_json(dlc, asset_type)
+            assets_blend = paths.get_dlc_sub_assets_blend(dlc, asset_type)
+            asset_icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
+
+            if not assets_json or not assets_blend: return
+
+            with open(assets_json, 'r') as asset_file:
+                asset_data = json.load(asset_file)
+
+            for asset in asset_data:
+                asset_sub_data = asset_data[asset]
+                item = ui_list.add()
+                item.name = asset
+                item.type = asset_sub_data["type"]
+                item.category = asset_sub_data["category"]
+                item.dlc = dlc
+                if asset in asset_icons:
+                    item.icon = f'{dlc}_{asset}'
+
+    @staticmethod
+    def load_dlc_presets_rigs(ui_list, asset_type):
+        """
+        - loads the rigs/presets of the dlcs into the ui list
+        - if an item has no icon: set icon to an empty string | else '$$$'
+        """
+        with open(paths.get_dlc_json(), 'r') as file:
+            data = json.load(file)
+
+        for dlc in paths.get_dlcs():
+            asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
+
+            if not data[dlc]["active"] or not asset_dir: return
+            
+            assets = paths.get_dlc_sub_assets(dlc, asset_type)
+            asset_icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
+            for asset in assets:
+                item = ui_list.add()
+                item.name, item.collection = asset.split("&&")
+                item.dlc = dlc
+                if file in asset_icons:
+                    item.icon = item.name
 
 
 #━━━━━━━━━━━━━━━    methods    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -126,8 +159,8 @@ def reload_asset_list():
     scene = bpy.context.scene
     asset_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_ASSETS)
     ReloadIntern.clear_list(asset_list)
-    ReloadIntern.load_user_files(asset_list, paths.USER_ASSETS)
     ReloadIntern.load_dlc_files(asset_list, paths.ASSETS)
+    ReloadIntern.load_user_files(asset_list, paths.USER_ASSETS)
 
 def reload_preset_list():
     """
@@ -136,6 +169,7 @@ def reload_preset_list():
     scene = bpy.context.scene
     preset_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_PRESETS)
     ReloadIntern.clear_list(preset_list)
+    ReloadIntern.load_dlc_files(preset_list, paths.USER_PRESETS)
     ReloadIntern.load_user_files(preset_list, paths.USER_PRESETS)
 
 def reload_rig_list():
@@ -145,4 +179,5 @@ def reload_rig_list():
     scene = bpy.context.scene
     rig_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_RIGS)
     ReloadIntern.clear_list(rig_list)
+    ReloadIntern.load_dlc_files(rig_list, paths.USER_RIGS)
     ReloadIntern.load_user_files(rig_list, paths.USER_RIGS)
