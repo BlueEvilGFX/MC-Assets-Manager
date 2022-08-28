@@ -31,18 +31,30 @@ class AddonPathsIntern:
     def get_addon_name() -> str:
         return os.path.basename(ADDON_DIR)
 
+    @staticmethod
+    def get_ressources_dir() -> os.path:
+        return os.path.join(ADDON_DIR, "ressources")
+
+    @staticmethod
+    def get_ressources_icon_dir() -> os.path:
+        return os.path.join(RESSOURCES_DIR, "icons")
+
 
 #━━━━━━━━━━━━━━━    constants    ━━━━━━━━━━━━━━━━━━━━━━━━━━
 UTILS_DIR = AddonPathsIntern.get_utils_dir()
 CORE_DIR = AddonPathsIntern.get_core_dir()
 ADDON_DIR = AddonPathsIntern.get_addon_dir()
 PACKAGE = AddonPathsIntern.get_addon_name()
+RESSOURCES_DIR = AddonPathsIntern.get_ressources_dir()
+RESSOURCES_ICON_DIR = AddonPathsIntern.get_ressources_icon_dir()
 ADDON_PROP_ACCESS = bpy.context.preferences.addons.get(PACKAGE).preferences
 
+# user assets
 USER_ASSETS = "user_assets"
-USER_PRESETS = "uer_presets"
+USER_PRESETS = "user_presets"
 USER_RIGS = "user_rigs"
 
+# dlc assets
 ASSETS = "assets"
 PRESETS = "presets"
 RIGS = "rigs"
@@ -53,6 +65,26 @@ UI_LIST_ASSETS = "asset_list"
 UI_LIST_PRESETS = "preset_list"
 UI_LIST_RIGS = "rig_list"
 
+# icons
+USER_ASSET_ICON = "user_asset_"
+USER_PRESET_ICON = "user_preset_"
+USER_RIG_ICON = "user_rig_"
+
+DLC_MAIN_ICON = "dlc_"
+DLC_ASSET_ICON = "dlc_asset_"
+DLC_PRESET_ICON = "dlc_preset_"
+DLC_RIG_ICON = "dlc_rig_"
+
+MCAM_ICON = "McAM_"
+
+#━━━━━━━━━━━━━━━    getter: ressources    ━━━━━━━━━━━━━━━━━
+def get_ressources_icons() -> list:
+    """
+    returns a list with all the mcam icons without extension
+    """
+    dir = RESSOURCES_ICON_DIR
+    return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
+            if icon.endswith(".png")]
 
 #━━━━━━━━━━━━━━━    getter: dirs    ━━━━━━━━━━━━━━━━━━━━━━━
 def get_storage_dir() -> os.path:
@@ -60,14 +92,13 @@ def get_storage_dir() -> os.path:
     returns the path to the storage dir:\n
     either default or set through addon preferences
     """
-    addon = bpy.context.preferences.addons.get()
     try:
-        storage_dir = addon.preferences.main_props.storage_path
+        storage_dir = ADDON_PROP_ACCESS.preferences.main_props.storage_path
     except:
         storage_dir = ""
 
     if storage_dir == "" or storage_dir is None:
-        return os.pah.join(ADDON_DIR, "storage")
+        return os.path.join(ADDON_DIR, "storage")
     return storage_dir
 
 #━━━━━━━━━━━━━━━    user files

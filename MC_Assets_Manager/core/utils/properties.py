@@ -1,5 +1,5 @@
-import importlib
-import json
+import importlib, json
+
 import bpy
 from bpy.props import *
 from bpy.types import PropertyGroup
@@ -7,7 +7,7 @@ from bpy.types import PropertyGroup
 from . import paths
 from . import reload
 
-class UpdateFunctionsInternal:
+class UpdateFunctionsIntern:
     """
     this class contains the update functions for the property groups
     """
@@ -20,7 +20,6 @@ class UpdateFunctionsInternal:
         dlc_name = self.name
         dlc_json = paths.get_dlc_json()
 
-        # reading status and reload if necessary
         with open(dlc_json, "r") as file:
             data = json.load(file)
 
@@ -43,7 +42,7 @@ class UpdateFunctionsInternal:
                     locals()[dlc_name].unregister()
             except:
                 pass
-            addonPreferences.reload()
+            reload.reload_addon_preferences()
 
         # write active status to json file
         with open(dlc_json, "w") as file:
@@ -88,7 +87,7 @@ class MCAssetsManagerProperties(PropertyGroup):
         name : StringProperty()
         type : StringProperty()
         creator : StringProperty()
-        active : BoolProperty(default = True, update = UpdateFunctionsInternal.update_active)
+        active : BoolProperty(default = True, update = UpdateFunctionsIntern.update_active)
         version: StringProperty()
     
     class AssetListItem(PropertyGroup):
@@ -144,8 +143,8 @@ class MCAssetsManagerProperties(PropertyGroup):
     dlc_list : CollectionProperty(type = DLCListItem)
     rig_list : CollectionProperty(type = RigListItem)
 
-    scriptUIEnum : EnumProperty(items=UpdateFunctionsInternal.scan_ui_dlc, name ="")
-    scriptUIEnum2 : EnumProperty(items=UpdateFunctionsInternal.scan_ui_dlc, name="")
+    scriptUIEnum : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name ="")
+    scriptUIEnum2 : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name="")
 
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -164,11 +163,10 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
     
-    # assigning the McAM prop group to a scene pointer property
-    left_side = f'bpy.types.Scene{paths.MCAM_PROP_GROUP}'
-    right_side = f'{PointerProperty(type=MCAssetsManagerProperties)}'
-    eval(f'{left_side} : {right_side}')
+    bpy.types.Scene.mc_assets_manager_props = PointerProperty(type=MCAssetsManagerProperties)
 
 def unregister():
+    del bpy.types.Scene.mc_assets_manager_props
+
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

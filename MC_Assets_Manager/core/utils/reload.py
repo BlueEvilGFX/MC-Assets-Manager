@@ -2,6 +2,7 @@ import json
 import bpy
 
 from . import paths
+from .. import addonpreferences
 
 #━━━━━━━━━━━━━━━    reload dlc json    ━━━━━━━━━━━━━━━━━━━━
 def reload_dlc_json() -> None:
@@ -181,3 +182,7 @@ def reload_rig_list():
     ReloadIntern.clear_list(rig_list)
     ReloadIntern.load_dlc_files(rig_list, paths.USER_RIGS)
     ReloadIntern.load_user_files(rig_list, paths.USER_RIGS)
+
+def reload_addon_preferences():
+    addonpreferences.unregister()
+    addonpreferences.register()
