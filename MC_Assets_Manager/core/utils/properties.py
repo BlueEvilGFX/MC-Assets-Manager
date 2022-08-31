@@ -1,11 +1,12 @@
-import importlib, json
+import importlib
+import json
 
 import bpy
 from bpy.props import *
 from bpy.types import PropertyGroup
 
-from . import paths
-from . import reload
+from . import paths, reload
+
 
 class UpdateFunctionsIntern:
     """

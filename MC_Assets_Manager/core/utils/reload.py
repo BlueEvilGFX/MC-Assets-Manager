@@ -1,8 +1,10 @@
 import json
+
 import bpy
 
-from . import paths
 from .. import addonpreferences
+from . import paths
+
 
 #━━━━━━━━━━━━━━━    reload dlc json    ━━━━━━━━━━━━━━━━━━━━
 def reload_dlc_json() -> None:
@@ -28,6 +30,9 @@ def reload_dlc_json() -> None:
                 dlc_dict[dlc] = json.load(sub_file)
                 dlc_dict[dlc]["active"] = True if data.get("dlc") is None\
                                                 else data[dlc]["active"]
+    
+    with open(dlc_json, "w") as file:
+        json.dump(dlc_dict, file, indent=4)
 
 #━━━━━━━━━━━━━━━    reload dlc list    ━━━━━━━━━━━━━━━━━━━━
 def reload_dlc_list() -> None:
@@ -36,17 +41,17 @@ def reload_dlc_list() -> None:
     -> sets all data from the item propertygroup
     """
     dlc_json = paths.get_dlc_json()
-    dlc_list = bpy.context.scene.mc_assets_manager_props
+    dlc_list = eval("bpy.context.scene.mc_assets_manager_props."+paths.UI_LIST_DLCS)
     dlc_list.clear()
 
     with open(dlc_json, 'r') as file:
         data = json.load(file)
 
         for dlc in data:
-            dlc_data = data["dlc"]
+            dlc_data = data[dlc]
             item = dlc_list.add()
             item.name = dlc
-            item.asset_type = dlc_data["asset_type"]
+            item.type = dlc_data["type"]
             item.creator = dlc_data["creator"]
             item.active = dlc_data["active"]
             item.version = dlc_data["version"]
@@ -107,7 +112,11 @@ class ReloadIntern:
         for dlc in paths.get_dlcs():
             asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
 
-            if not data[dlc]["active"] or not asset_dir: return
+            try:
+                if not data[dlc]["active"] or not asset_dir:
+                    return
+            except:
+                continue
 
             assets_json = paths.get_dlc_sub_assets_json(dlc, asset_type)
             assets_blend = paths.get_dlc_sub_assets_blend(dlc, asset_type)
@@ -157,8 +166,8 @@ def reload_asset_list():
     """
     reloads the whole asset list
     """
-    scene = bpy.context.scene
-    asset_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_ASSETS)
+    scene = "bpy.context.scene"
+    asset_list = eval('.'.join([scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_ASSETS]))
     ReloadIntern.clear_list(asset_list)
     ReloadIntern.load_dlc_files(asset_list, paths.ASSETS)
     ReloadIntern.load_user_files(asset_list, paths.USER_ASSETS)
@@ -167,8 +176,8 @@ def reload_preset_list():
     """
     reloads the whole preset list
     """
-    scene = bpy.context.scene
-    preset_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_PRESETS)
+    scene = "bpy.context.scene"
+    preset_list = eval('.'.join([scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_PRESETS]))
     ReloadIntern.clear_list(preset_list)
     ReloadIntern.load_dlc_files(preset_list, paths.USER_PRESETS)
     ReloadIntern.load_user_files(preset_list, paths.USER_PRESETS)
@@ -177,8 +186,8 @@ def reload_rig_list():
     """
     reloads the whole rig list
     """
-    scene = bpy.context.scene
-    rig_list = '.'.join(scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_RIGS)
+    scene = "bpy.context.scene"
+    rig_list = eval('.'.join([scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_RIGS]))
     ReloadIntern.clear_list(rig_list)
     ReloadIntern.load_dlc_files(rig_list, paths.USER_RIGS)
     ReloadIntern.load_user_files(rig_list, paths.USER_RIGS)

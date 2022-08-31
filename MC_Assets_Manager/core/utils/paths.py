@@ -1,4 +1,5 @@
 import os
+
 import bpy
 
 
@@ -59,11 +60,14 @@ ASSETS = "assets"
 PRESETS = "presets"
 RIGS = "rigs"
 
+DLCS = "dlcs"
+
 # name of the property inside the main property group of McAM
 MCAM_PROP_GROUP = "mc_assets_manager_props"
 UI_LIST_ASSETS = "asset_list"
 UI_LIST_PRESETS = "preset_list"
 UI_LIST_RIGS = "rig_list"
+UI_LIST_DLCS = "dlc_list"
 
 # icons
 USER_ASSET_ICON = "user_asset_"
@@ -201,14 +205,23 @@ def get_dlc_sub_assets_icon_dir(dlc ,asset_type) -> os.path:
     """
     asset_type: ASSETS | PRESETS | RIGS -> returns the path
     to its storage sub icon dir
+    -> returns "" if path path does not exist
     """
-    return os.path.join(get_dlc_sub_assets_dir(dlc, asset_type), "icons")
+    icon_dir = os.path.join(get_dlc_sub_assets_dir(dlc, asset_type), "icons")
+    if os.path.exists(icon_dir):
+        return icon_dir
+    return ""
 
 def get_dlc_sub_assets_icons(dlc, asset_type) -> list:
     """
     asset_type: ASSETS | PRESETS | RIGS -> returns a list
-    returns a list with all the user sub icons without extension
+    returns a list with all the user sub icons without extension\n
+    returns an empty list if the path does not exist
     """
+    icon_dir = get_dlc_sub_assets_icon_dir(dlc, asset_type)
+    if not os.path.exists(icon_dir):
+        return []
+
     dir = get_dlc_sub_assets_icon_dir(dlc, asset_type)
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".png")]

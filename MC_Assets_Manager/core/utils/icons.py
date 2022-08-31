@@ -1,18 +1,18 @@
-import bpy
 import os
+
+import bpy
 import bpy.utils.previews
 
 from . import paths
 
-
 #━━━━━━━━━━━━━━━    constants    ━━━━━━━━━━━━━━━━━━━━━━━━━━
-PCOLL_ASSET = "Assets"
-PCOLL_PRESET = "Presets"
-PCOLL_RIG = "Rigs"
-PCOLL_MCAM = "McAM"
-PCOLL_DLC = "DLCs"
+PCOLL_ASSET_ID = "Assets"
+PCOLL_PRESET_ID = "Presets"
+PCOLL_RIG_ID = "Rigs"
+PCOLL_MCAM_ID = "McAM"
+PCOLL_DLC_ID = "DLCs"
 
-class ReadIconsIntern:
+class IconReader:
     """
     class contains lower level reading methods which are used by other functions 
     """
@@ -20,9 +20,12 @@ class ReadIconsIntern:
     @staticmethod
     def read_mcam_icons(pcoll) -> None:
         """
-        reads the mcam icons into the addon
+        description:
+            - real pcoll!
+            - the mcam main icons into the addon
+            - it uses the ressources/icons path for it
         """
-        dir= paths.RESSOURCES_ICON_DIR
+        dir = paths.RESSOURCES_ICON_DIR
         icons = paths.get_ressources_icons()
 
         for icon in icons:
@@ -33,18 +36,20 @@ class ReadIconsIntern:
     @staticmethod
     def read_dlc_icons(pcoll, asset_type=None, icon_prefix=None) -> None:
         """
-        asset_type = None:
+        args:
+            pcoll: real pcoll reference to blenders api
+            asset_type: enum of
+                ASSETS | PRESETS | RIGS
+                , default = None
+            icon_prefix: enum of
+                DLC_MAIN_ICON | DLC_ASSET_ICON |
+                DLC_PRESET_ICON | DLC_RIG_ICON
+                , default = None
+        
+        description:
             - reads the main icons of the dlcs:
             - name = paths.DLC_MAIN_ICON + name
-            - icon_prefix is not needed here
-
-        asset_type = ASSETS | PRESETS | RIGS:
-            - loads the asset_type icons of all dlcs
-            - set icon_prefix to asset_type:
-                - DLC_MAIN_ICON
-                - DLC_ASSET_ICON
-                - DLC_PRESET_ICON
-                - DLC_RIG_ICON 
+            - if asset_type is set to None --> loads the main dlc icons
         """
         dlc_dir = paths.get_dlc_dir()
         dlc_list = paths.get_dlcs()
@@ -52,7 +57,7 @@ class ReadIconsIntern:
             if asset_type is None:
                 path = os.path.join(dlc_dir, dlc, "icon.png")
                 if os.path.exists(path):
-                    name = paths.DLC_MAIN_ICON + name
+                    name = paths.DLC_MAIN_ICON + dlc
                     pcoll.load(name, path, "IMAGE")
             else:
                 # return since without icon_prefix icons cannot be loaded
@@ -84,82 +89,74 @@ class ReadIconsIntern:
             pcoll.load(name, path, "IMAGE")
 
     @staticmethod
-    def reload_icons(pcoll, asset_type=None, icon_prefix=None) -> None:
+    def reload_icons(pcoll_id, asset_type=None, icon_prefix=None) -> None:
         """
-        pcoll: 
-            - PCOLL_ASSET
-            - PCOLL_PRESET
-            - PCOLL_RIG
-            - PCOLL_MCAM
-            - PCOLL_DLC
+        args:
+            pcoll_id: enum of
+                PCOLL_ASSET_ID | PCOLL_PRESET_ID | PCOLL_RIG_ID | PCOLL_MCAM_ID | PCOLL_DLC_ID
+            asset_type: 
+                ASSETS | PRESETS | RIGS
+                , default = None
 
-        asset_type: None? --> reads dlc main icons
-            - ASSETS
-            - PRESETS
-            - RIGS
-
-        icon_prefix: only needed when asset_type declared
-            - DLC_MAIN_ICON
-            - DLC_ASSET_ICON
-            - DLC_PRESET_ICON
-            - DLC_RIG_ICON\n
-        >
-        - clears the given pcoll category and reloads it
-        - when user icons available: loads them automatically too
+            icon_prefix: only needed when asset_type declared
+                DLC_MAIN_ICON | DLC_ASSET_ICON | DLC_PRESET_ICON | DLC_RIG_ICON
+                , default = None
+         
+        description:
+            - clears the given pcoll category and reloads it
+            - when user icons available: loads them automatically too
         """
-        # removes icons
-        if pcoll in mcam_icons.values():
+        # clears icons from pcoll
+        if pcoll_id in mcam_icons.keys():
+            pcoll = mcam_icons[pcoll_id]
             bpy.utils.previews.remove(pcoll)
-            for icon in mcam_icons[pcoll]:
-                bpy.utils.previews.remove(icon)
-            mcam_icons[pcoll] = {}
 
-
-        # load icons again
+        # dictionary to get corresponding user asses
         user_dlc = {
-            PCOLL_ASSET:paths.USER_ASSETS,
-            PCOLL_PRESET:paths.USER_PRESETS,
-            PCOLL_RIG:paths.USER_RIGS
+            PCOLL_ASSET_ID : paths.USER_ASSETS,
+            PCOLL_PRESET_ID : paths.USER_PRESETS,
+            PCOLL_RIG_ID : paths.USER_RIGS
             }
         
-        pcoll_icons = bpy.utils.previews.new()
-        if user_dlc.get(pcoll):
-            __class__.read_user_icon(pcoll_icons, user_dlc[pcoll])
-        __class__.read_dlc_icons(pcoll)
+        # load user and dlc icons
+        pcoll = bpy.utils.previews.new()
+        if user_dlc.get(pcoll_id):
+            __class__.read_user_icon(pcoll, user_dlc[pcoll_id])
+        __class__.read_dlc_icons(pcoll, asset_type, icon_prefix)
 
-        mcam_icons[pcoll] = pcoll_icons
+        mcam_icons[pcoll_id] = pcoll
+
 
 #━━━━━━━━━━━━━━━    functions    ━━━━━━━━━━━━━━━━━━━━━━━━━━
 def reload_mcam_icons() -> None:
-    pcoll = PCOLL_MCAM
+    pcoll_id = PCOLL_MCAM_ID
     asset_type = None
     icon_prefix = None
-    ReadIconsIntern.reload_icons(pcoll, asset_type, icon_prefix)
+    IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_dlc_icons() -> None:
-    pcoll = PCOLL_DLC
+    pcoll_id = PCOLL_DLC_ID
     asset_type = None
     icon_prefix = None
-    ReadIconsIntern.reload_icons(pcoll, asset_type, icon_prefix)
+    IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_asset_icons() -> None:
-    pcoll = PCOLL_ASSET
+    pcoll_id = PCOLL_ASSET_ID
     asset_type = paths.ASSETS
     icon_prefix = paths.DLC_ASSET_ICON
-    ReadIconsIntern.reload_icons(pcoll, asset_type, icon_prefix)
+    IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_preset_icons() -> None:
-    pcoll = PCOLL_PRESET
+    pcoll_id = PCOLL_PRESET_ID
     asset_type = paths.PRESETS
     icon_prefix = paths.DLC_PRESET_ICON
-    ReadIconsIntern.reload_icons(pcoll, asset_type, icon_prefix)
+    IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_rig_icons() -> None:
-    pcoll = PCOLL_RIG
+    pcoll_id = PCOLL_RIG_ID
     asset_type = paths.RIGS
     icon_prefix = paths.DLC_RIG_ICON
-    ReadIconsIntern.reload_icons(pcoll, asset_type, icon_prefix)
-
+    IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register
@@ -168,11 +165,12 @@ def reload_rig_icons() -> None:
 mcam_icons = {}
 
 def register():
+    # main icons: should be loaded all the time
     reload_mcam_icons()
     reload_dlc_icons()
-    reload_asset_icons()
-    reload_preset_icons()
-    reload_rig_icons()
+    # reload_asset_icons()
+    # reload_preset_icons()
+    # reload_rig_icons()
 
 def unregister():
     for pcoll in mcam_icons.values():
