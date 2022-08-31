@@ -1,5 +1,15 @@
+from . import addonpreferences, operators, uilists, utils
+
 def register():
-    pass
+    addonpreferences.register()
+    utils.register()
+    operators.register()
+    uilists.register()
+
+    utils.reload.reload_dlc_json()
 
 def unregister():
-    pass
+    uilists.unregister()
+    operators.unregister()
+    utils.unregister()
+    addonpreferences.unregister()
