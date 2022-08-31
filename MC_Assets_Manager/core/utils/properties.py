@@ -90,6 +90,7 @@ class MCAssetsManagerProperties(PropertyGroup):
         creator : StringProperty()
         active : BoolProperty(default = True, update = UpdateFunctionsIntern.update_active)
         version: StringProperty()
+        icon : BoolProperty()
     
     class AssetListItem(PropertyGroup):
         """
@@ -102,7 +103,7 @@ class MCAssetsManagerProperties(PropertyGroup):
         name : StringProperty()
         type : StringProperty()
         category : StringProperty()
-        dlc : StringProperty()
+        dlc : StringProperty(default="")
         icon : StringProperty()
         collection : StringProperty()
 

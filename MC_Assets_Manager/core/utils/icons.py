@@ -30,8 +30,7 @@ class IconReader:
 
         for icon in icons:
             path = os.path.join(dir, icon+".png")
-            name = paths.MCAM_ICON + icon
-            pcoll.load(name, path, "IMAGE")
+            pcoll.load(icon, path, "IMAGE")
 
     @staticmethod
     def read_dlc_icons(pcoll, asset_type=None, icon_prefix=None) -> None:
@@ -57,8 +56,7 @@ class IconReader:
             if asset_type is None:
                 path = os.path.join(dlc_dir, dlc, "icon.png")
                 if os.path.exists(path):
-                    name = paths.DLC_MAIN_ICON + dlc
-                    pcoll.load(name, path, "IMAGE")
+                    pcoll.load(dlc, path, "IMAGE")
             else:
                 # return since without icon_prefix icons cannot be loaded
                 if icon_prefix is None:
@@ -67,9 +65,8 @@ class IconReader:
                 icon_dir = paths.get_dlc_sub_assets_icon_dir(dlc, asset_type)
                 icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
                 for icon in icons:
-                    name = icon_prefix + icon
                     path = os.path.join(icon_dir, icon+".png")
-                    pcoll.load(name, path, "IMAGE")
+                    pcoll.load(icon, path, "IMAGE")
 
     @staticmethod
     def read_user_icon(pcoll, asset_type) -> None:
@@ -85,8 +82,7 @@ class IconReader:
         icons = paths.get_user_sub_icons(asset_type)
         for icon in icons:
             path = os.path.join(icon_dir, icon+".png")
-            name = paths.USER_PRESET_ICON + icon
-            pcoll.load(name, path, "IMAGE")
+            pcoll.load(icon, path, "IMAGE")
 
     @staticmethod
     def reload_icons(pcoll_id, asset_type=None, icon_prefix=None) -> None:
