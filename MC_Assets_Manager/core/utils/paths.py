@@ -33,12 +33,12 @@ class AddonPathsIntern:
         return os.path.basename(ADDON_DIR)
 
     @staticmethod
-    def get_ressources_dir() -> os.path:
-        return os.path.join(ADDON_DIR, "ressources")
+    def get_resources_dir() -> os.path:
+        return os.path.join(ADDON_DIR, "resources")
 
     @staticmethod
-    def get_ressources_icon_dir() -> os.path:
-        return os.path.join(RESSOURCES_DIR, "icons")
+    def get_resources_icon_dir() -> os.path:
+        return os.path.join(RESOURCES_DIR, "icons")
 
 
 #━━━━━━━━━━━━━━━    constants    ━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -46,8 +46,8 @@ UTILS_DIR = AddonPathsIntern.get_utils_dir()
 CORE_DIR = AddonPathsIntern.get_core_dir()
 ADDON_DIR = AddonPathsIntern.get_addon_dir()
 PACKAGE = AddonPathsIntern.get_addon_name()
-RESSOURCES_DIR = AddonPathsIntern.get_ressources_dir()
-RESSOURCES_ICON_DIR = AddonPathsIntern.get_ressources_icon_dir()
+RESOURCES_DIR = AddonPathsIntern.get_resources_dir()
+RESOURCES_ICON_DIR = AddonPathsIntern.get_resources_icon_dir()
 ADDON_PROP_ACCESS = bpy.context.preferences.addons.get(PACKAGE).preferences
 
 # user assets
@@ -70,23 +70,19 @@ UI_LIST_RIGS = "rig_list"
 UI_LIST_DLCS = "dlc_list"
 
 # icons
-USER_ASSET_ICON = "user_asset_"
-USER_PRESET_ICON = "user_preset_"
-USER_RIG_ICON = "user_rig_"
-
-DLC_MAIN_ICON = "dlc_"
-DLC_ASSET_ICON = "dlc_asset_"
-DLC_PRESET_ICON = "dlc_preset_"
-DLC_RIG_ICON = "dlc_rig_"
+DLC_MAIN_ICON = "dlc"
+DLC_ASSET_ICON = "dlc_asset"
+DLC_PRESET_ICON = "dlc_preset"
+DLC_RIG_ICON = "dlc_rig"
 
 MCAM_ICON = "McAM_"
 
-#━━━━━━━━━━━━━━━    getter: ressources    ━━━━━━━━━━━━━━━━━
-def get_ressources_icons() -> list:
+#━━━━━━━━━━━━━━━    getter: resources    ━━━━━━━━━━━━━━━━━
+def get_resources_icons() -> list:
     """
     returns a list with all the mcam icons without extension
     """
-    dir = RESSOURCES_ICON_DIR
+    dir = RESOURCES_ICON_DIR
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".png")]
 

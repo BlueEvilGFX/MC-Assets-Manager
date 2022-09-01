@@ -1,7 +1,5 @@
-from . import paths
-from . import properties
-from . import reload
-from . import icons
+from . import icons, paths, properties, reload
+
 
 def register():
     properties.register()

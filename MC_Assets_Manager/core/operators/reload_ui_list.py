@@ -39,5 +39,6 @@ class UI_LIST_OT_RELOAD(bpy.types.Operator):
                 ]
             }
         
-        function.get(self.asset_type, {'CANCELLED'})
-        return {'FINISHED'}
+        return {'FINISHED'}\
+            if function.get(self.asset_type, True)\
+            else {'CANCELLED'}

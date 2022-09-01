@@ -77,7 +77,7 @@ class ReloadIntern:
         - UI list asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS
         - loads the user items into the list
         - checks for collection restrictions: unimportant for assets
-        - it sets the icon property to True if it exists
+        - it sets the icon property to the corresponding id
         """
         user_files = paths.get_user_sub_assets(asset_type)
         user_icons = paths.get_user_sub_icons(asset_type)
@@ -90,7 +90,7 @@ class ReloadIntern:
                 item.name = file
 
             if file in user_icons:
-                item.icon = True
+                item.icon = asset_type + ':'+ item.name
 
     @staticmethod
     def load_dlc_files(ui_list, asset_type):
@@ -98,7 +98,7 @@ class ReloadIntern:
         - ui_list_name: UI_LIST_ASSETS | UI_LIST_PRESETS | UI_LIST_RIGS
         - UI list asset_type: ASSETS | PRESETS | RIGS
         - loads the dlc items into the list
-        - it sets the icon property to True if an icon exists
+        - it sets the icon property to the corresponding id
         """
         # filtering assets because they are read from the json file
         if asset_type == paths.ASSETS:
@@ -110,7 +110,7 @@ class ReloadIntern:
     def load_dlc_assets(ui_list):
         """
         - loads the assets of the dlcs into the ui list
-        - if an icon for an item exists: set icon property to True
+        - it sets the icon property to the corresponding id
         """
         asset_type = paths.ASSETS
         with open(paths.get_dlc_json(), 'r') as file:
@@ -142,14 +142,16 @@ class ReloadIntern:
                 item.category = asset_sub_data["category"]
                 item.dlc = dlc
                 if asset in asset_icons:
-                    item.icon = paths.DLC_ASSET_ICON + asset
+                    item.icon = paths.DLC_ASSET_ICON\
+                        + ':' + dlc\
+                        + ':'+ item.name
 
     @staticmethod
     def load_dlc_presets_rigs(ui_list, asset_type):
         """
         - asset_type: ASSETS | PRESETS | RIGS -> returns a list
         - loads the rigs/presets of the dlcs into the ui list
-        - if an icon for an item exists: set icon property to True
+        - it sets the icon property to the corresponding id
         """
         # dictionary to get corresponding user asses
         user_dlc = {
@@ -167,6 +169,7 @@ class ReloadIntern:
             
             assets = paths.get_dlc_sub_assets(dlc, asset_type)
             asset_icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
+
             for asset in assets:
                 item = ui_list.add()
                 if "&&" in asset:
@@ -175,8 +178,10 @@ class ReloadIntern:
                     item.name = asset
 
                 item.dlc = dlc
-                if file in asset_icons:
-                    item.icon = user_dlc[asset_type] + asset
+                if item.name in asset_icons:
+                    item.icon = user_dlc[asset_type]\
+                        + ':' + dlc\
+                        + ':'+ item.name
 
 
 #━━━━━━━━━━━━━━━    methods    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━

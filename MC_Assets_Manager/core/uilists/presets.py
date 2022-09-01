@@ -33,18 +33,16 @@ class PRESET_UL_List(UIList):
     filter_enum : EnumProperty(items=dlc_presets_callback)
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        custom_icon = 51
         # check for own custom icon
         if item.icon:
             pcoll = icons.mcam_icons[icons.PCOLL_PRESET_ID]
-            custom_icon = pcoll[item.name].icon_id
+            custom_icon = pcoll[item.icon].icon_id
         # check for dlc icon
         elif item.dlc:
             if item.dlc in icons.mcam_icons.get("DLCs", False):
                 pcoll = icons.mcam_icons[icons.PCOLL_DLC_ID]
                 custom_icon = pcoll[item.dlc].icon_id
-        # set default icon
-        else:
-            custom_icon = 51
         
         # draw
         row = layout.row()

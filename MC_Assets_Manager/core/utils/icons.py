@@ -5,6 +5,20 @@ import bpy.utils.previews
 
 from . import paths
 
+#━━━━━━━━━━━━━━━    description    ━━━━━━━━━━━━━━━━━━━━━━━━
+"""
+This py file can load every icon of user and dlc assets.
+To access the icon do following:
+
+    for dlc main icons:
+        pcoll = icons.mcam_icons[icons.PCOLL_DLC_ID]
+        custom_icon = pcoll[item.name].icon_id
+
+    for preset icons:
+        pcoll = icons.mcam_icons[icons.PCOLL_PRESET_ID]
+        custom_icon = pcoll[item.icon].icon_id
+"""
+
 #━━━━━━━━━━━━━━━    constants    ━━━━━━━━━━━━━━━━━━━━━━━━━━
 PCOLL_ASSET_ID = "Assets"
 PCOLL_PRESET_ID = "Presets"
@@ -23,10 +37,10 @@ class IconReader:
         description:
             - real pcoll!
             - the mcam main icons into the addon
-            - it uses the ressources/icons path for it
+            - it uses the resources/icons path for it
         """
-        dir = paths.RESSOURCES_ICON_DIR
-        icons = paths.get_ressources_icons()
+        dir = paths.RESOURCES_ICON_DIR
+        icons = paths.get_resources_icons()
 
         for icon in icons:
             path = os.path.join(dir, icon+".png")
@@ -47,7 +61,6 @@ class IconReader:
         
         description:
             - reads the main icons of the dlcs:
-            - name = paths.DLC_MAIN_ICON + name
             - if asset_type is set to None --> loads the main dlc icons
         """
         dlc_dir = paths.get_dlc_dir()
@@ -66,7 +79,8 @@ class IconReader:
                 icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
                 for icon in icons:
                     path = os.path.join(icon_dir, icon+".png")
-                    pcoll.load(icon, path, "IMAGE")
+                    name = icon_prefix + ':' + dlc + ':' + icon
+                    pcoll.load(name, path, "IMAGE")
 
     @staticmethod
     def read_user_icon(pcoll, asset_type) -> None:
@@ -75,14 +89,14 @@ class IconReader:
         real pcoll!
         asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS
         name:user = paths.USER_XXX_ICON + name
-        name:dlc  = dlc_name + name ('TheKronisDLC_hammer')
         """
         # read user preset icons
         icon_dir= paths.get_user_sub_icon_dir(asset_type)
         icons = paths.get_user_sub_icons(asset_type)
         for icon in icons:
             path = os.path.join(icon_dir, icon+".png")
-            pcoll.load(icon, path, "IMAGE")
+            name = asset_type + ':' + icon
+            pcoll.load(name, path, "IMAGE")
 
     @staticmethod
     def reload_icons(pcoll_id, asset_type=None, icon_prefix=None) -> None:
