@@ -1,6 +1,3 @@
-import json
-
-import bpy
 from bpy.props import EnumProperty
 from bpy.types import UIList
 from MC_Assets_Manager.core.utils import icons, paths

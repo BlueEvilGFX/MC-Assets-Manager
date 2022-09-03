@@ -46,7 +46,10 @@ def get_icon(item, pcoll_id, default_icon):
             default_icon = pcoll[item.dlc].icon_id
     return default_icon
 
-def filter_items_name_dlc(self, context, data, propname):
+def filter_items_name_dlc(self, context, data, propname) -> list:
+    """
+    returns two lists : filtered & ordered items
+    """
     filtered = []
     ordered = []
     items = getattr(data, propname)

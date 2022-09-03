@@ -1,6 +1,7 @@
 import json
 import os
 
+# DO NOT REMOVE BPY -> EVAL USAGE
 import bpy
 
 from .. import addonpreferences
