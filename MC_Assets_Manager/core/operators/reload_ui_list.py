@@ -1,9 +1,6 @@
 import bpy
 from bpy.props import StringProperty
-
-from ..utils import paths
-from ..utils import icons
-from ..utils import reload
+from MC_Assets_Manager.core.utils import icons, paths, reload
 
 class UI_LIST_OT_RELOAD(bpy.types.Operator):
     """
@@ -31,7 +28,7 @@ class UI_LIST_OT_RELOAD(bpy.types.Operator):
                 ],
             paths.RIGS : [
                 reload.reload_rig_list(),
-                icons.reload_preset_icons()
+                icons.reload_rig_icons()
                 ],
             paths.DLCS : [
                 reload.reload_dlc_list(),

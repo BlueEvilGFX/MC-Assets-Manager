@@ -20,8 +20,8 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
     #   creates the menu enum (assetsbar)
     assets_menu : EnumProperty(default = "Presets",
         items = [
-            ('Presets', 'Presets', 'Presets', 'OUTLINER_OB_ARMATURE',0),
-            ('Assets', 'Assets', 'Assets', 'DOCUMENTS',1),
+            ('Assets', 'Assets', 'Assets', 'DOCUMENTS',0),
+            ('Presets', 'Presets', 'Presets', 'OUTLINER_OB_ARMATURE',1),
             ('Rigs', 'Rigs', 'Rigs', 'ARMATURE_DATA',2)
         ])
 

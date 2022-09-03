@@ -1,7 +1,6 @@
 import bpy
 from bpy.types import UIList
-
-from ..utils import icons
+from MC_Assets_Manager.core.utils import icons
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

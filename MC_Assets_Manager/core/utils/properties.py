@@ -103,7 +103,7 @@ class MCAssetsManagerProperties(PropertyGroup):
         name : StringProperty()
         type : StringProperty()
         category : StringProperty()
-        dlc : StringProperty(default="")
+        dlc : StringProperty()
         icon : StringProperty()
         collection : StringProperty()
 
