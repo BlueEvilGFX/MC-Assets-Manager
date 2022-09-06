@@ -5,9 +5,11 @@ from bpy.props import *
 from bpy.types import AddonPreferences
 
 from . import ui_modules
+from . import assets
 from .properties import AddonPreferencesProps
 from .. import utils
 from ... import addon_updater_ops
+from MC_Assets_Manager.core.utils import paths
 
 @addon_updater_ops.make_annotations
 class AddonPref(AddonPreferences):
@@ -87,8 +89,7 @@ class AddonPref(AddonPreferences):
 
         # ━━━━━━━━━━━━ assets
         if self.main_props.menu == "Assets":
-            ui_modules.assets_tab(self, context, layout, scene)
-
+            assets.draw_assets_tab(self, context)
         # ━━━━━━━━━━━━ DLCs
         elif self.main_props.menu == "DLCs":
             ui_modules.dlc_tab(self, context, layout, scene)            
