@@ -6,7 +6,7 @@ import bpy
 from bpy.props import CollectionProperty, StringProperty
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
-from MC_Assets_Manager.core.utils import icons, paths, reload
+from MC_Assets_Manager.core.utils import paths, reload
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -38,9 +38,6 @@ class UI_LIST_OT_ADD(Operator, ImportHelper):
     def execute(self, context):
         Adder = AssetAdder(self, self.files, self.asset_type)
         Adder.main()
-        reload.reload_asset_list()
-        icons.reload_asset_icons()
-        self.report({'INFO'}, "asset successully added")
         return{'FINISHED'}
 
     def draw(self, context):
@@ -55,6 +52,12 @@ class AssetAdder:
         asset_type : enum of paths.USER_ASSETS | paths.USER_PRESETS 
         | paths.USER_RIGS
     """
+    list_dict = {
+        paths.USER_ASSETS : paths.ASSETS,
+        paths.USER_PRESETS : paths.PRESETS,
+        paths.USER_RIGS : paths.RIGS
+    }
+
     def __init__(self, operator_reference, files, asset_type):
         """
         args:
@@ -65,7 +68,7 @@ class AssetAdder:
         self.filedir = os.path.dirname(operator_reference.filepath)
         self.operator = operator_reference
         self.asset_type = asset_type
-        self.dst_directory = paths.get_user_sub_dir(asset_type)
+        self.dst_directory = paths.get_user_sub_asset_dir(asset_type)
     
     def main(self) -> None:
         for file in self.files:
@@ -77,6 +80,9 @@ class AssetAdder:
             else:
                 error_text = "one file has the wrong file format"
                 self.operator.report({'ERROR'}, error_text)
+
+        asset_type = self.list_dict[self.asset_type]
+        bpy.ops.mcam.ui_list_reload(asset_type=asset_type)
 
     def add_file(self, file) -> None:
         # get name

@@ -20,19 +20,17 @@ list_data = {
 
 def draw_assets_tab(self, context):
     """
-    description:
-        draws the <asset_type> ui list with all its operators according to the
-        selection in the <assets_menu> property
+    draws the <asset_type> ui list with all its operators according to the
+    selection in the <assets_menu> property
     """
     # gets the current navigation in the sub category assets
-    # -> returns 'Assets' | 'Presets' | 'Rigs'
     navigator = self.main_props.assets_menu
     if not navigator in ["Assets", "Presets", "Rigs"]:
         return
+
     asset_type = list_data[navigator]
 
     layout = self.layout
-    scene = context.scene
     # categories: assets, presets, rigs
     categories = self.layout.row()
     categories.prop(self.main_props, "assets_menu", expand = True)
@@ -100,7 +98,6 @@ def draw_assets_tab(self, context):
         reloader.asset_type = paths.ASSETS
         adder.asset_type = paths.USER_ASSETS
         remover.asset_type = paths.USER_ASSETS
-
 
     elif navigator == "Presets":
         # operator settings

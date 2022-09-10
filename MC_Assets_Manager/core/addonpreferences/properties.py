@@ -42,7 +42,7 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
     two_dlc_ui_panels : BoolProperty()
 
     #   reload all while starting blender
-    reload_all_during_startup : BoolProperty()
+    load_all_during_startup : BoolProperty()
 
     #   dlc & file storage path
     storage_path : StringProperty(

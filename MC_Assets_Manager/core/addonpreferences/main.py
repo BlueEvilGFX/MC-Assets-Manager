@@ -1,15 +1,16 @@
-import importlib, json
+import importlib
+import json
 
 import bpy
 from bpy.props import *
 from bpy.types import AddonPreferences
-
-from . import ui_modules
-from . import assets
-from .properties import AddonPreferencesProps
-from .. import utils
-from ... import addon_updater_ops
 from MC_Assets_Manager.core.utils import paths
+
+from ... import addon_updater_ops
+from .. import utils
+from . import assets, settings, ui_modules
+from .properties import AddonPreferencesProps
+
 
 @addon_updater_ops.make_annotations
 class AddonPref(AddonPreferences):
@@ -101,4 +102,4 @@ class AddonPref(AddonPreferences):
 
         # ━━━━━━━━━━━━ settings
         elif self.main_props.menu == "Settings":
-            ui_modules.show_settings(self, context, layout)
+            settings.draw_settings_tab(self, context)

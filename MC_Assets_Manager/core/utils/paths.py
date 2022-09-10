@@ -102,7 +102,7 @@ def get_storage_dir() -> os.path:
     return storage_dir
 
 #━━━━━━━━━━━━━━━    user files
-def get_user_sub_dir(asset_type) -> os.path:
+def get_user_sub_asset_dir(asset_type) -> os.path:
     """
     asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns the path
     to its storage sub dir
@@ -114,7 +114,7 @@ def get_user_sub_assets(asset_type) -> list:
     asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns a list
     with all the user 'assets' without extension
     """
-    dir = get_user_sub_dir(asset_type)
+    dir = get_user_sub_asset_dir(asset_type)
     return [os.path.splitext(icon)[0] for icon in os.listdir(dir)
             if icon.endswith(".blend")]
 
@@ -123,7 +123,7 @@ def get_user_sub_icon_dir(asset_type) -> os.path:
     asset_type: USER_ASSETS | USER_PRESETS | USER_RIGS -> returns the path
     to its storage sub icon dir
     """
-    return os.path.join(get_user_sub_dir(asset_type), "icons")
+    return os.path.join(get_user_sub_asset_dir(asset_type), "icons")
 
 def get_user_sub_icons(asset_type) -> list:
     """

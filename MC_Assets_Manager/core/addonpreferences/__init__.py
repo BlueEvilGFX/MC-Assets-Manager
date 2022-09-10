@@ -1,8 +1,7 @@
-import bpy
 import importlib
 
-from . import properties
-from . import main
+from . import main, properties
+
 
 def register():
     importlib.reload(main)
@@ -13,4 +12,8 @@ def register():
 def unregister():
     from bpy.utils import unregister_class
     unregister_class(main.AddonPref)
-    unregister_class(properties.AddonPreferencesProps)
+    unregister_class(properties.AddonPreferencesProps)#
+
+def reload_addon_preferences():
+    unregister()
+    register()

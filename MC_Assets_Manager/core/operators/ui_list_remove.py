@@ -1,11 +1,10 @@
 import os
-import shutil
-import zipfile
 
 import bpy
-from bpy.props import CollectionProperty, StringProperty
+from bpy.props import StringProperty
 from bpy.types import Operator
 from MC_Assets_Manager.core.utils import icons, paths, reload
+
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class UI_LIST_OT_REMOVE(Operator):
@@ -23,34 +22,60 @@ class UI_LIST_OT_REMOVE(Operator):
     asset_type : StringProperty()
 
     def execute(self, context):
-        Remover = AssetRemover(self, context, self.asset_type)
+        Remover = AssetRemover(context, self.asset_type)
         Remover.main()
-        reload.reload_asset_list()
-        icons.reload_asset_icons()
-        self.report({'INFO'}, "asset successully added")
         return{'FINISHED'}
 
 
 class AssetRemover:
+
+    list_dictionary = {
+        paths.USER_ASSETS : [
+            paths.UI_LIST_ASSETS,
+            paths.ASSETS
+            ],
+        paths.USER_PRESETS :[
+            paths.UI_LIST_PRESETS,
+            paths.PRESETS
+            ],
+        paths.USER_RIGS : [
+            paths.UI_LIST_RIGS,
+            paths.RIGS
+            ]
+    }
+
     def __init__(self, context, asset_type):
         self.scene = context.scene
         self.user_asset_type = asset_type
-        index = asset_type.split("_")[-1] + "index"
+        index = asset_type.split("_")[-1][:-1] + "_index"
         self.item_index = eval(f"self.scene.mc_assets_manager_props.{index}")
         
-    def main():
-        pass
+    def main(self):
+        asset_dir = paths.get_user_sub_asset_dir(self.user_asset_type)
+        icon_dir = paths.get_user_sub_icon_dir(self.user_asset_type)
+        scene = "bpy.context.scene"
+        asset_list = eval('.'.join([
+            scene,
+            paths.MCAM_PROP_GROUP,
+            self.list_dictionary[self.user_asset_type][0]
+            ]))
 
-# def execute(context, asset_type, list, index):
-#     # get path & data
-#     path = os.path.join(utils.AddonPathManagement.getAddonPath(), "files", asset_type)
-#     files = [file for file in os.listdir(path) if not file == "icons"]
-#     file_path = os.path.join(path, files[index])
-#     icon_name = os.path.splitext(files[index])[0]+".png"
-#     icon_path = os.path.join(path, "icons", icon_name)
-#     # remove
-#     os.remove(file_path)
-#     if os.path.exists(icon_path):
-#         os.remove(icon_path)
-#     list.remove(index)
-#     index = min(max(0, index - 1), len(list) - 1)
+        item = asset_list[self.item_index]
+        name = item.name
+        icon = name
+        collection = item.collection
+
+        if collection:
+            name = name + "&&" + collection
+
+        asset_path = os.path.join(asset_dir, name) + ".blend"
+        icon_path = os.path.join(icon_dir, icon) + ".png"
+
+        if os.path.exists(asset_path):
+            os.remove(asset_path)
+
+        if os.path.exists(icon_path):
+            os.remove(icon_path)
+
+        asset_type = self.list_dictionary[self.user_asset_type][1]
+        bpy.ops.mcam.ui_list_reload(asset_type=asset_type)
