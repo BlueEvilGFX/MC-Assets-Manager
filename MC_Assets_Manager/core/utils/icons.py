@@ -121,21 +121,24 @@ class IconReader:
             pcoll = mcam_icons[pcoll_id]
             bpy.utils.previews.remove(pcoll)
 
-        # dictionary to get corresponding user asses
-        user_dlc = {
-            PCOLL_ASSET_ID : paths.USER_ASSETS,
-            PCOLL_PRESET_ID : paths.USER_PRESETS,
-            PCOLL_RIG_ID : paths.USER_RIGS
-            }
-        
-        # load user and dlc icons
         pcoll = bpy.utils.previews.new()
-        if user_dlc.get(pcoll_id):
-            __class__.read_user_icon(pcoll, user_dlc[pcoll_id])
-        __class__.read_dlc_icons(pcoll, asset_type, icon_prefix)
+
+        if pcoll_id == PCOLL_MCAM_ID:
+            __class__.read_mcam_icons(pcoll)
+        else:
+            # dictionary to get corresponding user asses
+            user_dlc = {
+                PCOLL_ASSET_ID : paths.USER_ASSETS,
+                PCOLL_PRESET_ID : paths.USER_PRESETS,
+                PCOLL_RIG_ID : paths.USER_RIGS
+                }
+            
+            # load user and dlc icons
+            if user_dlc.get(pcoll_id):
+                __class__.read_user_icon(pcoll, user_dlc[pcoll_id])
+            __class__.read_dlc_icons(pcoll, asset_type, icon_prefix)
 
         mcam_icons[pcoll_id] = pcoll
-
 
 #━━━━━━━━━━━━━━━    functions    ━━━━━━━━━━━━━━━━━━━━━━━━━━
 def reload_mcam_icons() -> None:
@@ -175,12 +178,8 @@ def reload_rig_icons() -> None:
 mcam_icons = {}
 
 def register():
-    # main icons: should be loaded all the time
     reload_mcam_icons()
     reload_dlc_icons()
-    # reload_asset_icons()
-    # reload_preset_icons()
-    # reload_rig_icons()
 
 def unregister():
     for pcoll in mcam_icons.values():

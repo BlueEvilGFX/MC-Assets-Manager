@@ -1,4 +1,4 @@
-from . import icons, paths, properties, reload
+from . import icons, paths, properties, reload, asset_dict
 
 
 def register():

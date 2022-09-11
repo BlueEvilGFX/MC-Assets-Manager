@@ -6,14 +6,14 @@ import bpy
 from bpy.props import CollectionProperty, StringProperty
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
-from MC_Assets_Manager.core.utils import paths, reload
+from MC_Assets_Manager.core.utils import paths, asset_dict
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class UI_LIST_OT_ADD(Operator, ImportHelper):
     """
     description:
-        operator wich adds an item to a list
+        operator which adds an item to a list
         returns {'CANCELLED'} if asset_type is invalid
     args:
         asset_type : enum of paths.USER_ASSETS | paths.USER_PRESETS 
@@ -81,7 +81,10 @@ class AssetAdder:
                 error_text = "one file has the wrong file format"
                 self.operator.report({'ERROR'}, error_text)
 
-        asset_type = self.list_dict[self.asset_type]
+        asset_type = asset_dict.get_asset_types(
+            self.asset_type,
+            asset_dict.Selection.raw_type
+            )
         bpy.ops.mcam.ui_list_reload(asset_type=asset_type)
 
     def add_file(self, file) -> None:

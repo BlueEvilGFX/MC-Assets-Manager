@@ -1,10 +1,8 @@
-import importlib
 import json
 
 import bpy
 from bpy.props import *
 from bpy.types import AddonPreferences
-from MC_Assets_Manager.core.utils import paths
 
 from ... import addon_updater_ops
 from .. import utils
