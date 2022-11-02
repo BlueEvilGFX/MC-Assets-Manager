@@ -77,7 +77,7 @@ DLC_RIG_ICON = "dlc_rig"
 
 MCAM_ICON = "McAM_"
 
-#━━━━━━━━━━━━━━━    getter: resources    ━━━━━━━━━━━━━━━━━
+#━━━━━━━━━━━━━━━    getter: resources    
 def get_resources_icons() -> list:
     """
     returns a list with all the mcam icons without extension
@@ -140,6 +140,12 @@ def get_dlc_dir() -> os.path:
     """
     return os.path.join(get_storage_dir(), "dlcs")
 
+def get_dlc_sub_dir(dlc) -> os.path:
+    """
+    returns the path to the dlc with the given name
+    """
+    return os.path.join(get_dlc_dir(), dlc)
+
 def get_dlc_json() -> os.path:
     """
     return the path to the dlc.json which stores following data:
@@ -148,7 +154,7 @@ def get_dlc_json() -> os.path:
     - version
     - creator
     """
-    return os.path.join(get_storage_dir(), "dlcs.json")
+    return os.path.join(RESOURCES_DIR, "dlcs.json")
 
 def get_dlc_init(dlc) -> os.path:
     """
@@ -227,7 +233,7 @@ def get_dlc_asset_categories() -> os.path:
     """
     returns the path to the asset_categories.json file
     """
-    return os.path.join(get_storage_dir(), "asset_categories.json")
+    return os.path.join(RESOURCES_DIR, "asset_categories.json")
 
 def get_dlc_sub_assets_json(dlc, asset_type) -> os.path:
     """

@@ -46,17 +46,12 @@ class UI_LIST_OT_ADD(Operator, ImportHelper):
 class AssetAdder:
     """
     description:
-        operator class which performs the adding of items to hte list ->
+        operator class which performs the adding of items to the list ->
         copying files, reading in icons
     args:
         asset_type : enum of paths.USER_ASSETS | paths.USER_PRESETS 
         | paths.USER_RIGS
     """
-    list_dict = {
-        paths.USER_ASSETS : paths.ASSETS,
-        paths.USER_PRESETS : paths.PRESETS,
-        paths.USER_RIGS : paths.RIGS
-    }
 
     def __init__(self, operator_reference, files, asset_type):
         """

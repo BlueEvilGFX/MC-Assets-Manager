@@ -1,88 +1,136 @@
-from ...utils import paths
+from MC_Assets_Manager.core.utils import paths, asset_dict
 
-def assets_tab(self, context, layout, scene):
-    lowerEnum = layout.row()
-    lowerEnum.prop(self.main_props, "assets_menu", expand = True)
-    # lowerEnum.label(text="", icon = "BLANK1")
-    # lowerEnum.operator("mcam.add_main_file", text="", icon="RNA_ADD")
-    smallHeader = layout.row()
+def draw_assets_tab(self, context):
+    """
+    draws the <asset_type> ui list with all its operators according to the
+    selection in the <assets_menu> property
+    """
+    # gets the current navigation in the sub category assets
+    navigator = self.main_props.assets_menu
+    if not navigator in ["Assets", "Presets", "Rigs"]:
+        return
 
-    sm = smallHeader.column()
-    smBox = sm.box()
-    smr = smBox.row()
-    smr.scale_y = 0.5
-    smr.label(text="Name")
-    smr.label(text="Source")
+    layout = self.layout
+    # categories: assets, presets, rigs
+    categories = self.layout.row()
+    categories.prop(self.main_props, "assets_menu", expand = True)
 
-    right = smallHeader.row().column()
+    # info header for the assets including name, source
+    info_header = layout.row()
+    left_info_header = info_header.column()
+    right_info_header = info_header.row()
+    header_box = left_info_header.box()
+    header_labels = header_box.row()
+    header_labels.scale_y = 0.5
+    header_labels.label(text = "Name")
+    header_labels.label(text = "Source")
 
-    # ━━━━━━━━━━━━ assets
-    if self.main_props.assets_menu == "Assets":
-        row = sm
-        smr.label(text="Category")
-        row.template_list("ASSET_UL_List", "The_List", scene.mc_assets_manager_props, "asset_list", scene.mc_assets_manager_props, "asset_index")
-        
-        colMain = right.column()
-        colFir = colMain.column()
-        reloader = colFir.operator("mcam.ui_list_reload", text = "", icon = "FILE_REFRESH")
+    props = context.scene.mc_assets_manager_props
+
+    # main
+    if navigator == "Assets":
+        header_labels.label(text = "Category")
+
+    main = left_info_header
+    ul_class, index = asset_dict.get_ul_class(navigator.lower())
+    asset_type = asset_dict.get_asset_types(
+        navigator.lower(),asset_dict.Selection.ui_list
+        )
+
+    main.template_list(
+        ul_class, "The_List", props,
+        asset_type, props, index
+        )
+
+    # operators
+    main_right = right_info_header.column()
+    first = main_right.column(align = True)
+    second = main_right.column(align = True)
+    third = main_right.column(align = True)
+    fourth = main_right.column(align = True)
+
+    reloader_comp = first.row()
+    reloader = reloader_comp.operator(
+        "mcam.ui_list_reload",
+        text = "",
+        icon = "FILE_REFRESH"
+        )
+
+    adder_comp = second.row(align = True)
+    adder = adder_comp.operator(
+        "mcam.ui_list_add",
+        text = "",
+        icon = "ADD"
+        )
+    remover_comp = second.row(align = True)
+    remover_comp.enabled = polling_remove(self, context, asset_type)
+    remover = remover_comp.operator(
+        "mcam.ui_list_remove",
+        text = "",
+        icon = "REMOVE"
+        )
+    
+    lock = get_lock_icon(context)
+    third.prop(
+        context.scene.mc_assets_manager_props,
+        "item_unlock",
+        text="",
+        icon=lock
+        )
+
+    if navigator == "Assets":
+        # operator settings
         reloader.asset_type = paths.ASSETS
+        adder.asset_type = paths.USER_ASSETS
+        remover.asset_type = paths.USER_ASSETS
 
-        colSec = colMain.column(align = True)
-        add = colSec.operator("mcam.ui_list_add", text = "", icon = "ADD")
-        add.asset_type = paths.USER_ASSETS
-        remove = colSec.operator("mcam.ui_list_remove", text = "", icon = "REMOVE")
-        remove.asset_type = paths.USER_ASSETS
-
-        # colThi = colMain.column(align = True)
-        # if context.scene.mc_assets_manager_props.item_unlock == False: lock = "LOCKED"
-        # else: lock = "UNLOCKED"
-        # colThi.prop(context.scene.mc_assets_manager_props, "item_unlock", text="", icon=lock)
-
-        # colFou = colMain.column(align = True)
-        # colFou.operator("mcam.asset_list_export", text = "", icon = "EXPORT")
-        
-    # ━━━━━━━━━━━━ presets
-    if self.main_props.assets_menu == "Presets":
-        row = sm
-        row.template_list("PRESET_UL_List", "The_List", scene.mc_assets_manager_props, "preset_list", scene.mc_assets_manager_props, "preset_index")
-
-        colMain = right.column()
-        colFir = colMain.column()
-        reloader = colFir.operator("mcam.ui_list_reload", text = "", icon = "FILE_REFRESH")
+    elif navigator == "Presets":
+        # operator settings
         reloader.asset_type = paths.PRESETS
+        adder.asset_type = paths.USER_PRESETS
+        remover.asset_type = paths.USER_PRESETS
 
-        colSec = colMain.column(align = True)
-        add = colSec.operator("mcam.ui_list_add", text = "", icon = "ADD")
-        add.asset_type = paths.USER_PRESETS
-        # colSec.operator("mcam.preset_list_remove", text = "", icon = "REMOVE") 
-
-        # colThi = colMain.column(align = True)
-        # if context.scene.mc_assets_manager_props.item_unlock == False: lock = "LOCKED"
-        # else: lock = "UNLOCKED"
-        # colThi.prop(context.scene.mc_assets_manager_props, "item_unlock", text="", icon=lock)
-
-        # colFou = colMain.column(align = True)
-        # colFou.operator("mcam.preset_list_export", text = "", icon = "EXPORT")
-
-    # ━━━━━━━━━━━━ rigs
-    elif self.main_props.assets_menu == "Rigs":
-        row = sm
-        row.template_list("RIG_UL_List", "The_List", scene.mc_assets_manager_props, "rig_list", scene.mc_assets_manager_props, "rig_index")
-        
-        colMain = right.column()
-        colFir = colMain.column()
-        reloader = colFir.operator("mcam.ui_list_reload", text = "", icon = "FILE_REFRESH")
+    elif navigator == "Rigs":
+        # operator settings
         reloader.asset_type = paths.RIGS
+        adder.asset_type = paths.USER_RIGS
+        remover.asset_type = paths.USER_RIGS
 
-        colSec = colMain.column(align = True)
-        add = colSec.operator("mcam.ui_list_add", text = "", icon = "ADD")
-        add.asset_type = paths.USER_RIGS
-        # colSec.operator("mcam.rig_list_remove", text = "", icon = "REMOVE")
+def get_lock_icon(context):
+    """
+    returns "UNLOCKED" if the property item_unlock is True\
+        else "LOCKED"
+    """
+    return "UNLOCKED" if context.scene.mc_assets_manager_props.item_unlock\
+        else "LOCKED"
+        
+def polling_remove(self, context, asset_type) -> bool:
+    """
+    args:
+        self: addon preferences instance self
+        context: addon preferences context
+        asset_type: enum of: 
+            paths.UI_LIST_ASSETS |
+            paths.UI_LIST_PRESETS | 
+            paths.UI_LIST_RIGS
+    description:
+        polling method for the remove operator
+        returns the 'enabled' status for the operator\n
+        checks:
+            a) if item not a dlc item\n
+            b) lock is unklocked
+    """
+    scene = context.scene
+    try:
+        # gets the type: 'asset' |'preset' |'rig' + _index'
+        index_prop = asset_type.split("_")[0] + "_index"
+        item_list = asset_type
 
-        # colThi = colMain.column(align = True)
-        # if context.scene.mc_assets_manager_props.item_unlock == False: lock = "LOCKED"
-        # else: lock = "UNLOCKED"
-        # colThi.prop(context.scene.mc_assets_manager_props, "item_unlock", text="", icon=lock)
+        index = eval(f"scene.mc_assets_manager_props.{index_prop}")
+        item = eval(f"scene.mc_assets_manager_props.{item_list}[{index}]")
 
-        # colFou = colMain.column(align = True)
-        # colFou.operator("mcam.rig_list_export", text = "", icon = "EXPORT")
+        if scene.mc_assets_manager_props.item_unlock and item.dlc == "":
+            return True
+        return False
+    except:
+        return False

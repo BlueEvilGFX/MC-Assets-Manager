@@ -22,32 +22,23 @@ class UI_LIST_OT_REMOVE(Operator):
     asset_type : StringProperty()
 
     def execute(self, context):
-        Remover = AssetRemover(context, self.asset_type)
-        Remover.main()
-        return{'FINISHED'}
-
-
-class AssetRemover:
-    def __init__(self, context, asset_type):
         self.scene = context.scene
-        self.user_asset_type = asset_type
-        index = asset_type.split("_")[-1][:-1] + "_index"
-        self.item_index = eval(f"self.scene.mc_assets_manager_props.{index}")
-        
-    def main(self):
-        asset_dir = paths.get_user_sub_asset_dir(self.user_asset_type)
-        icon_dir = paths.get_user_sub_icon_dir(self.user_asset_type)
+        index = self.asset_type.split("_")[-1][:-1] + "_index"
+        item_index = eval(f"self.scene.mc_assets_manager_props.{index}")
+
+        asset_dir = paths.get_user_sub_asset_dir(self.asset_type)
+        icon_dir = paths.get_user_sub_icon_dir(self.asset_type)
         scene = "bpy.context.scene"
         asset_list = eval('.'.join([
             scene,
             paths.MCAM_PROP_GROUP,
             asset_dict.get_asset_types(
-                self.user_asset_type,
+                self.asset_type,
                 asset_dict.Selection.ui_list
                 )
             ]))
 
-        item = asset_list[self.item_index]
+        item = asset_list[item_index]
         name = item.name
         icon = name
         collection = item.collection
@@ -65,7 +56,8 @@ class AssetRemover:
             os.remove(icon_path)
 
         asset_type = asset_dict.get_asset_types(
-            self.user_asset_type,
+            self.asset_type,
             asset_dict.Selection.raw_type
             )
         bpy.ops.mcam.ui_list_reload(asset_type=asset_type)
+        return{'FINISHED'}

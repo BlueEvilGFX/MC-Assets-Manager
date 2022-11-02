@@ -24,13 +24,13 @@ class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
         layout = self.layout
         col = layout.column()
 
-        asset = col.operator("mcam.ui_list_append", icon="COMMUNITY")
+        asset = col.operator("mcam.ui_list_append", icon="COMMUNITY", text = "append asset")
         asset.asset_type = paths.ASSETS
 
-        preset = col.operator("mcam.ui_list_append", icon="ASSET_MANAGER")
+        preset = col.operator("mcam.ui_list_append", icon="ASSET_MANAGER", text = "append preset")
         preset.asset_type = paths.PRESETS
 
-        rig = col.operator("mcam.ui_list_append", icon="ARMATURE_DATA")
+        rig = col.operator("mcam.ui_list_append", icon="ARMATURE_DATA", text = "append rig")
         rig.asset_type = paths.RIGS
 
         # col.operator("mcam.ui_list_append", icon="ASSET_MANAGER")

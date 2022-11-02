@@ -2,7 +2,7 @@
 # from ...miscs import github_dlcs
 # from ...miscs.icons import basicMCAM_icon_collection
 
-def online_tab(self, context, layout):
+def draw_online_tab(self, context, layout):
     pass
     # pcoll = basicMCAM_icon_collection["McAM"]
     # smallHeader = layout.row()

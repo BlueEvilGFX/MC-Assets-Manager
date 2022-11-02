@@ -4,8 +4,8 @@ import os
 # DO NOT REMOVE BPY -> EVAL USAGE
 import bpy
 
-from .. import addonpreferences
-from . import paths
+from MC_Assets_Manager.core.utils import paths
+from MC_Assets_Manager.core import addonpreferences
 
 
 #━━━━━━━━━━━━━━━    reload dlc json    ━━━━━━━━━━━━━━━━━━━━
@@ -42,6 +42,7 @@ def reload_dlc_list() -> None:
     reads dlc.json file and reloads the items in the dlc ui list\n
     -> sets all data from the item propertygroup
     """
+    reload_dlc_json()
     dlc_json = paths.get_dlc_json()
     dlc_list = eval("bpy.context.scene.mc_assets_manager_props."+paths.UI_LIST_DLCS)
     dlc_list.clear()

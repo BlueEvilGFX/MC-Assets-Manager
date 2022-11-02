@@ -1,3 +1,4 @@
+import importlib
 import json
 
 import bpy
@@ -6,7 +7,7 @@ from bpy.types import AddonPreferences
 
 from ... import addon_updater_ops
 from .. import utils
-from . import assets, settings, ui_modules
+from . import settings, ui_modules
 from .properties import AddonPreferencesProps
 
 
@@ -56,26 +57,30 @@ class AddonPref(AddonPreferences):
     with open(dlc_json, "r") as file:
         data = json.load(file) 
 
-    # for dlc in data:                                                                                    #   iterate over every dlc 
-    #     init_exists = utils.AddonPathManagement.getDLCInitPath(dlc)[1]                                     #   check init path and existence
-        
-    #     if init_exists:                                                                                 #   --> if dlc is script based --> init file
-    #         if dlc in locals():                                                                         #   if already loaded
-    #             importlib.reload(eval(dlc))                                                             #   reload module
-    #         else:
-    #             module_name = f'.storage.dlcs.{dlc}'
-    #             locals()[dlc] = importlib.import_module(name = module_name, package = utils.paths.PACKAGE)          #   load module
+    for dlc in data:
+        if utils.paths.get_dlc_init(dlc):
+            try:
+                if dlc in locals():
+                    importlib.reload(eval(dlc))
+                else:
+                    locals()[dlc] = importlib.import_module(
+                        name = f'.storage.dlcs.{dlc}',
+                        package = utils.paths.PACKAGE
+                    )
 
-    #         try:
-    #             bpy.utils.register_class(locals()[dlc].PreferencesProperty)                             #   register PropertyGroup of dlc
-    #         except:
-    #             pass
-    #         # bpy.ops.wm.save_userpref()
-    #         try:
-    #             pointerProperty = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"   #   --> dlc_propGroup: acces to property group
-    #             exec(f'{dlc+"_propGroup"} : {pointerProperty}')                                         #   create PointerProperty to PropertyGroup
-    #         except:
-    #             print(f'McAM: could not read preference properties: {dlc}')
+                try: bpy.utils.register_class(locals()[dlc].PreferencesProperty)
+                except: pass
+
+                try:
+                    # dlc_propGroup: acces to property group
+                    pointer = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"
+                    #   creates PointerProperty to PropertyGroup
+                    exec(f'{dlc+"_propGroup"} : {pointer}')
+                except:
+                    print(f'McAM: [DLC Registering] could not read preference properties: {dlc}')
+            except:
+                print(f'McAM: [DLC Registering] could not register: {dlc}')
+                continue
 
     def draw(self, context):
         layout = self.layout
@@ -88,15 +93,15 @@ class AddonPref(AddonPreferences):
 
         # ━━━━━━━━━━━━ assets
         if self.main_props.menu == "Assets":
-            assets.draw_assets_tab(self, context)
+            ui_modules.assets_tab.draw_assets_tab(self, context)
         # ━━━━━━━━━━━━ DLCs
         elif self.main_props.menu == "DLCs":
-            ui_modules.dlc_tab(self, context, layout, scene)            
+            ui_modules.draw_dlc_tab(self, context, layout, scene)            
         #     ui_modules.showDlcPreferences(self, context)
 
         # ━━━━━━━━━━━━ online
         elif self.main_props.menu == "Online":
-            ui_modules.online_tab(self, context, layout)
+            ui_modules.draw_online_tab(self, context, layout)
 
         # ━━━━━━━━━━━━ settings
         elif self.main_props.menu == "Settings":

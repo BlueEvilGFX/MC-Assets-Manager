@@ -3,10 +3,9 @@
 # from ...miscs import utils
 # from ...load_modules import PACKAGE_NAME
 
-from ...utils import paths
+from MC_Assets_Manager.core.utils import paths
 
-def dlc_tab(self, context, layout, scene):
-    pass
+def draw_dlc_tab(self, context, layout, scene):
     smallHeader = layout.row()
     smallHeader.scale_y = 0.5
     row = smallHeader.box().row()
@@ -22,18 +21,20 @@ def dlc_tab(self, context, layout, scene):
     colMain = row.column()
     colFir = colMain.column()
 
-    reloader = colFir.operator("mcam.ui_list_reload", text = "", icon = "FILE_REFRESH")
+    reloader = colFir.operator(
+        "mcam.ui_list_reload",
+        text = "",
+        icon = "FILE_REFRESH"
+        )
     reloader.asset_type = paths.DLCS
 
-
-
-    # colSec = colMain.column(align = True)
-    # colSec.operator("mcam.dlc_list_add", text = "", icon = "ADD")
-    # colSec.operator("mcam.dlc_list_remove", text = "", icon = "REMOVE")
+    colSec = colMain.column(align = True)
+    colSec.operator("mcam.dlc_list_add", text = "", icon = "ADD")
+    colSec.operator("mcam.dlc_list_remove", text = "", icon = "REMOVE")
 
     colThi = colMain.column(align = True)
-    if context.scene.mc_assets_manager_props.item_unlock == False: lock = "LOCKED"
-    else: lock = "UNLOCKED"
+    lock = "UNLOCKED" if context.scene.mc_assets_manager_props.item_unlock\
+        else "LOCKED"
     colThi.prop(context.scene.mc_assets_manager_props, "item_unlock", text="", icon=lock)
 
 # def showDlcPreferences(self, context):
