@@ -1,14 +1,16 @@
 import importlib
 import json
+import traceback
 
 import bpy
 from bpy.props import *
 from bpy.types import AddonPreferences
 
-from ... import addon_updater_ops
-from .. import utils
-from . import settings, ui_modules
-from .properties import AddonPreferencesProps
+from MC_Assets_Manager import addon_updater_ops
+from MC_Assets_Manager.core import utils
+from MC_Assets_Manager.core.addonpreferences import settings, ui_modules
+from MC_Assets_Manager.core.addonpreferences.properties import \
+    AddonPreferencesProps
 
 
 @addon_updater_ops.make_annotations
@@ -57,6 +59,7 @@ class AddonPref(AddonPreferences):
     with open(dlc_json, "r") as file:
         data = json.load(file) 
 
+    active_set_false = []
     for dlc in data:
         if utils.paths.get_dlc_init(dlc):
             try:
@@ -68,19 +71,20 @@ class AddonPref(AddonPreferences):
                         package = utils.paths.PACKAGE
                     )
 
-                try: bpy.utils.register_class(locals()[dlc].PreferencesProperty)
-                except: pass
+                bpy.utils.register_class(locals()[dlc].PreferencesProperty)
 
-                try:
-                    # dlc_propGroup: acces to property group
-                    pointer = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"
-                    #   creates PointerProperty to PropertyGroup
-                    exec(f'{dlc+"_propGroup"} : {pointer}')
-                except:
-                    print(f'McAM: [DLC Registering] could not read preference properties: {dlc}')
-            except:
-                print(f'McAM: [DLC Registering] could not register: {dlc}')
-                continue
+                # dlc_propGroup: acces to property group
+                pointer = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"
+                #   creates PointerProperty to PropertyGroup
+                exec(f'{dlc+"_propGroup"} : {pointer}')
+            except Exception:
+                print(traceback.format_exc())
+                active_set_false.append(dlc)
+    
+    with open(dlc_json, "w") as file:
+        for dlc in active_set_false:
+            data[dlc]["active"] = False
+        json.dump(data, file, indent=4)
 
     def draw(self, context):
         layout = self.layout

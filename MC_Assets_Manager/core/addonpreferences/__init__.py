@@ -4,7 +4,6 @@ import bpy
 
 from . import main, properties
 
-
 def register():
     importlib.reload(main)
     bpy.utils.register_class(properties.AddonPreferencesProps)

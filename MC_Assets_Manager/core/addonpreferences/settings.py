@@ -5,14 +5,6 @@ def draw_settings_tab(self, context):
     layout = self.layout
     box = layout.box()
 
-    # loading settings
-    row = box.row()
-    row.prop(
-        self.main_props,
-        "load_all_during_startup",
-        text = "loads addon completely during startup",
-        )
-
     # auto addon updater -> theDuckCow!
     row = box.row()
     row.prop(

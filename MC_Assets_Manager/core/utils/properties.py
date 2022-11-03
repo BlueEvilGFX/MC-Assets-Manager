@@ -1,5 +1,6 @@
 import importlib
 import json
+import traceback
 
 import bpy
 from bpy.props import *
@@ -20,36 +21,39 @@ class UpdateFunctionsIntern:
         """
         dlc_name = self.name
         dlc_json = paths.get_dlc_json()
-
+        
         with open(dlc_json, "r") as file:
             data = json.load(file)
-
-        # writes blenders prop dlc status value to the data dict
-        data[dlc_name]["active"] = self.active
         
         init_path = paths.get_dlc_init(dlc_name)
 
         if init_path:
-            locals()[dlc_name] = importlib.import_module(
-                name = f'.storage.dlcs.{dlc_name}',
-                package = paths.PACKAGE
-                )
-
-            # register / unregister them
             try:
+                locals()[dlc_name] = importlib.import_module(
+                    name = f'.storage.dlcs.{dlc_name}',
+                    package = paths.PACKAGE
+                    )
+
+                # register / unregister them
                 if self.active:
                     locals()[dlc_name].register()
                 else:
                     locals()[dlc_name].unregister()
-            except:
-                pass
-            reload.reload_addon_preferences()
+
+                # blenders prop dlc status value
+                data[dlc_name]["active"] = self.active
+            except Exception:
+                print(traceback.format_exc())
+                # error -> set active status to False
+                if self.active:
+                    self.active = False
+                data[dlc_name]["active"] = False
 
         # write active status to json file
         with open(dlc_json, "w") as file:
             json.dump(data, file, indent=4)  
-        
-        reload.reload_asset_list()
+
+        reload.reload_addon_preferences()
         reload.reload_asset_list()
         reload.reload_preset_list()
 
@@ -148,6 +152,12 @@ class MCAssetsManagerProperties(PropertyGroup):
     scriptUIEnum : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name ="")
     scriptUIEnum2 : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name="")
 
+def get_addon_prop():
+    """
+    returns the properties access to the addon: get_addon_prop().get(property)
+    """
+    addon = bpy.context.preferences.addons.get(paths.PACKAGE).preferences
+    return addon
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register

@@ -41,9 +41,6 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
     #   two UIs : DLCs in the n panel
     two_dlc_ui_panels : BoolProperty()
 
-    #   reload all while starting blender
-    load_all_during_startup : BoolProperty()
-
     #   dlc & file storage path
     storage_path : StringProperty(
         subtype="DIR_PATH",

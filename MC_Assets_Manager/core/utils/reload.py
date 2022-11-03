@@ -30,7 +30,7 @@ def reload_dlc_json() -> None:
             dlc_sub_json = paths.get_dlc_sub_json(dlc)
             with open(dlc_sub_json, 'r') as sub_file:
                 dlc_dict[dlc] = json.load(sub_file)
-                dlc_dict[dlc]["active"] = True if data.get("dlc") is None\
+                dlc_dict[dlc]["active"] = True if data.get(dlc) is None\
                                                 else data[dlc]["active"]
     
     with open(dlc_json, "w") as file:
@@ -44,7 +44,10 @@ def reload_dlc_list() -> None:
     """
     reload_dlc_json()
     dlc_json = paths.get_dlc_json()
-    dlc_list = eval("bpy.context.scene.mc_assets_manager_props."+paths.UI_LIST_DLCS)
+    dlc_list = eval(
+        "bpy.context.scene.mc_assets_manager_props."
+        + paths.UI_LIST_DLCS
+        )
     dlc_list.clear()
 
     with open(dlc_json, 'r') as file:
