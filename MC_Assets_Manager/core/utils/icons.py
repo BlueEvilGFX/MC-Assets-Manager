@@ -25,6 +25,7 @@ PCOLL_PRESET_ID = "Presets"
 PCOLL_RIG_ID = "Rigs"
 PCOLL_MCAM_ID = "McAM"
 PCOLL_DLC_ID = "DLCs"
+PCOLL_GITHUB_DLC_ID = "GitHubDLCs"
 
 class IconReader:
     """
@@ -99,11 +100,24 @@ class IconReader:
             pcoll.load(name, path, "IMAGE")
 
     @staticmethod
+    def read_github_dlc_icons(pcoll) -> None:
+        """
+        reads the github dlc icons
+        """
+        icon_dir = os.path.join(paths.RESOURCES_DIR, "github_icons")
+        icons = os.listdir(icon_dir) # lists icons with extension
+        for icon in icons:
+            path = os.path.join(icon_dir, icon)
+            name = os.path.splitext(icon)[0]
+            pcoll.load(name, path, "IMAGE")
+
+    @staticmethod
     def reload_icons(pcoll_id, asset_type=None, icon_prefix=None) -> None:
         """
         args:
             pcoll_id: enum of
-                PCOLL_ASSET_ID | PCOLL_PRESET_ID | PCOLL_RIG_ID | PCOLL_MCAM_ID | PCOLL_DLC_ID
+                PCOLL_ASSET_ID | PCOLL_PRESET_ID | PCOLL_RIG_ID | PCOLL_MCAM_I
+                | PCOLL_DLC_ID | PCOLL_GITHUB_DLC_ID
             asset_type: 
                 ASSETS | PRESETS | RIGS
                 , default = None
@@ -125,6 +139,8 @@ class IconReader:
 
         if pcoll_id == PCOLL_MCAM_ID:
             __class__.read_mcam_icons(pcoll)
+        elif pcoll_id == PCOLL_GITHUB_DLC_ID:
+            __class__.read_github_dlc_icons(pcoll)
         else:
             # dictionary to get corresponding user asses
             user_dlc = {
@@ -170,6 +186,11 @@ def reload_rig_icons() -> None:
     asset_type = paths.RIGS
     icon_prefix = paths.DLC_RIG_ICON
     IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
+
+def reload_github_dlc_icons() -> None:
+    pcoll_id = PCOLL_GITHUB_DLC_ID
+    IconReader.reload_icons(pcoll_id)
+
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register

@@ -1,4 +1,4 @@
-from . import icons, paths, properties, reload, asset_dict
+from . import icons, paths, properties, reload, asset_dict, github_connect
 
 
 def register():

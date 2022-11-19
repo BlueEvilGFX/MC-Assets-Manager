@@ -7,6 +7,9 @@ from MC_Assets_Manager.core import (addonpreferences, operators, ui, uilists,
 @persistent
 def load_handler(dummy):
     bpy.ops.mcam.main_reload()
+    check = utils.paths.get_addon_properties().main_props.auto_check_dlc
+    if check:
+        utils.github_connect.auto_check()
 
 def register():
     addonpreferences.register()

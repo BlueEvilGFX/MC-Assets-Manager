@@ -8,7 +8,7 @@ from bpy.types import AddonPreferences
 
 from MC_Assets_Manager import addon_updater_ops
 from MC_Assets_Manager.core import utils
-from MC_Assets_Manager.core.addonpreferences import settings, ui_modules
+from MC_Assets_Manager.core.addonpreferences import ui_modules
 from MC_Assets_Manager.core.addonpreferences.properties import \
     AddonPreferencesProps
 
@@ -109,4 +109,4 @@ class AddonPref(AddonPreferences):
 
         # ━━━━━━━━━━━━ settings
         elif self.main_props.menu == "Settings":
-            settings.draw_settings_tab(self, context)
+            ui_modules.settings_tab.draw_settings_tab(self, context)

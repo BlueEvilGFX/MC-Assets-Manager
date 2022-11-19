@@ -42,6 +42,7 @@ class UpdateFunctionsIntern:
 
                 # blenders prop dlc status value
                 data[dlc_name]["active"] = self.active
+                
             except Exception:
                 print(traceback.format_exc())
                 # error -> set active status to False

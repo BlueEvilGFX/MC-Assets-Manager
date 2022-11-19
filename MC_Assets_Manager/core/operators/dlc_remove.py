@@ -4,7 +4,7 @@ import shutil
 
 import bpy
 from bpy.types import Operator
-from MC_Assets_Manager.core.utils import paths
+from MC_Assets_Manager.core.utils import paths, github_connect
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -48,5 +48,6 @@ class DLC_OT_Remove(Operator):
         shutil.rmtree(paths.get_dlc_sub_dir(dlc))
 
         bpy.ops.mcam.main_reload()
+        github_connect.auto_check()
         self.report({'INFO'}, "dlc successully removed")
         return{'FINISHED'}

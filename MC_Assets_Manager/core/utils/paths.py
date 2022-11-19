@@ -48,7 +48,6 @@ ADDON_DIR = AddonPathsIntern.get_addon_dir()
 PACKAGE = AddonPathsIntern.get_addon_name()
 RESOURCES_DIR = AddonPathsIntern.get_resources_dir()
 RESOURCES_ICON_DIR = AddonPathsIntern.get_resources_icon_dir()
-ADDON_PROP_ACCESS = bpy.context.preferences.addons.get(PACKAGE).preferences
 
 # user assets
 USER_ASSETS = "user_assets"
@@ -77,6 +76,14 @@ DLC_RIG_ICON = "dlc_rig"
 
 MCAM_ICON = "McAM_"
 
+#━━━━━━━━━━━━━━━    getter: addon preferences properties    
+def get_addon_properties() -> bpy:
+    """
+    gives access to the addon properties\n
+    add .main_props if you are using the addon internal properties
+    """
+    return bpy.context.preferences.addons.get(PACKAGE).preferences
+
 #━━━━━━━━━━━━━━━    getter: resources    
 def get_resources_icons() -> list:
     """
@@ -92,14 +99,15 @@ def get_storage_dir() -> os.path:
     returns the path to the storage dir:\n
     either default or set through addon preferences
     """
-    try:
-        storage_dir = ADDON_PROP_ACCESS.preferences.main_props.storage_path
-    except:
-        storage_dir = ""
+    # try:
+    #     storage_dir = ADDON_PROP_ACCESS.preferences.main_props.storage_path
+    # except:
+    #     storage_dir = ""
 
-    if storage_dir == "" or storage_dir is None:
-        return os.path.join(ADDON_DIR, "storage")
-    return storage_dir
+    # if storage_dir == "" or storage_dir is None:
+    #     return os.path.join(ADDON_DIR, "storage")
+    # return storage_dir
+    return os.path.join(ADDON_DIR, "storage")
 
 #━━━━━━━━━━━━━━━    user files
 def get_user_sub_asset_dir(asset_type) -> os.path:

@@ -9,6 +9,8 @@ from .ui_list_add import UI_LIST_OT_ADD
 from .ui_list_remove import UI_LIST_OT_REMOVE
 from .ui_list_append import UI_LIST_OT_APPEND
 
+from . import github
+
 
 def register():
     from bpy.utils import register_class
@@ -19,9 +21,11 @@ def register():
     register_class(UI_LIST_OT_ADD)
     register_class(MCAM_OT_RELOAD_ALL)
     register_class(UI_LIST_OT_APPEND)
+    github.register()
 
 def unregister():
     from bpy.utils import unregister_class
+    github.unregister()
     unregister_class(UI_LIST_OT_APPEND)
     unregister_class(MCAM_OT_RELOAD_ALL)
     unregister_class(UI_LIST_OT_ADD)
