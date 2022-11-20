@@ -33,7 +33,7 @@ class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
         rig = col.operator("mcam.ui_list_append", icon="ARMATURE_DATA", text = "append rig")
         rig.asset_type = paths.RIGS
 
-        # col.operator("mcam.ui_list_append", icon="ASSET_MANAGER")
+        col.operator("mcam.split_close_area_asset_browser", icon="ASSET_MANAGER")
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register

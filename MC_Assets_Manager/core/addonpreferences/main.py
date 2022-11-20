@@ -71,7 +71,9 @@ class AddonPref(AddonPreferences):
                         package = utils.paths.PACKAGE
                     )
 
-                bpy.utils.register_class(locals()[dlc].PreferencesProperty)
+                try:
+                    bpy.utils.register_class(locals()[dlc].PreferencesProperty)
+                except: pass
 
                 # dlc_propGroup: acces to property group
                 pointer = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"

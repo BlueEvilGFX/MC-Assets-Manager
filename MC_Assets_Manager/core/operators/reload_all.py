@@ -2,6 +2,8 @@ import bpy
 from MC_Assets_Manager.core.utils import paths, reload
 from MC_Assets_Manager.core import addonpreferences
 
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 class MCAM_OT_RELOAD_ALL(bpy.types.Operator):
 
     bl_idname = "mcam.main_reload"

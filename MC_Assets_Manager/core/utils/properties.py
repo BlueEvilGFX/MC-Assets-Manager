@@ -35,10 +35,12 @@ class UpdateFunctionsIntern:
                     )
 
                 # register / unregister them
-                if self.active:
-                    locals()[dlc_name].register()
-                else:
-                    locals()[dlc_name].unregister()
+                try:
+                    if self.active:
+                        locals()[dlc_name].register()
+                    else:
+                        locals()[dlc_name].unregister()
+                except: pass
 
                 # blenders prop dlc status value
                 data[dlc_name]["active"] = self.active

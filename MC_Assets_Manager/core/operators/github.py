@@ -2,6 +2,8 @@ import bpy, urllib, os, zipfile
 
 from MC_Assets_Manager.core import addonpreferences, utils
 
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 class GITHUB_OT_connect(bpy.types.Operator):
     bl_idname = "mcam.githubconnect"
     bl_label = ""
@@ -44,10 +46,8 @@ class UpdateInstall(bpy.types.Operator):
 
         os.remove(save_location)
 
-        # utils.reload.reload_dlc_json()
-        # utils.reload.reload_dlc_list()
-
         dlc.status = utils.github_connect.StatusEnum.INSTALLED
+        github_reader.news = False
 
         bpy.ops.mcam.main_reload('INVOKE_DEFAULT')            
         self.report({'INFO'}, f'{self.data} successfully updated/installed')
@@ -82,16 +82,14 @@ class UpdateInstallAll(bpy.types.Operator):
 
             os.remove(save_location)
 
-        # utils.reload.reload_dlc_json()
-        # utils.reload.reload_dlc_list()
-
         for dlc in dlcs_to_manage:
             dlc.status = utils.github_connect.StatusEnum.INSTALLED
 
         bpy.ops.mcam.main_reload('INVOKE_DEFAULT')
         if utils.paths.get_dlc_init(name):
             addonpreferences.reload_addon_preferences()
-            
+        
+        github_reader.news = False
         self.report({'INFO'}, "DLCs successfully updated/installed")
         return {'FINISHED'}
 

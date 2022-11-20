@@ -11,9 +11,12 @@ from MC_Assets_Manager.core.utils import icons, paths
 
 github_reader = None
 
-def connect():
-    global github_reader
-    github_reader = GitHubReader()
+def connect(force_wait=False):
+    if force_wait:
+        global github_reader
+        github_reader = GitHubReader()
+    else:
+        auto_check()
 
 class StatusEnum(Enum):
     INSTALLED = auto()
@@ -35,7 +38,6 @@ def _creating_reader():
 
 def auto_check() -> None:
     Thread(target=_creating_reader).start()
-    print("after thread start")
 
 class GitHubReader:
     sta_url = "https://github.com"
@@ -52,12 +54,10 @@ class GitHubReader:
         if not initializing:
             return
 
-        if not self.check_internet_connection():
-            self.network_connection = False
+        self.network_connection = self.check_internet_connection()
+        if not self.network_connection:
             return
-        else:
-            self.network_connection = True
-
+        
         self.fetch_data()
         self.check_dlcs()
         self.fetch_icons()        
@@ -127,7 +127,10 @@ class GitHubReader:
                 sta, owner = github_reader.sta_url, github_reader.rep_owner 
                 repo, name = github_reader.repo, dlc.name          
                 url = f'{sta}/{owner}/{repo}/raw/main/{name}/icon.png'
-                save_location = os.path.join(dir_github_icons, f'{dlc.name}.png')
+                save_location = os.path.join(
+                    dir_github_icons,
+                    f'{dlc.name}.png'
+                    )
                 urllib.request.urlretrieve(url, save_location)
             except:
                 pass

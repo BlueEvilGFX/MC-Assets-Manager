@@ -1,10 +1,38 @@
 from MC_Assets_Manager.core.utils import icons
 from MC_Assets_Manager.core.utils.github_connect import StatusEnum
+from MC_Assets_Manager import addon_updater_ops
+
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def draw_online_tab(self, context, element=None):
+    layout = self.layout
+    pcoll = icons.mcam_icons["McAM"]
+    smallHeader = layout.row()
+    smallHeader.prop(self.main_props, "online_menu", expand = True)
+    smallHeader.label(text="", icon="BLANK1")
+
+    row = layout.row()
+    if self.main_props.online_menu == "Addon Updater":
+        addon_updater_ops.update_settings_ui(self, context, row)
+    else:
+        draw_github_tab(self, layout, row)
+
+    colMain = row.column(align=True)
+    custom_icon = pcoll["github"].icon_id
+    colMain.operator("wm.url_open", text="", icon_value = custom_icon).url = "https://github.com/BlueEvilGFX/MC-Assets-Manager"
+
+    custom_icon = pcoll["youtube"].icon_id
+    colMain.operator("wm.url_open", text="", icon_value = custom_icon).url = "https://www.youtube.com/channel/UCKPgR4jjSDRTqWGAd2IOL5w"
+
+    custom_icon = pcoll["discord"].icon_id
+    colMain.operator("wm.url_open", text="", icon_value = custom_icon).url = "https://discord.com/invite/3mybvgB6wE"
+
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        
+def draw_github_tab(self, layout, element):
     from MC_Assets_Manager.core.utils.github_connect import github_reader
-    
-    layout = self.layout if element is None else element.column()
+        
+    layout = layout if element is None else element.column()
 
     box = layout.box()
     box.label(text="Github DLC connector : shows only original DLCs")
@@ -78,17 +106,3 @@ def draw_online_tab(self, context, element=None):
         else:
             sub_row.enabled = True
         sub_row.operator("mcam.githubupdateinstallall")
-
-# def ui_notice_dlc_update(self, element=None) -> None:
-#     from .operators import github_NEWS
-#     if github_NEWS:
-#         layout = self.layout.box() if element is None else element
-#         row = layout.row()
-#         row.label(text="NEW DLCS OR DLCS UPDATABLE")
-#         row.operator("mcam.githubignore")
-#         row.operator("mcam.openaddonprefs", icon="PROPERTIES")
-#         layout.operator("mcam.githubupdateinstallall")
-#     # colMain.operator("wm.url_open", text="", icon_value = custom_icon).url = "https://www.youtube.com/channel/UCKPgR4jjSDRTqWGAd2IOL5w"
-
-#     # custom_icon = pcoll["McAM_discord"].icon_id
-#     # colMain.operator("wm.url_open", text="", icon_value = custom_icon).url = "https://discord.com/invite/3mybvgB6wE"

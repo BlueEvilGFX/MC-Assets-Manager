@@ -5,7 +5,6 @@ from MC_Assets_Manager.core.utils import asset_dict, paths
 
 from bpy.types import Operator
 
-
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class UI_LIST_OT_APPEND(Operator):
