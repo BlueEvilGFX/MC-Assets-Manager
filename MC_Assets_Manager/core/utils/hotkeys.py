@@ -1,7 +1,7 @@
 import bpy
 from bpy.types import Menu
 
-from MC_Assets_Manager.core.utils import paths
+from MC_Assets_Manager.core.ui import shift_a_menu
 
 addon_keymaps = []
 
@@ -11,20 +11,8 @@ class EMPTY_MT_PIE_MCAM(Menu):
     bl_label = "McAM"
 
     def draw(self, context):
-        layout = self.layout
-
-        pie = layout.menu_pie()
-
-        asset = pie.operator("mcam.ui_list_append", icon="COMMUNITY", text = "append asset")
-        asset.asset_type = paths.ASSETS
-
-        preset = pie.operator("mcam.ui_list_append", icon="ASSET_MANAGER", text = "append preset")
-        preset.asset_type = paths.PRESETS
-
-        rig = pie.operator("mcam.ui_list_append", icon="ARMATURE_DATA", text = "append rig")
-        rig.asset_type = paths.RIGS
-
-        pie.operator("mcam.split_close_area_asset_browser", icon="ASSET_MANAGER")
+        element = self.layout.menu_pie()
+        shift_a_menu.OBJECT_MT_McAssets_ShiftA_submenu.list_operators(element)
 
 def register():
     bpy.utils.register_class(EMPTY_MT_PIE_MCAM)

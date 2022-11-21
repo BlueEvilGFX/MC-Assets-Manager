@@ -16,7 +16,7 @@ def connect(force_wait=False):
         global github_reader
         github_reader = GitHubReader()
     else:
-        auto_check()
+        check_in_background()
 
 class StatusEnum(Enum):
     INSTALLED = auto()
@@ -36,7 +36,7 @@ def _creating_reader():
     global github_reader
     github_reader = GitHubReader(True)
 
-def auto_check() -> None:
+def check_in_background() -> None:
     Thread(target=_creating_reader).start()
 
 class GitHubReader:
@@ -47,6 +47,11 @@ class GitHubReader:
     repo = "McAM-DLCs"
 
     def __init__(self, initializing = True) -> None:
+        """
+        arg:
+            initializing: boolean: proceed with connecting to GitHub
+            internet connection required
+        """
         self.dlc_list = []
         self.network_connection = None
         self.news = None

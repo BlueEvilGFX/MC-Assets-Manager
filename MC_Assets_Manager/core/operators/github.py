@@ -14,6 +14,22 @@ class GITHUB_OT_connect(bpy.types.Operator):
         self.report({'INFO'}, "Successfull connection to Github")
         return{'FINISHED'}
 
+def install_dlc(dlc, github_reader):
+    sta, owner = github_reader.sta_url, github_reader.rep_owner 
+    repo, name = github_reader.repo, dlc.name     
+    url = dlc.download_link if dlc.download_link else\
+        f'{sta}/{owner}/{repo}/raw/main/{name}/{name}.dlc'
+
+    dlc_dir = utils.paths.get_dlc_dir()
+    save_location = os.path.join(dlc_dir, f'{name}.dlc')
+    urllib.request.urlretrieve(url, save_location)
+
+    with zipfile.ZipFile(save_location) as zip:
+        zip.extractall(path = dlc_dir)
+
+    os.remove(save_location)
+    dlc.status = utils.github_connect.StatusEnum.INSTALLED
+    
 class UpdateInstall(bpy.types.Operator):
     bl_idname = "mcam.githubupdateinstall"
     bl_label = ""
@@ -29,27 +45,13 @@ class UpdateInstall(bpy.types.Operator):
         
         for dlc in github_reader.dlc_list:
             if dlc.name == self.data:
-                dl_link = dlc.download_link
                 break
         
-        sta, owner = github_reader.sta_url, github_reader.rep_owner 
-        repo, name = github_reader.repo, self.data         
-        url = dl_link if dl_link else\
-            f'{sta}/{owner}/{repo}/raw/main/{name}/{name}.dlc'
+        install_dlc(dlc, github_reader)
 
-        dlc_dir = utils.paths.get_dlc_dir()
-        save_location = os.path.join(dlc_dir, f'{self.data}.dlc')
-        urllib.request.urlretrieve(url, save_location)
-
-        with zipfile.ZipFile(save_location) as zip:
-            zip.extractall(path = dlc_dir)
-
-        os.remove(save_location)
-
-        dlc.status = utils.github_connect.StatusEnum.INSTALLED
+        bpy.ops.mcam.main_reload('INVOKE_DEFAULT')      
+    
         github_reader.news = False
-
-        bpy.ops.mcam.main_reload('INVOKE_DEFAULT')            
         self.report({'INFO'}, f'{self.data} successfully updated/installed')
         return {'FINISHED'}
 
@@ -65,28 +67,15 @@ class UpdateInstallAll(bpy.types.Operator):
             if dlc.status != utils.github_connect.StatusEnum.INSTALLED
             ]
 
-        #   iterating over the dlcs to install / update them
+        #   iterating over the dlcs to install / update them+
+        reload_preferences = False
         for dlc in dlcs_to_manage:
-            dl_link = dlc.download_link
-            sta, owner = github_reader.sta_url, github_reader.rep_owner 
-            repo, name = github_reader.repo, dlc.name           
-            url = dl_link if dl_link else\
-                f'{sta}/{owner}/{repo}/raw/main/{name}/{name}.dlc'
-            
-            dlc_dir = utils.paths.get_dlc_dir()
-            save_location = os.path.join(dlc_dir, f'{name}.dlc')
-            urllib.request.urlretrieve(url, save_location)
-
-            with zipfile.ZipFile(save_location) as zip:
-                zip.extractall(path = dlc_dir)
-
-            os.remove(save_location)
-
-        for dlc in dlcs_to_manage:
-            dlc.status = utils.github_connect.StatusEnum.INSTALLED
+            install_dlc(dlc, github_reader)
+            reload_preferences = utils.paths.get_dlc_init(dlc.name)
 
         bpy.ops.mcam.main_reload('INVOKE_DEFAULT')
-        if utils.paths.get_dlc_init(name):
+
+        if reload_preferences:
             addonpreferences.reload_addon_preferences()
         
         github_reader.news = False

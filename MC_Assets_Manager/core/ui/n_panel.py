@@ -102,7 +102,8 @@ class MAIN_OT_SCRIPT_UI_ENUM_SWITCH(bpy.types.Operator):
 
     def execute(self, context):
         selection_1 = context.scene.mc_assets_manager_props.scriptUIEnum
-        context.scene.mc_assets_manager_props.scriptUIEnum = context.scene.mc_assets_manager_props.scriptUIEnum2
+        context.scene.mc_assets_manager_props.scriptUIEnum\
+            = context.scene.mc_assets_manager_props.scriptUIEnum2
         context.scene.mc_assets_manager_props.scriptUIEnum2 = selection_1
         return{'FINISHED'}
 
@@ -113,7 +114,10 @@ class OpenAddonPrefs(bpy.types.Operator):
 
     def execute(self, context):
         from MC_Assets_Manager import bl_info
-        search = [addon.bl_info.get("name") for addon in addon_utils.modules() if addon.bl_info['name'] == bl_info["name"]][0]
+        search = [
+            addon.bl_info.get("name") for addon in addon_utils.modules()
+            if addon.bl_info['name'] == bl_info["name"]
+        ][0]
         bpy.ops.screen.userpref_show()
         bpy.context.preferences.active_section = 'ADDONS'
         bpy.data.window_managers['WinMan']['addon_search'] = search

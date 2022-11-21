@@ -48,6 +48,6 @@ class DLC_OT_Remove(Operator):
         shutil.rmtree(paths.get_dlc_sub_dir(dlc))
 
         bpy.ops.mcam.main_reload()
-        github_connect.auto_check()
+        github_connect.check_in_background()
         self.report({'INFO'}, "dlc successully removed")
         return{'FINISHED'}

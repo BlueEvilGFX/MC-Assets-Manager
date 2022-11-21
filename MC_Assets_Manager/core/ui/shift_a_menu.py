@@ -23,17 +23,35 @@ class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout
         col = layout.column()
+        self.list_operators(col)
 
-        asset = col.operator("mcam.ui_list_append", icon="COMMUNITY", text = "append asset")
-        asset.asset_type = paths.ASSETS
+    @staticmethod
+    def list_operators(element):
+        # asset
+        element.operator(
+            "mcam.ui_list_append",
+            icon="COMMUNITY",
+            text = "append asset"
+        ).asset_type = paths.ASSETS
 
-        preset = col.operator("mcam.ui_list_append", icon="ASSET_MANAGER", text = "append preset")
-        preset.asset_type = paths.PRESETS
+        # preset
+        element.operator(
+            "mcam.ui_list_append",
+            icon="DOCUMENTS",
+            text = "append preset"
+        ).asset_type = paths.PRESETS
 
-        rig = col.operator("mcam.ui_list_append", icon="ARMATURE_DATA", text = "append rig")
-        rig.asset_type = paths.RIGS
+        # rig
+        element.operator(
+            "mcam.ui_list_append",
+            icon="ARMATURE_DATA",
+            text = "append rig"
+        ).asset_type = paths.RIGS
 
-        col.operator("mcam.split_close_area_asset_browser", icon="ASSET_MANAGER")
+        element.operator(
+            "mcam.split_close_area_asset_browser",
+            icon="ASSET_MANAGER"
+        )
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register

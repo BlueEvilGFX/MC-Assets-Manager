@@ -14,7 +14,7 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
             ("Assets", "Assets", "Assets"),
             ("DLCs", "DLCs", "DLCs"),
             ("Online", "Online", "Online"),
-            ("Settings", "Settings", "Settings", "SETTINGS", 3)
+            ("Settings", "", "", "SETTINGS", 3)
         ])
 
     #   creates the menu enum (assetsbar)
@@ -57,7 +57,7 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
 #         return
 
 #     from ..miscs.github_dlcs.operators import clear_github_data
-#     from ..miscs.github_dlcs.auto_check import create_auto_check_thread
+#     from ..miscs.github_dlcs.check_in_background import create_auto_check_thread
     
 #     clear_github_data()
 #     create_auto_check_thread()
