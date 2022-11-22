@@ -6,6 +6,7 @@ from .dlc_remove import DLC_OT_Remove
 from .reload_all import MCAM_OT_RELOAD_ALL
 from .ui_list_add import UI_LIST_OT_ADD
 from .ui_list_append import UI_LIST_OT_APPEND
+from .ui_list_export import UI_LIST_OT_EXPORT, UI_LIST_OT_EXPORT_ALL
 from .ui_list_reload import UI_LIST_OT_RELOAD
 from .ui_list_remove import UI_LIST_OT_REMOVE
 
@@ -17,7 +18,9 @@ classes = [
     UI_LIST_OT_ADD,
     UI_LIST_OT_APPEND,
     MCAM_OT_RELOAD_ALL,
-    ASSET_LIBRARY_OPEN_ASSET_BROWSER
+    ASSET_LIBRARY_OPEN_ASSET_BROWSER,
+    UI_LIST_OT_EXPORT,
+    UI_LIST_OT_EXPORT_ALL
 ]
 
 

@@ -27,6 +27,13 @@ def draw_settings_tab(self, context):
         "two_dlc_ui_panels",
         text="displaying two DLC UIs in the n panel")
 
+    # export all
+    exporter = box.operator(
+        "mcam.ui_list_export_all",
+        text = "export all",
+        icon = "EXPORT"
+    )
+
     # experimental: option deactivated
     # # storage path
     # row = box.row()

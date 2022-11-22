@@ -78,23 +78,33 @@ def draw_assets_tab(self, context):
         icon=lock
         )
 
+    fourth.enabled = polling_export(self, context, navigator)
+    exporter = fourth.operator(
+        "mcam.ui_list_export",
+        text = "",
+        icon = "EXPORT"
+    )
+
     if navigator == "Assets":
         # operator settings
         reloader.asset_type = paths.ASSETS
         adder.asset_type = paths.USER_ASSETS
         remover.asset_type = paths.USER_ASSETS
+        exporter.asset_type = paths.USER_ASSETS
 
     elif navigator == "Presets":
         # operator settings
         reloader.asset_type = paths.PRESETS
         adder.asset_type = paths.USER_PRESETS
         remover.asset_type = paths.USER_PRESETS
+        exporter.asset_type = paths.USER_PRESETS
 
     elif navigator == "Rigs":
         # operator settings
         reloader.asset_type = paths.RIGS
         adder.asset_type = paths.USER_RIGS
         remover.asset_type = paths.USER_RIGS
+        exporter.asset_type = paths.RIGS
 
 def get_lock_icon(context):
     """
@@ -129,8 +139,23 @@ def polling_remove(self, context, asset_type) -> bool:
         index = eval(f"scene.mc_assets_manager_props.{index_prop}")
         item = eval(f"scene.mc_assets_manager_props.{item_list}[{index}]")
 
-        if scene.mc_assets_manager_props.item_unlock and item.dlc == "":
-            return True
-        return False
+        # check if unlocked and the asset is no dlc
+        return (scene.mc_assets_manager_props.item_unlock and item.dlc == "")
     except:
         return False
+
+def polling_export(self, context, asset_type) -> bool:
+    """
+    args:
+        self: addon preferences instance self
+        context: addon preferences context
+        asset_type: enum of:
+            "Assets" | "Presets" | "Rigs"
+        --> usage of navigator enum property
+    """
+    asset_type = asset_dict.get_asset_types(
+        asset_type.lower(),
+        asset_dict.Selection.user_type
+    )
+    # True if there are any assets
+    return not not paths.get_user_sub_assets(asset_type)
