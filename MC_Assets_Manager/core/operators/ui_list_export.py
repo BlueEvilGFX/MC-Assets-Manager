@@ -63,6 +63,7 @@ class UI_LIST_OT_EXPORT_ALL(Operator, ExportHelper):
         path = paths.get_user_sub_asset_dir(paths.USER_RIGS)
         export_single(destination, path, paths.USER_RIGS, 'a')
 
+        self.report({'INFO'}, "successfully exported all user presets")
         return {'FINISHED'}
 
 def export_single(destination, path, asset_type, write_type):

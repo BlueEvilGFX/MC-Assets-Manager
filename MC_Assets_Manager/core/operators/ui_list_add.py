@@ -91,17 +91,21 @@ class AssetAdder:
         dst = os.path.join(self.dst_directory, name)
         shutil.copyfile(src=file, dst=dst)
 
-    def add_zip(self, file) -> None:
-        temp_path = os.path.join(self.dst_directory, "temp")
+    def copy_zip_file(self, file, temp_path) -> None:
         if not os.path.exists(temp_path):
             os.mkdir(temp_path)
 
-        target = file
-        handle = zipfile.ZipFile(target)
-        handle.extractall(path = temp_path)
-        handle.close()
+        with zipfile.ZipFile(file) as zip:
+            zip.extractall(path = temp_path)
 
-        for file in os.listdir(temp_path):
+    def add_zip(self, file) -> None:
+        temp_path = os.path.join(self.dst_directory, "temp")
+
+        self.copy_zip_file(file, temp_path)
+
+        files = os.listdir(temp_path)
+
+        for file in files:
             if file.endswith(".blend"):
                 src_path = os.path.join(temp_path, file)
                 # get name
@@ -121,6 +125,7 @@ class AssetAdder:
 
                     file_destination = os.path.join(icon_path, icon_name)
                     shutil.copyfile(src=icon_src_path, dst=file_destination)
+                    
         shutil.rmtree(temp_path)
 
     def get_name(self, name) -> str:

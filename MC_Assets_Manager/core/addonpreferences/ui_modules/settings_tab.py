@@ -27,8 +27,15 @@ def draw_settings_tab(self, context):
         "two_dlc_ui_panels",
         text="displaying two DLC UIs in the n panel")
 
+    # import
+    row = box.row()
+    row.operator(
+        "mcam.add_asset_compound",
+        text  = "import asset compound",
+        icon = "IMPORT"
+    )
     # export all
-    exporter = box.operator(
+    row.operator(
         "mcam.ui_list_export_all",
         text = "export all",
         icon = "EXPORT"
