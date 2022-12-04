@@ -264,3 +264,9 @@ def get_dlc_sub_assets_blend(dlc, asset_type) -> os.path:
     if os.path.exists(assets_blend):
         return assets_blend
     return ""
+
+def get_github_icon_dir() -> os.path:
+    """
+    returns the path ot the github icon dir
+    """
+    return os.path.join(RESOURCES_DIR, "github_icons")

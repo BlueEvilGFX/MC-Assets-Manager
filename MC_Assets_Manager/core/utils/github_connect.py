@@ -120,7 +120,7 @@ class GitHubReader:
                 )
     
     def fetch_icons(self) -> None:
-        dir_github_icons = os.path.join(paths.RESOURCES_DIR, "github_icons")
+        dir_github_icons = paths.get_github_icon_dir()
         if not os.path.exists(dir_github_icons):
             os.mkdir(dir_github_icons)
         else:

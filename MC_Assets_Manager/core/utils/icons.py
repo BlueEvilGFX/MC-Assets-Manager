@@ -104,7 +104,7 @@ class IconReader:
         """
         reads the github dlc icons
         """
-        icon_dir = os.path.join(paths.RESOURCES_DIR, "github_icons")
+        icon_dir = paths.get_github_icon_dir()
         icons = os.listdir(icon_dir) # lists icons with extension
         for icon in icons:
             path = os.path.join(icon_dir, icon)
