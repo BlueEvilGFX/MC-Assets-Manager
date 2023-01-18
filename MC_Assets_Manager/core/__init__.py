@@ -27,9 +27,9 @@ for path in paths:
 
 # modules
 register_modules = [
+    operators,
     addonpreferences,
     utils,
-    operators,
     uilists,
     ui
 ]

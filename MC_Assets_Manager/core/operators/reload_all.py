@@ -16,4 +16,5 @@ class MCAM_OT_RELOAD_ALL(bpy.types.Operator):
         bpy.ops.mcam.ui_list_reload(asset_type=paths.RIGS)
         bpy.ops.mcam.ui_list_reload(asset_type=paths.DLCS)
         addonpreferences.reload_addon_preferences()
+        self.report({'INFO'}, f'successfully reloaded asset lists')
         return {'FINISHED'}

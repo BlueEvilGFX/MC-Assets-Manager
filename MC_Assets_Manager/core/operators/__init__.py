@@ -1,6 +1,7 @@
 # importing the classes which needs registering
 from . import github
-from .asset_library import ASSET_LIBRARY_OPEN_ASSET_BROWSER
+from . import asset_library
+
 from .dlc_add import DLC_OT_Add
 from .dlc_remove import DLC_OT_Remove
 from .reload_all import MCAM_OT_RELOAD_ALL
@@ -19,7 +20,6 @@ classes = [
     UI_LIST_OT_ADD,
     UI_LIST_OT_APPEND,
     MCAM_OT_RELOAD_ALL,
-    ASSET_LIBRARY_OPEN_ASSET_BROWSER,
     UI_LIST_OT_EXPORT,
     UI_LIST_OT_EXPORT_ALL,
     UI_LIST_OT_IMPORT_ASSET_COMPOUND
@@ -31,9 +31,11 @@ def register():
     for cls in classes:
         register_class(cls)
     github.register()
+    asset_library.register()
 
 def unregister():
-    from bpy.utils import unregister_class
+    asset_library.unregister()
     github.unregister()
+    from bpy.utils import unregister_class
     for cls in reversed(classes):
         unregister_class(cls)
