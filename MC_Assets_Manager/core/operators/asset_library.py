@@ -41,11 +41,8 @@ class MAIN_OT_CREATE_ASSET_LIBRARY(Operator):
 
     @classmethod
     def poll(cls, context):
-        libraries = bpy.context.preferences.filepaths
-        for lib in libraries.asset_libraries:
-            if lib.name == "McAM":
-                return False
-        return True
+        libraries = bpy.context.preferences.filepaths.asset_libraries
+        return not any(lib.name == "McAM" for lib in libraries)
 
     def execute(self, context):
         bpy.ops.preferences.asset_library_add()
@@ -64,11 +61,8 @@ class MAIN_OT_REMOVE_ASSET_LIBRARY(Operator):
 
     @classmethod
     def poll(cls, context):
-        filepaths = bpy.context.preferences.filepaths
-        for library in filepaths.asset_libraries:
-            if library.name == "McAM":
-                return True
-        return False
+        libraries = bpy.context.preferences.filepaths.asset_libraries
+        return any(lib.name == "McAM" for lib in libraries)
 
     def execute(self, context):
         filepaths = bpy.context.preferences.filepaths

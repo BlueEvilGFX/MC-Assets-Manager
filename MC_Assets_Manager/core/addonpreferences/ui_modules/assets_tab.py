@@ -14,6 +14,7 @@ def draw_assets_tab(self, context):
     # categories: assets, presets, rigs
     categories = self.layout.row()
     categories.prop(self.main_props, "assets_menu", expand = True)
+    categories.label(text="", icon="BLANK1")
 
     # info header for the assets including name, source
     info_header = layout.row()
@@ -48,6 +49,7 @@ def draw_assets_tab(self, context):
     second = main_right.column(align = True)
     third = main_right.column(align = True)
     fourth = main_right.column(align = True)
+    fifth = main_right.column(align = True)
 
     reloader_comp = first.row()
     reloader = reloader_comp.operator(
@@ -85,26 +87,40 @@ def draw_assets_tab(self, context):
         icon = "EXPORT"
     )
 
+    opener = fifth.operator(
+        "mcam.ui_list_open_dir",
+        text = "",
+        icon = "FILEBROWSER"
+    )
     if navigator == "Assets":
         # operator settings
         reloader.asset_type = paths.ASSETS
-        adder.asset_type = paths.USER_ASSETS
-        remover.asset_type = paths.USER_ASSETS
-        exporter.asset_type = paths.USER_ASSETS
+    
+        adder.asset_type =\
+            remover.asset_type =\
+            exporter.asset_type =\
+            opener.asset_type\
+        = paths.USER_ASSETS
 
     elif navigator == "Presets":
         # operator settings
         reloader.asset_type = paths.PRESETS
-        adder.asset_type = paths.USER_PRESETS
-        remover.asset_type = paths.USER_PRESETS
-        exporter.asset_type = paths.USER_PRESETS
+        
+        adder.asset_type =\
+            remover.asset_type =\
+            exporter.asset_type =\
+            opener.asset_type\
+        = paths.USER_PRESETS
 
     elif navigator == "Rigs":
         # operator settings
         reloader.asset_type = paths.RIGS
-        adder.asset_type = paths.USER_RIGS
-        remover.asset_type = paths.USER_RIGS
-        exporter.asset_type = paths.RIGS
+        
+        adder.asset_type =\
+            remover.asset_type =\
+            exporter.asset_type =\
+            opener.asset_type\
+        = paths.USER_RIGS
 
 def get_lock_icon(context):
     """
