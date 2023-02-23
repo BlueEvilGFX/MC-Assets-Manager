@@ -75,8 +75,6 @@ You can import and export your own assets as well. It will be saved to a zip fil
 The implementation of the asset library has also its place here. You can create the specific library here if wanted.
 <br/><br/>
 <br/><br/>
-<br/><br/>
-<br/><br/>
 
 ## Hotkeys
 <img align="right" src="./visuals/hotkey_menu.png" width=40% height=40%>
