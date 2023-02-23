@@ -66,7 +66,7 @@ class McAMDlc(bpy.types.Panel):
         rr = row
         self.displayOperator(rr)
         try: locals()[enum_selection_2].Panel.draw(self, context)
-        except: print(f"McAM: UI - DLC-Panel-2 - Error: {enum_selection_1}")
+        except: print(f"McAM: UI - DLC-Panel-2 - Error: {enum_selection_2}")
 
     # ━━━━━━━━━━━━ 
 

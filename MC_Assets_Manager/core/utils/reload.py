@@ -126,7 +126,7 @@ class ReloadIntern:
 
             try:
                 if not data[dlc]["active"] or not asset_dir:
-                    return
+                    continue
             except:
                 continue
 
