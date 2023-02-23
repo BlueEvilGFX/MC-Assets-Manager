@@ -68,7 +68,7 @@ In the n panel are the UIs of the DLCs. You can have two slots for different dlc
 <br/><br/>
 
 ## Settings
-<img align="right" src="./visuals/preferences_settings.png">
+<img src="./visuals/preferences_settings.png">
 
 You will find some main settings of McAM here. You can (de)activate the addon updater, the DLC update checker and the displaying of two DLC UIs in the n panel of McAM. It is also possible to open the filepaths to the users assets, presets and rigs directory.
 You can import and export your own assets as well. It will be saved to a zip file which can be used by any other user to add your assets to their own McAM storage.
