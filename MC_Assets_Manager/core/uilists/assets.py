@@ -64,5 +64,5 @@ class ASSET_UL_List(UIList):
         column.prop(self, "filter_enum", text="")
         column.prop(self, "category_enum", text="")
 
-        icon = "SORT_DESC" if self.use_filter_sort_reverse == True else "SORT_ASC"
+        icon = "SORT_DESC" if self.use_filter_sort_reverse is True else "SORT_ASC"
         right.prop(self, "use_filter_sort_reverse", text="", icon=icon)

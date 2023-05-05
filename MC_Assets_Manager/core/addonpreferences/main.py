@@ -103,7 +103,7 @@ class AddonPref(AddonPreferences):
         # ━━━━━━━━━━━━ DLCs
         elif self.main_props.menu == "DLCs":
             ui_modules.draw_dlc_tab(self, context, layout, scene)            
-        #     ui_modules.showDlcPreferences(self, context)
+            ui_modules.showDlcPreferences(self, context, layout)
 
         # ━━━━━━━━━━━━ online
         elif self.main_props.menu == "Online":

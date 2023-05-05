@@ -1,7 +1,5 @@
-# import os, importlib
-
-# from ...miscs import utils
-# from ...load_modules import PACKAGE_NAME
+import importlib
+import traceback
 
 from MC_Assets_Manager.core.utils import paths
 
@@ -37,32 +35,30 @@ def draw_dlc_tab(self, context, layout, scene):
         else "LOCKED"
     colThi.prop(context.scene.mc_assets_manager_props, "item_unlock", text="", icon=lock)
 
-# def showDlcPreferences(self, context):
-#     dlc_list = context.scene.mcAssetsManagerProps.dlc_list
-#     if dlc_list:
-#         #   get paths and more
-#         addon_path = utils.AddonPathManagement.getAddonPath()
-#         dlc_paths = os.path.join(addon_path, "files", "DLCs")
-#         dlc_list = os.listdir(dlc_paths)
+def showDlcPreferences(self, context, layout):
+    props = context.scene.mc_assets_manager_props
+    dlc_list = context.scene.mc_assets_manager_props.dlc_list
+    if dlc_list:
+        #   get paths and more
+        dlcs = paths.get_dlcs()
 
-#         for dlc in dlc_list:
-#             index = context.scene.mcAssetsManagerProps.dlc_index
-#             active = context.scene.mcAssetsManagerProps.dlc_list[index].active              #   read active status of dlc
-#             init_exists = utils.AddonPathManagement.getDLCInitPath(dlc)[1]                     #   check init path and existence
+        for dlc in dlcs:
+            index = props.dlc_index
+            active = props.dlc_list[index].active                                           #   read active status of dlc
 
-#             if self.data and active and init_exists:                                        #   if dlc exists & active & init file (script based)
-#                 if dlc in locals():                                                         #   if already loaded
-#                     importlib.reload(eval(dlc))                                             #   reload module
-#                 else:
-#                     module_name = ".files.DLCs."+dlc                                        #   get module name for importing
-#                     locals()[dlc] = importlib.import_module(name = module_name, package = PACKAGE_NAME) 
-                
-#                 selected_dlc = str(dlc_list[index])                                         #   get selected dlc from ui list
-#                 dlc_name = os.path.splitext(locals()[dlc].__name__)[-1][1:]                 #   get dlc name from selection
+            if self.data and active and paths.get_dlc_init(dlc):                            #   if dlc exists & active & init file (script based)                
+                if dlc == str(dlc_list[index].name):
+                    try:
+                        if dlc in locals():                                                         #   if already loaded
+                            importlib.reload(eval(dlc))                                             #   reload module
+                        else:
+                            module_name = ".storage.dlcs."+dlc                                        #   get module name for importing
+                            locals()[dlc] = importlib.import_module(
+                                name = module_name,
+                                package = paths.PACKAGE
+                            ) 
 
-#                 if selected_dlc == dlc_name and active:                                     #   if selection is dlc from iteration
-#                     try:
-#                         locals()[dlc].CustomAddonPreferences.display(self)                  #   draw addon preferences from dlc
-
-#                     except:
-#                         print(f'McAM: could not display addon preferences panel: {dlc}')
+                        locals()[dlc].CustomAddonPreferences.display(self, layout)                      #   draw addon preferences from dlc
+                    except Exception:
+                        print(traceback.format_exc())
+                        print(f'McAM: could not display addon preferences panel: {dlc}')
