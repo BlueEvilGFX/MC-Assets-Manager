@@ -14,7 +14,6 @@
 * [Support and Help](#-support-and-help)
 
 ## 🛠️ RoadMap
-
 * [ ] adding new features
 
 ## 💡 Purpose
