@@ -61,7 +61,7 @@ class SingletonUpdater:
         self._repo = None
         self._website = None
         self._current_version = None
-        self._subfolder_path = None
+        self._subfolder_path = True
         self._tags = list()
         self._tag_latest = None
         self._tag_names = list()

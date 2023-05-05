@@ -7,7 +7,7 @@ from . import addon_updater_ops
 bl_info = {
     "name": "[Minecraft Assets Manager]",
     "author": "BlueEvilGFX",
-    "version": (0, 3, 0),
+    "version": (0, 3, 1),
     "blender": (3, 2, 2),
     }  
     
