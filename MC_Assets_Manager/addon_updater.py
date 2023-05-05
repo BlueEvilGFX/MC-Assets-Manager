@@ -949,7 +949,7 @@ class SingletonUpdater:
 
         self.print_verbose("Extracted source")
 
-        unpath = os.path.join(self._updater_path, "source")
+        unpath = os.path.join(self._updater_path, "source", "MC_Assets_Manager")
         if not os.path.isdir(unpath):
             self._error = "Install failed"
             self._error_msg = "Extracted path does not exist"
