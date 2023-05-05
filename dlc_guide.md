@@ -83,12 +83,13 @@ Now to the more complex assets structure.
 }
 ```
 
-Every asset must be listed in the `asset.json` file. The name of the `object` or `collection` will also be the name which will be displayed in McAM. It is the name of the collection if `type` is set to `Collection`. Vice versa if the `type` is set to `Object` it is the name of the object. This is followed by the property `category`. You can set the category to following values which are listed in the `assetCategories.json` of the addon:
+Every asset must be listed in the `asset.json` file. The name of the `object` or `collection` will also be the name which will be displayed in McAM. It is the name of the collection if `type` is set to `Collection`. Vice versa if the `type` is set to `Object` it is the name of the object. This is followed by the property `category`. You can set the category to following values which are listed in the `assetCategories.json` of the addon (file location: `MC_Assets_Manager/resources/`:
 ```json
 [
     "tools",
     "food",
-    "weapons"
+    "weapons",
+    "armor"
 ]
 ```
 
@@ -110,7 +111,7 @@ class PreferencesProperty(PropertyGroup):
 class CustomAddonPreferences():
     '''Creates a Panel in the User Preferences -> Addon Preferences'''
 
-    def display(self, element=None):
+    def display(self, layout=None):
         # here will be your code for your preferences UI
         pass
 ```
