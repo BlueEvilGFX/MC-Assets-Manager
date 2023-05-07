@@ -1,1 +1,32 @@
-{}
+{
+    "default_items": {
+        "type": "assets",
+        "creator": "BlueEvilGFX",
+        "version": "[1, 0, 0]",
+        "active": true
+    },
+    "NFX_Swords": {
+        "type": "assets",
+        "creator": "Night GFX",
+        "version": "[1, 2, 1]",
+        "active": true
+    },
+    "preset_helper": {
+        "type": "script",
+        "creator": "Grandpa Evil",
+        "version": "[0, 2, 0]",
+        "active": true
+    },
+    "WanXis_Assets": {
+        "type": "assets",
+        "creator": "Wan Xi",
+        "version": "[1, 1, 0]",
+        "active": true
+    },
+    "world_importer": {
+        "type": "script",
+        "creator": "Grandpa Evil",
+        "version": "[0, 2, 0]",
+        "active": true
+    }
+}

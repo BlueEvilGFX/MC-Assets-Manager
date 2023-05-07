@@ -52,6 +52,7 @@ class UpdateInstall(bpy.types.Operator):
         bpy.ops.mcam.main_reload('INVOKE_DEFAULT')      
     
         github_reader.news = False
+        
         self.report({'INFO'}, f'{self.data} successfully updated/installed')
         return {'FINISHED'}
 

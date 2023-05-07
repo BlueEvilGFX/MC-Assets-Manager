@@ -1367,7 +1367,7 @@ def register(bl_info):
     # Addon subfolder path.
     # "sample/path/to/addon"
     # default is "" or None, meaning root
-    updater.subfolder_path = ""
+    updater.subfolder_path = "MC_Assets_Manager"
 
     # Used to check/compare versions.
     updater.current_version = bl_info["version"]
@@ -1387,7 +1387,7 @@ def register(bl_info):
     # updater.updater_path = # set path of updater folder, by default:
     # 			/addons/{__package__}/{__package__}_updater
 
-    # Auto create a backup of the addon when installing other versions.
+    # Auto create a backup of the addon when installing other versions.F
     updater.backup_current = True  # True by default
 
     # Sample ignore patterns for when creating backup of current during update.
