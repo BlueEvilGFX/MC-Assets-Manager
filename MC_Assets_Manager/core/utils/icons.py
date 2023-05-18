@@ -116,7 +116,7 @@ class IconReader:
         """
         args:
             pcoll_id: enum of
-                PCOLL_ASSET_ID | PCOLL_PRESET_ID | PCOLL_RIG_ID | PCOLL_MCAM_I
+                PCOLL_ASSET_ID | PCOLL_PRESET_ID | PCOLL_RIG_ID | PCOLL_MCAM_ID
                 | PCOLL_DLC_ID | PCOLL_GITHUB_DLC_ID
             asset_type: 
                 ASSETS | PRESETS | RIGS

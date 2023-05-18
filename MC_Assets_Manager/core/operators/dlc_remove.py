@@ -48,7 +48,6 @@ class DLC_OT_Remove(Operator):
         shutil.rmtree(paths.get_dlc_sub_dir(dlc))
 
         bpy.ops.mcam.main_reload()
-        scene.mc_assets_manager_props.dlc_index = False
         
         github_connect.check_in_background()
         self.report({'INFO'}, "dlc successully removed")

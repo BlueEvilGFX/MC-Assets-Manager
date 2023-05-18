@@ -12,7 +12,6 @@ from MC_Assets_Manager.core.addonpreferences import ui_modules
 from MC_Assets_Manager.core.addonpreferences.properties import \
     AddonPreferencesProps
 
-
 @addon_updater_ops.make_annotations
 class AddonPref(AddonPreferences):
     bl_idname = utils.paths.PACKAGE

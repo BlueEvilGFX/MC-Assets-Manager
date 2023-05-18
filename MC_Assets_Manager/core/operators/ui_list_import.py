@@ -9,7 +9,6 @@ from bpy_extras.io_utils import ImportHelper
 
 from MC_Assets_Manager.core.utils import paths
 
-
 class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
     """
     Operator which imports a asset compound .zip file

@@ -51,8 +51,11 @@ class McAMDlc(bpy.types.Panel):
         row.prop(McAMProps, "scriptUIEnum")
         rr = row
         self.displayOperator(rr)
-        try: locals()[enum_selection_1].Panel.draw(self, context)
-        except: print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
+        try:
+            locals()[enum_selection_1].Panel.draw(self, context)
+        except Exception as e: 
+            print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
+            print(e)
         
         # ━━━━━━━━━━━━ 2 UI pananls check
         preferences = paths.get_addon_properties().main_props
@@ -65,8 +68,11 @@ class McAMDlc(bpy.types.Panel):
         row.prop(McAMProps, "scriptUIEnum2")
         rr = row
         self.displayOperator(rr)
-        try: locals()[enum_selection_2].Panel.draw(self, context)
-        except: print(f"McAM: UI - DLC-Panel-2 - Error: {enum_selection_2}")
+        try:
+            locals()[enum_selection_2].Panel.draw(self, context)
+        except Exception as e: 
+            print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_2}")
+            print(e)
 
     # ━━━━━━━━━━━━ 
 
@@ -75,21 +81,16 @@ class McAMDlc(bpy.types.Panel):
             github_reader
         if github_reader.news:
             layout = reference.layout.box() if element is None else element
-            row = layout.row()
+            box = layout.box()
+            row = box.row()
             row.label(text="NEW DLCS OR DLCS UPDATABLE")
             row.operator("mcam.githubignore")
             row.operator("mcam.openaddonprefs", icon="PROPERTIES")
-            layout.operator("mcam.githubupdateinstallall")
+            box.operator("mcam.githubupdateinstallall")
 
     # ━━━━━━━━━━━━ 
 
     def displayOperator(self, row):
-            # row.scale_x = 0.8
-            # row.operator(
-            #     "mcam.dlc_list_reload",
-            #     text = "",
-            #     icon = "FILE_REFRESH"
-            #     )
             row.operator(
                 "mcam.switch_ui_enum",
                 text = "",

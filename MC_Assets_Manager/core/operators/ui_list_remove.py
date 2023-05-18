@@ -59,6 +59,5 @@ class UI_LIST_OT_REMOVE(Operator):
             self.asset_type,
             asset_dict.Selection.raw_type
             )
-        index = False
         bpy.ops.mcam.ui_list_reload(asset_type=asset_type)
         return{'FINISHED'}
