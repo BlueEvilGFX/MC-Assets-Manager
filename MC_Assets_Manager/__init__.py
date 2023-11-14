@@ -8,7 +8,7 @@ bl_info = {
     "name": "[Minecraft Assets Manager]",
     "author": "BlueEvilGFX",
     "version": (0, 3, 7),
-    "blender": (3, 2, 2),
+    "blender": (4, 0, 0),
     }  
     
 # ━━━━━━━
