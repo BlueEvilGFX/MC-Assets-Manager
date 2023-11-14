@@ -73,7 +73,7 @@ class GitHubReader:
             urllib.request.urlopen(self.sta_url)
             return True
         except:
-            print("McAM: Wifi connection could not been found")
+            print("McAM: Wifi connection coul not been found")
             return False
 
     def fetch_data(self) -> bool:

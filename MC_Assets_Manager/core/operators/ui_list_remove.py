@@ -29,14 +29,14 @@ class UI_LIST_OT_REMOVE(Operator):
         asset_dir = paths.get_user_sub_asset_dir(self.asset_type)
         icon_dir = paths.get_user_sub_icon_dir(self.asset_type)
         scene = "bpy.context.scene"
-        asset_list = '.'.join([
+        asset_list = eval('.'.join([
             scene,
             paths.MCAM_PROP_GROUP,
             asset_dict.get_asset_types(
                 self.asset_type,
                 asset_dict.Selection.ui_list
                 )
-            ])
+            ]))
 
         item = asset_list[item_index]
         name = item.name
