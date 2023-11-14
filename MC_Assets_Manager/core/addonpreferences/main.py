@@ -63,7 +63,7 @@ class AddonPref(AddonPreferences):
         if utils.paths.get_dlc_init(dlc):
             try:
                 if dlc in locals():
-                    importlib.reload(eval(dlc))
+                    importlib.reload(dlc)
                 else:
                     locals()[dlc] = importlib.import_module(
                         name = f'.storage.dlcs.{dlc}',

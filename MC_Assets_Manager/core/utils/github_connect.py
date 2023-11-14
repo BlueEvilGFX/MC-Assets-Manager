@@ -28,7 +28,8 @@ class DLCObject:
     name: str
     type: str
     creator: str
-    version: str
+    installed_version: str
+    online_version : str
     download_link: str
     status: StatusEnum
 
@@ -72,7 +73,7 @@ class GitHubReader:
             urllib.request.urlopen(self.sta_url)
             return True
         except:
-            print("McAM: Wifi connection coul not been found")
+            print("McAM: Wifi connection could not been found")
             return False
 
     def fetch_data(self) -> bool:
@@ -87,12 +88,13 @@ class GitHubReader:
 
             self.dlc_list.append(
                 DLCObject(
-                    dlc,
-                    data["type"],
-                    data["creator"],
-                    data["version"],
-                    data["download_link"] if "download_link" in data else None,
-                    None
+                    name = dlc,
+                    type = data["type"],
+                    creator = data["creator"],
+                    installed_version = None,
+                    online_version = data["version"],
+                    download_link = data["download_link"] if "download_link" in data else None,
+                    status = None
                     ))
 
     def check_dlcs(self) -> None:
@@ -105,11 +107,10 @@ class GitHubReader:
                 if not dlc.name in j_data:
                     dlc.status = StatusEnum.INSTALLABLE
                 else:
-                    i_version = eval(j_data[dlc.name]["version"])
-                    g_version = eval(dlc.version)
+                    dlc.installed_version = j_data[dlc.name]["version"]
 
-                    for idx, x  in enumerate(i_version):
-                        if x < g_version[idx]:
+                    for idx, x  in enumerate(dlc.installed_version):
+                        if x < dlc.online_version[idx]:
                             dlc.status = StatusEnum.UPDATEABLE
                             break
                         else:

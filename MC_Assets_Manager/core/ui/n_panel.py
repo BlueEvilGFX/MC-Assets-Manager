@@ -37,7 +37,7 @@ class McAMDlc(bpy.types.Panel):
         # ━━━━━━━━━━━━ import all DLC UIs
         for dlc in script_dlcs:
             if dlc in locals():
-                importlib.reload(eval(dlc))
+                importlib.reload(dlc)
             else:
                 module_name = ".storage.dlcs."+dlc
                 locals()[dlc] = importlib.import_module(

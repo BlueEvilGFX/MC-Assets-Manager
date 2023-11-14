@@ -10,6 +10,8 @@ class GITHUB_OT_connect(bpy.types.Operator):
 
     def execute(self, context):
         from MC_Assets_Manager.core.utils import github_connect
+        from MC_Assets_Manager.core.utils import paths
+        bpy.ops.mcam.ui_list_reload(asset_type=paths.DLCS)
         github_connect.connect()
         self.report({'INFO'}, "Successfull connection to Github")
         return{'FINISHED'}
@@ -29,6 +31,7 @@ def install_dlc(dlc, github_reader):
 
     os.remove(save_location)
     dlc.status = utils.github_connect.StatusEnum.INSTALLED
+    dlc.installed_version = dlc.online_version
     
 class UpdateInstall(bpy.types.Operator):
     bl_idname = "mcam.githubupdateinstall"
@@ -48,10 +51,7 @@ class UpdateInstall(bpy.types.Operator):
                 break
         
         install_dlc(dlc, github_reader)
-
-        bpy.ops.mcam.main_reload('INVOKE_DEFAULT')      
-    
-        github_reader.news = False
+        bpy.ops.mcam.main_reload('INVOKE_DEFAULT')
         
         self.report({'INFO'}, f'{self.data} successfully updated/installed')
         return {'FINISHED'}

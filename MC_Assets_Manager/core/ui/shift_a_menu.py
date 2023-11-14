@@ -18,7 +18,6 @@ def menu_func(self, context):
 class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
     bl_idname = "OBJECT_MT_McAssets_ShiftA_submenu"
     bl_label = "MC Assets"
-    bl_options = {'REGISTER', 'UNDO'}
 
     def draw(self, context):
         layout = self.layout

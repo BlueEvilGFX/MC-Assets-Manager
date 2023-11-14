@@ -1,6 +1,8 @@
+import bpy
+
+from MC_Assets_Manager import addon_updater_ops
 from MC_Assets_Manager.core.utils import icons
 from MC_Assets_Manager.core.utils.github_connect import StatusEnum
-from MC_Assets_Manager import addon_updater_ops
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -88,18 +90,31 @@ def draw_github_tab(self, layout, element):
     col2 = split.split().box().column()     #   update
     col3 = split.split().box().column()     #   not installed
 
+    # if min width is more than 8285 : show version info
+    width_show = bpy.context.screen.areas[0].width >= 825
+
     for dlc in github_reader.dlc_list:           
         #   display of DLCs
-        if dlc.status == StatusEnum.INSTALLED:
+        if dlc.status in {StatusEnum.INSTALLED, StatusEnum.UPDATEABLE}:
             custom_icon = get_icon(icons.PCOLL_DLC_ID, dlc)
             display = col1.row()
+            if dlc.status == StatusEnum.UPDATEABLE:
+                display.label(icon = "BLANK1")
             display.label(text=dlc.name, icon_value = custom_icon)
+            if width_show:
+                right = display.row()
+                right.alignment = "RIGHT"
+                right.label(text = dlc.installed_version)
 
-        elif dlc.status == StatusEnum.UPDATEABLE:
+        if dlc.status == StatusEnum.UPDATEABLE:
             custom_icon = get_icon(icons.PCOLL_DLC_ID, dlc)
             display = col2.row()
             display.label(text=dlc.name, icon_value = custom_icon)
-            button = display.operator(
+            right = display.row()
+            right.alignment = "RIGHT"
+            if width_show:
+                right.label(text = dlc.online_version)
+            button = right.operator(
                 "mcam.githubupdateinstall",
                 icon="FILE_REFRESH"
                 )
@@ -109,7 +124,11 @@ def draw_github_tab(self, layout, element):
             custom_icon = get_icon(icons.PCOLL_GITHUB_DLC_ID, dlc)
             display = col3.row()
             display.label(text=dlc.name, icon_value = custom_icon)
-            button = display.operator("mcam.githubupdateinstall", icon = "IMPORT")
+            right = display.row()
+            right.alignment = "RIGHT"
+            if width_show:
+                right.label(text = dlc.online_version)
+            button = right.operator("mcam.githubupdateinstall", icon = "IMPORT")
             button.data = dlc.name
 
     #   display of update/install all DLCs
