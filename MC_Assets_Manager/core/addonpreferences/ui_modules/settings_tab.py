@@ -43,17 +43,17 @@ def draw_settings_tab(self, context):
         "mcam.ui_list_open_dir",
         text = "assets",
         icon = "DOCUMENTS"
-    ).asset_type = paths.USER_ASSETS
+    ).asset_type = paths.AssetTypes.USER_ASSETS
     row.operator(
         "mcam.ui_list_open_dir",
         text = "presets",
         icon = "OUTLINER_OB_ARMATURE"
-    ).asset_type = paths.USER_PRESETS
+    ).asset_type = paths.AssetTypes.USER_PRESETS
     row.operator(
         "mcam.ui_list_open_dir",
         text = "rigs",
         icon = "ARMATURE_DATA"
-    ).asset_type = paths.USER_RIGS
+    ).asset_type = paths.AssetTypes.USER_RIGS
 
     # import
     row = box.row()

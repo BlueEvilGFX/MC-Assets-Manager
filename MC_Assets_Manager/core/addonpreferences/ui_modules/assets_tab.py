@@ -94,33 +94,33 @@ def draw_assets_tab(self, context):
     )
     if navigator == "Assets":
         # operator settings
-        reloader.asset_type = paths.ASSETS
+        reloader.asset_type = paths.AssetTypes.ASSETS
     
         adder.asset_type =\
             remover.asset_type =\
             exporter.asset_type =\
             opener.asset_type\
-        = paths.USER_ASSETS
+        = paths.AssetTypes.USER_ASSETS
 
     elif navigator == "Presets":
         # operator settings
-        reloader.asset_type = paths.PRESETS
+        reloader.asset_type = paths.AssetTypes.PRESETS
         
         adder.asset_type =\
             remover.asset_type =\
             exporter.asset_type =\
             opener.asset_type\
-        = paths.USER_PRESETS
+        = paths.AssetTypes.USER_PRESETS
 
     elif navigator == "Rigs":
         # operator settings
-        reloader.asset_type = paths.RIGS
+        reloader.asset_type = paths.AssetTypes.RIGS
         
         adder.asset_type =\
             remover.asset_type =\
             exporter.asset_type =\
             opener.asset_type\
-        = paths.USER_RIGS
+        = paths.AssetTypes.USER_RIGS
 
 def get_lock_icon(context):
     """
@@ -146,17 +146,16 @@ def polling_remove(self, context, asset_type) -> bool:
             a) if item not a dlc item\n
             b) lock is unklocked
     """
-    scene = context.scene
+    mcam_props = context.scene.mc_assets_manager_props
     try:
         # gets the type: 'asset' |'preset' |'rig' + _index'
         index_prop = asset_type.split("_")[0] + "_index"
-        item_list = asset_type
 
-        index = eval(f"scene.mc_assets_manager_props.{index_prop}")
-        item = eval(f"scene.mc_assets_manager_props.{item_list}[{index}]")
+        index = getattr(mcam_props, index_prop)
+        item = getattr(mcam_props, asset_type)[index]
 
         # check if unlocked and the asset is no dlc
-        return (scene.mc_assets_manager_props.item_unlock and item.dlc == "")
+        return (mcam_props.item_unlock and item.dlc == "")
     except:
         return False
 
@@ -174,4 +173,4 @@ def polling_export(self, context, asset_type) -> bool:
         asset_dict.Selection.user_type
     )
     # True if there are any assets
-    return not not paths.get_user_sub_assets(asset_type)
+    return any(paths.User.get_sub_asset_list(asset_type))

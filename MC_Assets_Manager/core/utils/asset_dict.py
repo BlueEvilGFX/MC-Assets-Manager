@@ -1,25 +1,24 @@
 from enum import Enum
 
-from .paths import (ASSETS, PRESETS, RIGS, UI_LIST_ASSETS, UI_LIST_PRESETS,
-                    UI_LIST_RIGS, USER_ASSETS, USER_PRESETS, USER_RIGS)
+from .paths import AssetTypes, PropertyGroups
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class Selection(Enum):
-    raw_type = [ASSETS, PRESETS, RIGS]
-    user_type = [USER_ASSETS, USER_PRESETS, USER_RIGS]
-    ui_list = [UI_LIST_ASSETS, UI_LIST_PRESETS, UI_LIST_RIGS]
+    raw_type = [AssetTypes.ASSETS, AssetTypes.PRESETS, AssetTypes.RIGS]
+    user_type = [AssetTypes.USER_ASSETS, AssetTypes.USER_PRESETS, AssetTypes.USER_RIGS]
+    ui_list = [PropertyGroups.UI_LIST_ASSETS, PropertyGroups.UI_LIST_PRESETS, PropertyGroups.UI_LIST_RIGS]
 
 asset_determine = {
-    ASSETS : 0,
-    PRESETS : 1,
-    RIGS : 2,
-    USER_ASSETS : 0,
-    USER_PRESETS : 1,
-    USER_RIGS : 2,
-    UI_LIST_ASSETS : 0,
-    UI_LIST_PRESETS : 1,
-    UI_LIST_RIGS : 2
+    AssetTypes.ASSETS : 0,
+    AssetTypes.PRESETS : 1,
+    AssetTypes.RIGS : 2,
+    AssetTypes.USER_ASSETS : 0,
+    AssetTypes.USER_PRESETS : 1,
+    AssetTypes.USER_RIGS : 2,
+    PropertyGroups.UI_LIST_ASSETS : 0,
+    PropertyGroups.UI_LIST_PRESETS : 1,
+    PropertyGroups.UI_LIST_RIGS : 2
 }
 
 def get_asset_types(asset_type:str, output_type:Selection) -> str:

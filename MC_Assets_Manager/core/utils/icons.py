@@ -40,8 +40,8 @@ class IconReader:
             - the mcam main icons into the addon
             - it uses the resources/icons path for it
         """
-        dir = paths.RESOURCES_ICON_DIR
-        icons = paths.get_resources_icons()
+        dir = paths.PathConstants.RESOURCES_ICON_DIRECTORY
+        icons = paths.McAM.get_resource_icons()
 
         for icon in icons:
             path = os.path.join(dir, icon+".png")
@@ -64,8 +64,8 @@ class IconReader:
             - reads the main icons of the dlcs:
             - if asset_type is set to None --> loads the main dlc icons
         """
-        dlc_dir = paths.get_dlc_dir()
-        dlc_list = paths.get_dlcs()
+        dlc_dir = paths.DLC.get_directory()
+        dlc_list = paths.DLC.get_dlcs_list()
         for dlc in dlc_list:
             if asset_type is None:
                 path = os.path.join(dlc_dir, dlc, "icon.png")
@@ -76,8 +76,8 @@ class IconReader:
                 if icon_prefix is None:
                     return
 
-                icon_dir = paths.get_dlc_sub_assets_icon_dir(dlc, asset_type)
-                icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
+                icon_dir = paths.DLC.get_sub_icon_directory(dlc, asset_type)
+                icons = paths.DLC.get_sub_icon_list(dlc, asset_type)
                 for icon in icons:
                     path = os.path.join(icon_dir, icon+".png")
                     name = icon_prefix + ':' + dlc + ':' + icon
@@ -92,8 +92,8 @@ class IconReader:
         name:user = paths.USER_XXX_ICON + name
         """
         # read user preset icons
-        icon_dir= paths.get_user_sub_icon_dir(asset_type)
-        icons = paths.get_user_sub_icons(asset_type)
+        icon_dir= paths.User.get_sub_icon_directory(asset_type)
+        icons = paths.User.get_sub_icon_list(asset_type)
         for icon in icons:
             path = os.path.join(icon_dir, icon+".png")
             name = asset_type + ':' + icon
@@ -104,11 +104,11 @@ class IconReader:
         """
         reads the github dlc icons
         """
-        icon_dir = paths.get_github_icon_dir()
-        icons = os.listdir(icon_dir) # lists icons with extension
+        icon_dir = paths.McAM.get_github_icon_directory()
+        icons = paths.McAM.get_github_icon_list()
         for icon in icons:
-            path = os.path.join(icon_dir, icon)
-            name = os.path.splitext(icon)[0]
+            path = os.path.join(icon_dir, icon+'.png')
+            name = icon
             pcoll.load(name, path, "IMAGE")
 
     @staticmethod
@@ -144,16 +144,15 @@ class IconReader:
         else:
             # dictionary to get corresponding user asses
             user_dlc = {
-                PCOLL_ASSET_ID : paths.USER_ASSETS,
-                PCOLL_PRESET_ID : paths.USER_PRESETS,
-                PCOLL_RIG_ID : paths.USER_RIGS
+                PCOLL_ASSET_ID : paths.AssetTypes.USER_ASSETS,
+                PCOLL_PRESET_ID : paths.AssetTypes.USER_PRESETS,
+                PCOLL_RIG_ID : paths.AssetTypes.USER_RIGS
                 }
             
             # load user and dlc icons
             if user_dlc.get(pcoll_id):
                 __class__.read_user_icon(pcoll, user_dlc[pcoll_id])
             __class__.read_dlc_icons(pcoll, asset_type, icon_prefix)
-
         mcam_icons[pcoll_id] = pcoll
 
 #━━━━━━━━━━━━━━━    functions    ━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -171,20 +170,20 @@ def reload_dlc_icons() -> None:
 
 def reload_asset_icons() -> None:
     pcoll_id = PCOLL_ASSET_ID
-    asset_type = paths.ASSETS
-    icon_prefix = paths.DLC_ASSET_ICON
+    asset_type = paths.AssetTypes.ASSETS
+    icon_prefix = paths.IconTypes.DLC_ASSET_ICON
     IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_preset_icons() -> None:
     pcoll_id = PCOLL_PRESET_ID
-    asset_type = paths.PRESETS
-    icon_prefix = paths.DLC_PRESET_ICON
+    asset_type = paths.AssetTypes.PRESETS
+    icon_prefix = paths.IconTypes.DLC_PRESET_ICON
     IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_rig_icons() -> None:
     pcoll_id = PCOLL_RIG_ID
-    asset_type = paths.RIGS
-    icon_prefix = paths.DLC_RIG_ICON
+    asset_type = paths.AssetTypes.RIGS
+    icon_prefix = paths.IconTypes.DLC_RIG_ICON
     IconReader.reload_icons(pcoll_id, asset_type, icon_prefix)
 
 def reload_github_dlc_icons() -> None:

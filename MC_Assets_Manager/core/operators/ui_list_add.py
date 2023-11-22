@@ -63,7 +63,7 @@ class AssetAdder:
         self.filedir = os.path.dirname(operator_reference.filepath)
         self.operator = operator_reference
         self.asset_type = asset_type
-        self.dst_directory = paths.get_user_sub_asset_dir(asset_type)
+        self.dst_directory = paths.User.get_sub_asset_directory(asset_type)
     
     def main(self) -> None:
         for file in self.files:
@@ -134,7 +134,7 @@ class AssetAdder:
             name : string for the input name ->
             returns name with the next valid id -> name_id
         """
-        taken_names = paths.get_user_sub_assets(self.asset_type)
+        taken_names = paths.User.get_sub_asset_list(self.asset_type)
 
         # return name if name is not taken
         if not name in taken_names:

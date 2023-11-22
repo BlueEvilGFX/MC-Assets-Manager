@@ -11,10 +11,10 @@ from . import commons
 class ASSET_UL_List(UIList):
     """Asset UIList."""
     # filter enum for normal dlc filtering
-    filter_enum : EnumProperty(items=commons.dlc_callback(paths.ASSETS))
+    filter_enum : EnumProperty(items=commons.dlc_callback(paths.AssetTypes.ASSETS))
 
     # filtering for categories -> categories written in json file
-    category_file = paths.get_dlc_asset_categories()
+    category_file = paths.DLC.get_asset_categories_json()
     with open(category_file, "r") as file:
         data = json.load(file)
         categories = [("None", "None", "None")]

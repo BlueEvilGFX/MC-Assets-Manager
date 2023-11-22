@@ -22,22 +22,16 @@ class UI_LIST_OT_REMOVE(Operator):
     asset_type : StringProperty()
 
     def execute(self, context):
-        self.scene = context.scene
+        scene = context.scene
         index = self.asset_type.split("_")[-1][:-1] + "_index"
-        item_index = eval(f"self.scene.mc_assets_manager_props.{index}")
+        item_index = getattr(scene.mc_assets_manager_props, index)
 
-        asset_dir = paths.get_user_sub_asset_dir(self.asset_type)
-        icon_dir = paths.get_user_sub_icon_dir(self.asset_type)
-        scene = "bpy.context.scene"
-        asset_list = eval('.'.join([
-            scene,
-            paths.MCAM_PROP_GROUP,
-            asset_dict.get_asset_types(
-                self.asset_type,
-                asset_dict.Selection.ui_list
-                )
-            ]))
-
+        asset_dir = paths.User.get_sub_asset_directory(self.asset_type)
+        icon_dir = paths.User.get_sub_icon_directory(self.asset_type)
+        asset_list = getattr(scene.mc_assets_manager_props,
+                             asset_dict.get_asset_types(
+                                self.asset_type,
+                                asset_dict.Selection.ui_list))
         item = asset_list[item_index]
         name = item.name
         icon = name

@@ -48,7 +48,7 @@ class MAIN_OT_CREATE_ASSET_LIBRARY(Operator):
         bpy.ops.preferences.asset_library_add()
         library = bpy.context.preferences.filepaths.asset_libraries[-1]
         library.name = "McAM"
-        library.path = paths.get_storage_dir()
+        library.path = paths.PathConstants.STORAGE_DIRECTORY
         return {'FINISHED'}
 
 class MAIN_OT_REMOVE_ASSET_LIBRARY(Operator):

@@ -8,7 +8,7 @@ from . import commons
 
 class PRESET_UL_List(UIList):
     """Preset UIList"""
-    filter_enum : EnumProperty(items=commons.dlc_callback(paths.PRESETS))
+    filter_enum : EnumProperty(items=commons.dlc_callback(paths.AssetTypes.PRESETS))
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):        
         # draw

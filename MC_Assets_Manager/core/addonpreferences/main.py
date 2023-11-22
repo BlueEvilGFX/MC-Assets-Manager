@@ -14,7 +14,7 @@ from MC_Assets_Manager.core.addonpreferences.properties import \
 
 @addon_updater_ops.make_annotations
 class AddonPref(AddonPreferences):
-    bl_idname = utils.paths.PACKAGE
+    bl_idname = utils.paths.PathConstants.PACKAGE
 
     main_props : PointerProperty(type=AddonPreferencesProps)
 
@@ -24,7 +24,7 @@ class AddonPref(AddonPreferences):
     auto_check_update : bpy.props.BoolProperty(
         name="Auto-check for Update",
         description="If enabled, auto-check for updates using an interval",
-        default=False)
+        default=True)
 
     updater_interval_months : bpy.props.IntProperty(
         name='Months',
@@ -54,20 +54,20 @@ class AddonPref(AddonPreferences):
         max=59)
 
     # ━━━━━━━━━━━━ loading dlc preferences
-    dlc_json = utils.paths.get_dlc_json()
+    dlc_json = utils.paths.McAM.get_dlc_main_json()
     with open(dlc_json, "r") as file:
         data = json.load(file) 
 
     active_set_false = []
     for dlc in data:
-        if utils.paths.get_dlc_init(dlc):
+        if utils.paths.DLC.get_sub_init(dlc):
             try:
                 if dlc in locals():
                     importlib.reload(dlc)
                 else:
                     locals()[dlc] = importlib.import_module(
                         name = f'.storage.dlcs.{dlc}',
-                        package = utils.paths.PACKAGE
+                        package = utils.paths.PathConstants.PACKAGE
                     )
 
                 try:

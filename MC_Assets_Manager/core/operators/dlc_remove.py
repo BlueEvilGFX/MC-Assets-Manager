@@ -30,14 +30,14 @@ class DLC_OT_Remove(Operator):
                 ].name
 
         try:
-            if paths.get_dlc_init(dlc):
+            if paths.DLC.get_sub_init(dlc):
                 module_name = ".storage.DLCs."+dlc
                 locals()[dlc] = importlib.import_module(
                     name = module_name,
-                    package = paths.PACKAGE
+                    package = paths.PathConstants.PACKAGE
                 )
                 
-                json_file = paths.get_dlc_json()
+                json_file = paths.McAM.get_dlc_main_json()
                 with open(json_file) as dataFile:
                     data = json.load(dataFile)
                     if data[dlc]["active"]:
@@ -45,10 +45,10 @@ class DLC_OT_Remove(Operator):
         except:
             print(f"McAM: [DLC Unregistering] error: {dlc}")
 
-        shutil.rmtree(paths.get_dlc_sub_dir(dlc))
+        shutil.rmtree(paths.DLC.get_sub_directory(dlc))
 
         bpy.ops.mcam.main_reload()
         
-        github_connect.check_in_background()
+        github_connect.GitHubReader().connect()
         self.report({'INFO'}, "dlc successully removed")
         return{'FINISHED'}

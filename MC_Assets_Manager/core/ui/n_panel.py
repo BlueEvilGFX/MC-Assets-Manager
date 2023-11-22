@@ -1,4 +1,5 @@
 import importlib
+import traceback
 
 import bpy
 import addon_utils
@@ -22,16 +23,16 @@ class McAMDlc(bpy.types.Panel):
         addon_updater_ops.update_notice_box_ui(self, layout)
         self.ui_notice_dlc_update(self, layout)
 
-        #   get data
+        # get data
         script_dlcs = []
 
         for dlc in McAMProps.dlc_list:
-            if paths.get_dlc_init(dlc.name) and dlc.active:
+            if paths.DLC.get_sub_init(dlc.name) and dlc.active:
                 script_dlcs.append(dlc.name)
 
         # return if no scripted dlc is installed since nothing will be shown
         if not script_dlcs:
-            layout.label(text="no script based DLC is installed")
+            # layout.label(text="no script based DLC is installed")
             return
 
         # ━━━━━━━━━━━━ import all DLC UIs
@@ -42,7 +43,7 @@ class McAMDlc(bpy.types.Panel):
                 module_name = ".storage.dlcs."+dlc
                 locals()[dlc] = importlib.import_module(
                     name = module_name,
-                    package = paths.PACKAGE
+                    package = paths.PathConstants.PACKAGE
                     )
 
         # ━━━━━━━━━━━━ 1
@@ -55,12 +56,14 @@ class McAMDlc(bpy.types.Panel):
             locals()[enum_selection_1].Panel.draw(self, context)
         except Exception as e: 
             print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
-            print(e)
+            print(str(e))
+            traceback.print_exc()
         
         # ━━━━━━━━━━━━ 2 UI pananls check
-        preferences = paths.get_addon_properties().main_props
+        preferences = paths.McAM.get_addon_properties().main_props
         if not preferences.two_dlc_ui_panels: return
 
+        self.layout.label(text="")
         self.layout.label(text="")
         # ━━━━━━━━━━━━ 2
         enum_selection_2 = McAMProps.scriptUIEnum2
@@ -72,21 +75,28 @@ class McAMDlc(bpy.types.Panel):
             locals()[enum_selection_2].Panel.draw(self, context)
         except Exception as e: 
             print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_2}")
-            print(e)
+            print(str(e))
+            traceback.print_exc()
 
     # ━━━━━━━━━━━━ 
 
     def ui_notice_dlc_update(self, reference, element=None) -> None:
-        from MC_Assets_Manager.core.utils.github_connect import \
-            github_reader
-        if github_reader.news:
-            layout = reference.layout.box() if element is None else element
-            box = layout.box()
-            row = box.row()
-            row.label(text="NEW DLCS OR DLCS UPDATABLE")
-            row.operator("mcam.githubignore")
-            row.operator("mcam.openaddonprefs", icon="PROPERTIES")
-            box.operator("mcam.githubupdateinstallall")
+        from MC_Assets_Manager.core.utils.github_connect import GitHubReader
+
+        github_reader = GitHubReader()
+        # guard clause
+        if not github_reader:
+            return
+        if not github_reader.news:
+            return
+        
+        layout = reference.layout.box() if element is None else element
+        box = layout.box()
+        row = box.row()
+        row.label(text="NEW DLCS OR DLCS UPDATABLE")
+        row.operator("mcam.githubignore")
+        row.operator("mcam.openaddonprefs", icon="PROPERTIES")
+        box.operator("mcam.githubupdateinstallall")
 
     # ━━━━━━━━━━━━ 
 
@@ -102,10 +112,9 @@ class MAIN_OT_SCRIPT_UI_ENUM_SWITCH(bpy.types.Operator):
     bl_label = ""
 
     def execute(self, context):
-        selection_1 = context.scene.mc_assets_manager_props.scriptUIEnum
-        context.scene.mc_assets_manager_props.scriptUIEnum\
-            = context.scene.mc_assets_manager_props.scriptUIEnum2
-        context.scene.mc_assets_manager_props.scriptUIEnum2 = selection_1
+        mcam_prop = context.scene.mc_assets_manager_props
+        mcam_prop.scriptUIEnum,  mcam_prop.scriptUIEnum2 =\
+            mcam_prop.scriptUIEnum2,  mcam_prop.scriptUIEnum
         return{'FINISHED'}
 
 class OpenAddonPrefs(bpy.types.Operator):
@@ -122,14 +131,14 @@ class OpenAddonPrefs(bpy.types.Operator):
         bpy.ops.screen.userpref_show()
         bpy.context.preferences.active_section = 'ADDONS'
         bpy.data.window_managers['WinMan']['addon_search'] = search
-        bpy.ops.preferences.addon_expand(module = paths.PACKAGE)
+        bpy.ops.preferences.addon_expand(module = paths.PathConstants.PACKAGE)
         
-        pref_props = paths.get_addon_properties().main_props
+        pref_props = paths.McAM.get_addon_properties().main_props
         pref_props.menu = "Online"
         pref_props.online_menu = "Github"
 
         from MC_Assets_Manager.core.utils import github_connect
-        github_connect.github_reader.news = False
+        github_connect.GitHubReader()._news = False
         return {'FINISHED'}
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register

@@ -23,13 +23,13 @@ class UI_LIST_OT_OPEN_DIR(bpy.types.Operator):
 
     def execute(self, context):
         if not self.asset_type in {
-            paths.USER_ASSETS,
-            paths.USER_PRESETS,
-            paths.USER_RIGS
+            paths.AssetTypes.USER_ASSETS,
+            paths.AssetTypes.USER_PRESETS,
+            paths.AssetTypes.USER_RIGS
             }: 
             return {'CANCELLED'}
 
-        path = paths.get_user_sub_asset_dir(self.asset_type)
+        path = paths.User.get_sub_asset_directory(self.asset_type)
         path = os.path.normpath(path)
 
         try:

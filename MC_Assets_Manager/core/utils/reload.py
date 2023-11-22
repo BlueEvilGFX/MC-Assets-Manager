@@ -1,7 +1,5 @@
 import json
 import os
-
-# DO NOT REMOVE BPY -> EVAL USAGE
 import bpy
 
 from MC_Assets_Manager.core.utils import paths
@@ -17,8 +15,8 @@ def reload_dlc_json() -> None:
     - writes the data to the dlc.json file
     - sets the active status: if dlc new: set to True else set to stored state
     """
-    dlc_json = paths.get_dlc_json()
-    dlc_list = paths.get_dlcs()
+    dlc_json = paths.McAM.get_dlc_main_json()
+    dlc_list = paths.DLC.get_dlcs_list()
     dlc_dict = {}
 
     with open(dlc_json, 'r') as file:
@@ -27,7 +25,7 @@ def reload_dlc_json() -> None:
         for dlc in dlc_list:
             # sets the active status of the dlc accordingly:
             # new -> True else  -> use stored
-            dlc_sub_json = paths.get_dlc_sub_json(dlc)
+            dlc_sub_json = paths.DLC.get_sub_json(dlc)
             with open(dlc_sub_json, 'r') as sub_file:
                 dlc_dict[dlc] = json.load(sub_file)
                 dlc_dict[dlc]["active"] = True if data.get(dlc) is None\
@@ -43,11 +41,8 @@ def reload_dlc_list() -> None:
     -> sets all data from the item propertygroup
     """
     reload_dlc_json()
-    dlc_json = paths.get_dlc_json()
-    dlc_list = eval(
-        "bpy.context.scene.mc_assets_manager_props."
-        + paths.UI_LIST_DLCS
-        )
+    dlc_json = paths.McAM.get_dlc_main_json()
+    dlc_list = getattr(bpy.context.scene.mc_assets_manager_props, paths.PropertyGroups.UI_LIST_DLCS)
     dlc_list.clear()
 
     with open(dlc_json, 'r') as file:
@@ -61,7 +56,7 @@ def reload_dlc_list() -> None:
             item.creator = dlc_data["creator"]
             item.active = dlc_data["active"]
             item.version = dlc_data["version"]
-            icon_path = os.path.join(paths.get_dlc_dir(), dlc, "icon.png")
+            icon_path = os.path.join(paths.DLC.get_directory(), dlc, "icon.png")
             item.icon = os.path.exists(icon_path)
 
 
@@ -84,8 +79,8 @@ class ReloadIntern:
         - checks for collection restrictions: unimportant for assets
         - it sets the icon property to the corresponding id
         """
-        user_files = paths.get_user_sub_assets(asset_type)
-        user_icons = paths.get_user_sub_icons(asset_type)
+        user_files = paths.User.get_sub_asset_list(asset_type)
+        user_icons = paths.User.get_sub_icon_list(asset_type)
 
         for file in user_files:
             item = ui_list.add()
@@ -106,7 +101,7 @@ class ReloadIntern:
         - it sets the icon property to the corresponding id
         """
         # filtering assets because they are read from the json file
-        if asset_type == paths.ASSETS:
+        if asset_type == paths.AssetTypes.ASSETS:
             __class__.load_dlc_assets(ui_list)
         else:
             __class__.load_dlc_presets_rigs(ui_list, asset_type)
@@ -117,12 +112,12 @@ class ReloadIntern:
         - loads the assets of the dlcs into the ui list
         - it sets the icon property to the corresponding id
         """
-        asset_type = paths.ASSETS
-        with open(paths.get_dlc_json(), 'r') as file:
+        asset_type = paths.AssetTypes.ASSETS
+        with open(paths.McAM.get_dlc_main_json(), 'r') as file:
             data = json.load(file)
 
-        for dlc in paths.get_dlcs():
-            asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
+        for dlc in paths.DLC.get_dlcs_list():
+            asset_dir = paths.DLC.get_sub_asset_directory(dlc, asset_type)
 
             try:
                 if not data[dlc]["active"] or not asset_dir:
@@ -130,15 +125,14 @@ class ReloadIntern:
             except:
                 continue
 
-            assets_json = paths.get_dlc_sub_assets_json(dlc, asset_type)
-            assets_blend = paths.get_dlc_sub_assets_blend(dlc, asset_type)
-            asset_icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
+            assets_json = paths.DLC.get_sub_asset_json(dlc, asset_type)
+            assets_blend = paths.DLC.get_sub_asset_blend(dlc, asset_type)
+            asset_icons = paths.DLC.get_sub_icon_list(dlc, asset_type)
 
             if not assets_json or not assets_blend: continue
 
             with open(assets_json, 'r') as asset_file:
                 asset_data = json.load(asset_file)
-
             for asset in asset_data:
                 asset_sub_data = asset_data[asset]
                 item = ui_list.add()
@@ -147,7 +141,7 @@ class ReloadIntern:
                 item.category = asset_sub_data["category"]
                 item.dlc = dlc
                 if asset in asset_icons:
-                    item.icon = paths.DLC_ASSET_ICON\
+                    item.icon = paths.IconTypes.DLC_ASSET_ICON\
                         + ':' + dlc\
                         + ':'+ item.name
 
@@ -160,20 +154,20 @@ class ReloadIntern:
         """
         # dictionary to get corresponding user asses
         user_dlc = {
-            paths.PRESETS : paths.DLC_PRESET_ICON,
-            paths.RIGS : paths.DLC_RIG_ICON,
+            paths.AssetTypes.PRESETS : paths.IconTypes.DLC_PRESET_ICON,
+            paths.AssetTypes.RIGS : paths.IconTypes.DLC_RIG_ICON,
             }
 
-        with open(paths.get_dlc_json(), 'r') as file:
+        with open(paths.McAM.get_dlc_main_json(), 'r') as file:
             data = json.load(file)
 
-        for dlc in paths.get_dlcs():
-            asset_dir = paths.get_dlc_sub_assets_dir(dlc, asset_type)
+        for dlc in paths.DLC.get_dlcs_list():
+            asset_dir = paths.DLC.get_sub_asset_directory(dlc, asset_type)
 
             if not data[dlc]["active"] or not asset_dir: continue
             
-            assets = paths.get_dlc_sub_assets(dlc, asset_type)
-            asset_icons = paths.get_dlc_sub_assets_icons(dlc, asset_type)
+            assets = paths.DLC.get_sub_asset_list(dlc, asset_type)
+            asset_icons = paths.DLC.get_sub_icon_list(dlc, asset_type)
 
             for asset in assets:
                 item = ui_list.add()
@@ -191,34 +185,25 @@ class ReloadIntern:
 
 #━━━━━━━━━━━━━━━    methods    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def reload_asset_list():
-    """
-    reloads the whole asset list
-    """
-    scene = "bpy.context.scene"
-    asset_list = eval('.'.join([scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_ASSETS]))
+    prop_group = getattr(bpy.context.scene, paths.PropertyGroups.MCAM_PROP_GROUP)
+    asset_list = getattr(prop_group, paths.PropertyGroups.UI_LIST_ASSETS)
     ReloadIntern.clear_list(asset_list)
-    ReloadIntern.load_dlc_files(asset_list, paths.ASSETS)
-    ReloadIntern.load_user_files(asset_list, paths.USER_ASSETS)
+    ReloadIntern.load_dlc_files(asset_list, paths.AssetTypes.ASSETS)
+    ReloadIntern.load_user_files(asset_list, paths.AssetTypes.USER_ASSETS)
 
 def reload_preset_list():
-    """
-    reloads the whole preset list
-    """
-    scene = "bpy.context.scene"
-    preset_list = eval('.'.join([scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_PRESETS]))
+    prop_group = getattr(bpy.context.scene, paths.PropertyGroups.MCAM_PROP_GROUP)
+    preset_list = getattr(prop_group, paths.PropertyGroups.UI_LIST_PRESETS)
     ReloadIntern.clear_list(preset_list)
-    ReloadIntern.load_dlc_files(preset_list, paths.PRESETS)
-    ReloadIntern.load_user_files(preset_list, paths.USER_PRESETS)
+    ReloadIntern.load_dlc_files(preset_list, paths.AssetTypes.PRESETS)
+    ReloadIntern.load_user_files(preset_list, paths.AssetTypes.USER_PRESETS)
 
 def reload_rig_list():
-    """
-    reloads the whole rig list
-    """
-    scene = "bpy.context.scene"
-    rig_list = eval('.'.join([scene, paths.MCAM_PROP_GROUP, paths.UI_LIST_RIGS]))
+    prop_group = getattr(bpy.context.scene, paths.PropertyGroups.MCAM_PROP_GROUP)
+    rig_list = getattr(prop_group, paths.PropertyGroups.UI_LIST_RIGS)
     ReloadIntern.clear_list(rig_list)
-    ReloadIntern.load_dlc_files(rig_list, paths.RIGS)
-    ReloadIntern.load_user_files(rig_list, paths.USER_RIGS)
+    ReloadIntern.load_dlc_files(rig_list, paths.AssetTypes.RIGS)
+    ReloadIntern.load_user_files(rig_list, paths.AssetTypes.USER_RIGS)
 
 def reload_addon_preferences():
     addonpreferences.unregister()

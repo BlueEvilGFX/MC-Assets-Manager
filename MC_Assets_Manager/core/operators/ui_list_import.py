@@ -31,9 +31,9 @@ class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
         categories = os.listdir(temp_path)
         for category in categories:
             validation = {
-                paths.USER_ASSETS,
-                paths.USER_PRESETS,
-                paths.USER_RIGS
+                paths.AssetTypes.USER_ASSETS,
+                paths.AssetTypes.USER_PRESETS,
+                paths.AssetTypes.USER_RIGS
                 }
 
             if not category in validation:
@@ -50,7 +50,7 @@ class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
                 name = os.path.splitext(file)[0]
                 name = self.get_name(name, category) + ".blend"
                 dst_path = os.path.join(
-                    paths.get_user_sub_asset_dir(category),
+                    paths.User.get_sub_icon_directory(category),
                     name
                     )
 
@@ -62,7 +62,7 @@ class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
                 name = os.path.splitext(name)[0] + ".png"
                 if os.path.exists(src_path):
                     dst_path = os.path.join(
-                        paths.get_user_sub_icon_dir(category),
+                        paths.User.get_sub_icon_directory(category),
                         name
                     )
                     shutil.copyfile(src = src_path, dst = dst_path)
@@ -70,9 +70,9 @@ class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
 
         shutil.rmtree(temp_path)
 
-        bpy.ops.mcam.ui_list_reload(asset_type=paths.ASSETS)
-        bpy.ops.mcam.ui_list_reload(asset_type=paths.PRESETS)
-        bpy.ops.mcam.ui_list_reload(asset_type=paths.RIGS)
+        bpy.ops.mcam.ui_list_reload(asset_type=paths.AssetTypes.ASSETS)
+        bpy.ops.mcam.ui_list_reload(asset_type=paths.AssetTypes.PRESETS)
+        bpy.ops.mcam.ui_list_reload(asset_type=paths.AssetTypes.RIGS)
 
         self.report({'INFO'}, "successully exported asset compound")
         return{'FINISHED'}
@@ -85,7 +85,7 @@ class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
                 enum : paths.USER_ASSETS | paths.USER_PRESETS | paths.USER_RIGS
         returns name with the next valid id -> name_id
         """
-        taken_names = paths.get_user_sub_assets(category)
+        taken_names = paths.User.get_sub_asset_list(category)
 
         # return name if name is not taken
         if not name in taken_names:

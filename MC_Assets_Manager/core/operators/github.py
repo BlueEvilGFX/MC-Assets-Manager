@@ -1,6 +1,7 @@
 import bpy, urllib, os, zipfile
 
 from MC_Assets_Manager.core import addonpreferences, utils
+from MC_Assets_Manager.core.utils.github_connect import GitHubReader
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -9,24 +10,22 @@ class GITHUB_OT_connect(bpy.types.Operator):
     bl_label = ""
 
     def execute(self, context):
-        from MC_Assets_Manager.core.utils import github_connect
         from MC_Assets_Manager.core.utils import paths
-        bpy.ops.mcam.ui_list_reload(asset_type=paths.DLCS)
-        github_connect.connect()
-        self.report({'INFO'}, "Successfull connection to Github")
+        bpy.ops.mcam.ui_list_reload(asset_type=paths.AssetTypes.DLCS)
+        GitHubReader().connect_threaded()
         return{'FINISHED'}
 
 def install_dlc(dlc, github_reader):
-    sta, owner = github_reader.sta_url, github_reader.rep_owner 
-    repo, name = github_reader.repo, dlc.name     
+    sta, owner = github_reader._sta_url, github_reader._rep_owner 
+    repo, name = github_reader._repo, dlc.name     
     url = dlc.download_link if dlc.download_link else\
         f'{sta}/{owner}/{repo}/raw/main/{name}/{name}.dlc'
 
-    dlc_dir = utils.paths.get_dlc_dir()
+    dlc_dir = utils.paths.DLC.get_directory()
     save_location = os.path.join(dlc_dir, f'{name}.dlc')
     urllib.request.urlretrieve(url, save_location)
 
-    with zipfile.ZipFile(save_location) as zip:
+    with zipfile.ZipFile(save_location, 'r') as zip:
         zip.extractall(path = dlc_dir)
 
     os.remove(save_location)
@@ -44,8 +43,7 @@ class UpdateInstall(bpy.types.Operator):
     )
  
     def execute(self, context):
-        from MC_Assets_Manager.core.utils.github_connect import github_reader
-        
+        github_reader = GitHubReader()
         for dlc in github_reader.dlc_list:
             if dlc.name == self.data:
                 break
@@ -61,25 +59,26 @@ class UpdateInstallAll(bpy.types.Operator):
     bl_label = "update / install all DLCs"
  
     def execute(self, context):
-        from MC_Assets_Manager.core.utils.github_connect import github_reader
+        from MC_Assets_Manager.core.utils.github_connect import GitHubReader
+        github_reader = GitHubReader()
 
         #   dlc list full of dlcs which need to be installed or updated
         dlcs_to_manage = [dlc for dlc in github_reader.dlc_list\
             if dlc.status != utils.github_connect.StatusEnum.INSTALLED
             ]
 
-        #   iterating over the dlcs to install / update them+
+        #   iterating over the dlcs to install / update them
         reload_preferences = False
         for dlc in dlcs_to_manage:
             install_dlc(dlc, github_reader)
-            reload_preferences = utils.paths.get_dlc_init(dlc.name)
+            reload_preferences = utils.paths.DLC.get_sub_init(dlc.name)
 
         bpy.ops.mcam.main_reload('INVOKE_DEFAULT')
 
         if reload_preferences:
             addonpreferences.reload_addon_preferences()
         
-        github_reader.news = False
+        github_reader._news = False
         self.report({'INFO'}, "DLCs successfully updated/installed")
         return {'FINISHED'}
 
@@ -88,8 +87,8 @@ class GITHUB_OT_IGNORE(bpy.types.Operator):
     bl_label = "ignore"
 
     def execute(self, context):
-        from MC_Assets_Manager.core.utils.github_connect import github_reader
-        github_reader.news = False
+        from MC_Assets_Manager.core.utils.github_connect import GitHubReader
+        GitHubReader()._news = False
         return{'FINISHED'}
 
 def register():

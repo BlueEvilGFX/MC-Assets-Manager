@@ -22,7 +22,7 @@ class DLC_OT_Add(Operator, ImportHelper):
         )
 
     def add(self, path):
-        pre_dir_path = paths.get_dlc_dir()
+        pre_dir_path = paths.DLC.get_directory()
         # add / import
         target = path
         handle = zipfile.ZipFile(target)
@@ -40,7 +40,7 @@ class DLC_OT_Add(Operator, ImportHelper):
         reload.reload_dlc_list()
 
         dlc = os.path.splitext(os.path.basename(self.filepath))[0]
-        init_path = paths.get_dlc_init(dlc)
+        init_path = paths.DLC.get_sub_init(dlc)
 
         if init_path:
             reload_addon_preferences()

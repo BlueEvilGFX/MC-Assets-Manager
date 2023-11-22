@@ -24,7 +24,7 @@ def draw_dlc_tab(self, context, layout, scene):
         text = "",
         icon = "FILE_REFRESH"
         )
-    reloader.asset_type = paths.DLCS
+    reloader.asset_type = paths.AssetTypes.DLCS
 
     colSec = colMain.column(align = True)
     colSec.operator("mcam.dlc_list_add", text = "", icon = "ADD")
@@ -40,13 +40,13 @@ def showDlcPreferences(self, context, layout):
     dlc_list = context.scene.mc_assets_manager_props.dlc_list
     if dlc_list:
         #   get paths and more
-        dlcs = paths.get_dlcs()
+        dlcs = paths.DLC.get_dlcs_list()
 
         for dlc in dlcs:
             index = props.dlc_index
             active = props.dlc_list[index].active                                           #   read active status of dlc
 
-            if self.data and active and paths.get_dlc_init(dlc):                            #   if dlc exists & active & init file (script based)                
+            if self.data and active and paths.DLC.get_sub_init(dlc):                        #   if dlc exists & active & init file (script based)                
                 if dlc == str(dlc_list[index].name):
                     try:
                         if dlc in locals():                                                 #   if already loaded
@@ -55,7 +55,7 @@ def showDlcPreferences(self, context, layout):
                             module_name = ".storage.dlcs."+dlc                              #   get module name for importing
                             locals()[dlc] = importlib.import_module(
                                 name = module_name,
-                                package = paths.PACKAGE
+                                package = paths.PathConstants.PACKAGE
                             ) 
 
                         locals()[dlc].CustomAddonPreferences.display(self, layout)          #   draw addon preferences from dlc

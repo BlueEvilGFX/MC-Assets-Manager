@@ -17,25 +17,25 @@ class UI_LIST_OT_RELOAD(bpy.types.Operator):
     asset_type : StringProperty()
 
     def execute(self, context):
-        if self.asset_type == paths.ASSETS:
+        if self.asset_type == paths.AssetTypes.ASSETS:
             reload.reload_asset_list()
             icons.reload_asset_icons()
             # self.report({'INFO'}, f'successfully reloaded asset list')
             return {'FINISHED'}
 
-        if self.asset_type == paths.PRESETS:
+        if self.asset_type == paths.AssetTypes.PRESETS:
             reload.reload_preset_list()
             icons.reload_preset_icons()
             # self.report({'INFO'}, f'successfully reloaded preset list')
             return {'FINISHED'}
         
-        if self.asset_type == paths.RIGS:
+        if self.asset_type == paths.AssetTypes.RIGS:
             reload.reload_rig_list()
             icons.reload_rig_icons()
             # self.report({'INFO'}, f'successfully reloaded rig list')
             return {'FINISHED'}
 
-        if self.asset_type == paths.DLCS:
+        if self.asset_type == paths.AssetTypes.DLCS:
             reload.reload_dlc_list()
             icons.reload_dlc_icons()
             # self.report({'INFO'}, f'successfully reloaded dlc list')

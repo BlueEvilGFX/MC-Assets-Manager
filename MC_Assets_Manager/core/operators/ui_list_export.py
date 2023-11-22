@@ -27,9 +27,9 @@ class UI_LIST_OT_EXPORT(Operator, ExportHelper):
 
     def execute(self, context):
         if not self.asset_type in {
-            paths.USER_ASSETS,
-            paths.USER_PRESETS,
-            paths.USER_RIGS
+            paths.AssetTypes.USER_ASSETS,
+            paths.AssetTypes.USER_PRESETS,
+            paths.AssetTypes.USER_RIGS
             }: 
             return {'CANCELED'}
 
@@ -54,14 +54,14 @@ class UI_LIST_OT_EXPORT_ALL(Operator, ExportHelper):
     def execute(self, context):
         destination = self.filepath
 
-        path = paths.get_user_sub_asset_dir(paths.USER_ASSETS)
-        export_single(destination, path, paths.USER_ASSETS, 'w')
+        path = paths.User.get_sub_asset_directory(paths.AssetTypes.USER_ASSETS)
+        export_single(destination, path, paths.AssetTypes.USER_ASSETS, 'w')
 
-        path = paths.get_user_sub_asset_dir(paths.USER_PRESETS)
-        export_single(destination, path, paths.USER_PRESETS, 'a')
+        path = paths.User.get_sub_asset_directory(paths.AssetTypes.USER_PRESETS)
+        export_single(destination, path, paths.AssetTypes.USER_PRESETS, 'a')
 
-        path = paths.get_user_sub_asset_dir(paths.USER_RIGS)
-        export_single(destination, path, paths.USER_RIGS, 'a')
+        path = paths.User.get_sub_asset_directory(paths.AssetTypes.USER_RIGS)
+        export_single(destination, path, paths.AssetTypes.USER_RIGS, 'a')
 
         self.report({'INFO'}, "successfully exported all user presets")
         return {'FINISHED'}
@@ -79,14 +79,15 @@ def export_single(destination, path, asset_type, write_type):
     """
     with zipfile.ZipFile(destination, write_type, zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk( os.path.join(
-                paths.get_user_sub_icon_dir(asset_type)), zipf):
+                paths.User.get_sub_icon_directory(asset_type)), zipf
+            ):
             for file in files:
                 zipf.write( os.path.join(root, file), 
                     os.path.relpath(os.path.join(root, file), 
                     os.path.join(path, '..')))
 
-        asset_dir = paths.get_user_sub_asset_dir(asset_type)
-        for file_name in paths.get_user_sub_assets(asset_type):
+        asset_dir = paths.User.get_sub_asset_directory(asset_type)
+        for file_name in paths.User.get_sub_asset_list(asset_type):
             file = file_name + ".blend"
             file_path = os.path.join(asset_dir, file)
             zipf.write(file_path, os.path.join(asset_type, file))

@@ -20,18 +20,18 @@ class UpdateFunctionsIntern:
         and the properties inside blender.
         """
         dlc_name = self.name
-        dlc_json = paths.get_dlc_json()
+        dlc_json = paths.McAM.get_dlc_main_json()
         
         with open(dlc_json, "r") as file:
             data = json.load(file)
         
-        init_path = paths.get_dlc_init(dlc_name)
+        init_path = paths.DLC.get_sub_init(dlc_name)
 
         if init_path:
             try:
                 locals()[dlc_name] = importlib.import_module(
                     name = f'.storage.dlcs.{dlc_name}',
-                    package = paths.PACKAGE
+                    package = paths.PathConstants.PACKAGE
                     )
 
                 # register / unregister them
@@ -70,13 +70,13 @@ class UpdateFunctionsIntern:
         function that returns the active scripted DLCs
         as enum items.
         """
-        dlc_json = paths.get_dlc_json()
+        dlc_json = paths.McAM.get_dlc_main_json()
     
         with open(dlc_json, "r") as json_file:
             data = json.load(json_file)
             enum = []
             for dlc in data:
-                if paths.get_dlc_init(dlc)and data[dlc]["active"]:
+                if paths.DLC.get_sub_init(dlc)and data[dlc]["active"]:
                     enum_item = (dlc, dlc, '')
                     enum.append(enum_item)
         return enum

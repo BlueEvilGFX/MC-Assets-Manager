@@ -28,24 +28,24 @@ class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
     def list_operators(element):
         # asset
         element.operator(
-            "mcam.ui_list_append",
+            "mcam.ui_list_append_asset",
             icon="COMMUNITY",
             text = "append asset"
-        ).asset_type = paths.ASSETS
+        )
 
         # preset
         element.operator(
-            "mcam.ui_list_append",
+            "mcam.ui_list_append_preset",
             icon="DOCUMENTS",
             text = "append preset"
-        ).asset_type = paths.PRESETS
+        )
 
         # rig
         element.operator(
-            "mcam.ui_list_append",
+            "mcam.ui_list_append_rig",
             icon="ARMATURE_DATA",
             text = "append rig"
-        ).asset_type = paths.RIGS
+        )
 
         element.operator(
             "mcam.split_close_area_asset_browser",

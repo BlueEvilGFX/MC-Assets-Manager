@@ -12,7 +12,7 @@ def dlc_callback(asset_type) -> list:
     """
 
     def callback(self, context):
-        dlcs_json = paths.get_dlc_json()
+        dlcs_json = paths.McAM.get_dlc_main_json()
 
         with open(dlcs_json, "r") as file:
             data = json.load(file)
@@ -21,7 +21,7 @@ def dlc_callback(asset_type) -> list:
                 ("User", "User", "User")
                 ]
             for dlc in data:
-                presets_path = paths.get_dlc_sub_assets_dir(dlc, asset_type)
+                presets_path = paths.DLC.get_sub_asset_directory(dlc, asset_type)
                 if presets_path and data[dlc]["active"]:
                     dlc_item = (dlc, dlc, '')
                     enum.append(dlc_item)

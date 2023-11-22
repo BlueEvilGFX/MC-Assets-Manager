@@ -8,7 +8,7 @@ from . import commons
 
 class RIG_UL_List(UIList):
     """Rig UIList"""
-    filter_enum : EnumProperty(items=commons.dlc_callback(paths.RIGS))
+    filter_enum : EnumProperty(items=commons.dlc_callback(paths.AssetTypes.RIGS))
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         # draw

@@ -2,7 +2,7 @@ import bpy
 
 from MC_Assets_Manager import addon_updater_ops
 from MC_Assets_Manager.core.utils import icons
-from MC_Assets_Manager.core.utils.github_connect import StatusEnum
+from MC_Assets_Manager.core.utils.github_connect import StatusEnum, GitHubReader
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -45,7 +45,7 @@ def get_icon(pcoll_id, dlc):
 
        
 def draw_github_tab(self, layout, element):
-    from MC_Assets_Manager.core.utils.github_connect import github_reader
+    github_reader = GitHubReader()
         
     layout = layout if element is None else element.column()
 
@@ -54,7 +54,7 @@ def draw_github_tab(self, layout, element):
     row = box.row()
 
     # no githubreader initialized
-    if github_reader == None:
+    if not github_reader.connection:
         row.operator("mcam.githubconnect", text="connect", icon="WORLD_DATA")
         return
     else:
@@ -72,7 +72,7 @@ def draw_github_tab(self, layout, element):
     row.prop(self.main_props, "auto_check_dlc", text="", icon="TEMP")
 
     # no internet connection
-    if not github_reader.network_connection:
+    if not github_reader.connection:
         layout.label(text="please connect to the internet")
         return
     
@@ -92,6 +92,7 @@ def draw_github_tab(self, layout, element):
 
     # if min width is more than 8285 : show version info
     width_show = bpy.context.screen.areas[0].width >= 825
+
 
     for dlc in github_reader.dlc_list:           
         #   display of DLCs
