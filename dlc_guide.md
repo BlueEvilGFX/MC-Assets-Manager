@@ -159,12 +159,16 @@ The names of the files can be changed. The class names must be the same though.
 
 To access the DLCs addon preference properties you have created in the `PreferencesProperty` class you will need to do it this way:
 ```py
+from MC_Assets_Manager.core.utils import paths
+
 dlc_name = os.path.basename(os.path.dirname(__file__))
 addon_preferences = paths.McAM.get_addon_properties()
 prop_access = getattr(addon_preferences, f"{dlc_name}_propGroup")
 ```
 Example of using:
 ```py
+from MC_Assets_Manager.core.utils import paths
+
 dlc_name = os.path.basename(os.path.dirname(__file__))
 addon_preferences = paths.McAM.get_addon_properties()
 prop_access = getattr(addon_preferences, f"{dlc_name}_propGroup")
