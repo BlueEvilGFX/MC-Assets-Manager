@@ -109,7 +109,7 @@ class PreferencesProperty(PropertyGroup):
 
 ```py
 class CustomAddonPreferences():
-    '''Creates a Panel in the User Preferences -> Addon Preferences'''
+    """Creates a Panel in the User Preferences -> Addon Preferences"""
 
     def display(self, layout=None):
         # here will be your code for your preferences UI
