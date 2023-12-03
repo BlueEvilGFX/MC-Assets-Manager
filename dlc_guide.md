@@ -134,6 +134,7 @@ class Panel():
         layout = self.layout
         obj = context.object
 ```
+You will find more information below.
 
 ## Multilfile Script
 
@@ -155,9 +156,41 @@ from .panel import Panel
 ```
 The names of the files can be changed. The class names must be the same though.
 
+## Defining the DLCs addon preferences properties
+
+To define the addon preferenes properties you need to declare them in the `PreferencesProperty` class.
+It could look like following:
+```py
+class PreferencesProperty(PropertyGroup):
+    test1 : bpy.props.BoolProperty()
+    test2 : bpy.props.StringProperty()
+    test3 : bpy.props.IntProperty()
+```
+
+## Displaying text/properties in the Addon Preferences Panel
+
+When you need to write text or display any kind of information in the DLCs addon preferences panel, you need to write that in the `CustomAddonPreferences` class.
+This could look like this using the properties which we have defined in the `PreferencesProperty` class before.
+```py
+class CustomAddonPreferences():
+    '''Creates a Panel in the User Preferences -> Addon Preferences'''
+
+    def display(self, element=None):
+        import os
+        from MC_Assets_Manager.core.utils import paths
+        # alternatively: use the dlc name for dlc_name
+        dlc_name = os.path.basename(os.path.dirname(__file__))
+        addon_preferences = paths.McAM.get_addon_properties()
+        prop_access = getattr(addon_preferences, f"{dlc_name}_propGroup"
+        layout = self.layout
+        layout.prop(prop_access, "test1")
+        layout.prop(prop_access, "test2")
+        layout.prop(prop_access, "test3")
+```
+
 ## Accessing the DLCs addon preferences
 
-To access the DLCs addon preference properties you have created in the `PreferencesProperty` class you will need to do it this way:
+To access the DLCs addon preference properties (in any class or file) you have created in the `PreferencesProperty` class you will need to do it this way: (It is similar to the `CustomAddonPreferences`)
 ```py
 from MC_Assets_Manager.core.utils import paths
 
@@ -173,9 +206,7 @@ dlc_name = os.path.basename(os.path.dirname(__file__))
 addon_preferences = paths.McAM.get_addon_properties()
 prop_access = getattr(addon_preferences, f"{dlc_name}_propGroup")
 
-value = prop_access.presets_wip_enum
-
-self.layout.prop(prop_access, "presets_wip_enum", expand=true)
+self.layout.prop(prop_access, "test1", expand=true)
 ```
         
 Except this, you can build your script like you want. This are the only restrictions / guidelines you need to follow.
