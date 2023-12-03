@@ -13,7 +13,7 @@
   * [Introduction to Scripts](#introduction-to-scripts)
   * [Multifile Scripts](#mutlifile-scripts)
   * [Defining the DLCs Addon Preferences Properties](#defining-the-dlcs-addon-preferences-properties)
-  * [Displaying text/properties in the Addon Preferences Panel](#displaying-text/properties-in-the-addon-preferences-panel)
+  * [Displaying text/properties in the Addon Preferences Panel](#displaying-properties-in-the-addon-preferences-panel)
   * [Accessing the DLCs addon preferences](#accessing-the-dlcs-addon-preferences) 
 
 # File Structure
@@ -169,7 +169,7 @@ class PreferencesProperty(PropertyGroup):
     test3 : bpy.props.IntProperty()
 ```
 
-## Displaying text/properties in the Addon Preferences Panel
+## Displaying properties in the Addon Preferences Panel
 
 When you need to write text or display any kind of information in the DLCs addon preferences panel, you need to write that in the `CustomAddonPreferences` class.
 This could look like this using the properties which we have defined in the `PreferencesProperty` class before.
