@@ -12,6 +12,8 @@
 * [Scripts](#scripts)
   * [Introduction to Scripts](#introduction-to-scripts)
   * [Multifile Scripts](#mutlifile-scripts)
+  * [Defining the DLCs Addon Preferences Properties](#defining-the-dlcs-addon-preferences-properties)
+  * [Displaying text/properties in the Addon Preferences Panel](#displaying-text/properties-in-the-addon-preferences-panel)
   * [Accessing the DLCs addon preferences](#accessing-the-dlcs-addon-preferences) 
 
 # File Structure
@@ -156,7 +158,7 @@ from .panel import Panel
 ```
 The names of the files can be changed. The class names must be the same though.
 
-## Defining the DLCs addon preferences properties
+## Defining the DLCs Addon Preferences Properties
 
 To define the addon preferenes properties you need to declare them in the `PreferencesProperty` class.
 It could look like following:
