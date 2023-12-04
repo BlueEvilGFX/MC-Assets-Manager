@@ -209,6 +209,7 @@ addon_preferences = paths.McAM.get_addon_properties()
 prop_access = getattr(addon_preferences, f"{dlc_name}_propGroup")
 
 self.layout.prop(prop_access, "test1", expand=true)
+value = prop_access.test1
 ```
         
 Except this, you can build your script like you want. This are the only restrictions / guidelines you need to follow.
