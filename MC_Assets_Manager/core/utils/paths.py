@@ -211,6 +211,32 @@ class DLC:
         ]
 
     @staticmethod
+    def get_sub_main_icon_directory(dlc: str) -> str:
+        """
+        :return: path to storage sub main icon of dlc directory, return '' if not existent
+        """
+        icon_dir = os.path.join(DLC.get_sub_directory(dlc), "icons")
+        if os.path.exists(icon_dir):
+            return icon_dir
+        return ''
+    
+    @staticmethod
+    def get_sub_main_icon_list(dlc:str) -> list:
+        """
+        :param dlc: dlc name
+        :return: list with icons without extensions
+        """
+        icon_dir = DLC.get_sub_main_icon_directory(dlc)
+        if icon_dir == '':
+            return []
+        
+        return [
+            os.path.splitext(icon)[0]
+            for icon in os.listdir(icon_dir)
+            if icon.endswith(".png")
+        ]
+
+    @staticmethod
     def get_sub_icon_directory(dlc: str, asset_type: AssetTypes) -> str:
         """
         :param asset_type: Element in AssetTypes

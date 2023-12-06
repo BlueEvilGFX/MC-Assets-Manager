@@ -34,7 +34,7 @@ class UpdateFunctionsIntern:
                     package = paths.PathConstants.PACKAGE
                     )
 
-                # register / unregister them
+                # register / unregister DLCs
                 try:
                     if self.active:
                         try:

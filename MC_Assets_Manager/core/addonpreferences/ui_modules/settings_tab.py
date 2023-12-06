@@ -22,7 +22,15 @@ def draw_settings_tab(self, context):
     row.prop(
         self.main_props,
         "auto_check_dlc",
-        text="checks for DLC updates during startup "
+        text="checks for DLC updates during startup"
+        )
+    
+    # auto lists loader during start up
+    row = box.row()
+    row.prop(
+        self.main_props,
+        "auto_load_lists",
+        text="loads the addons lists during startup"
         )
 
     # two UIs in the n panel

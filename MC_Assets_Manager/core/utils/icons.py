@@ -71,6 +71,13 @@ class IconReader:
                 path = os.path.join(dlc_dir, dlc, "icon.png")
                 if os.path.exists(path):
                     pcoll.load(dlc, path, "IMAGE")
+
+                icon_dir = paths.DLC.get_sub_main_icon_directory(dlc)
+                icons = paths.DLC.get_sub_main_icon_list(dlc)
+                for icon in icons:
+                    path = os.path.join(icon_dir, icon+".png")
+                    name = dlc + ':' + icon
+                    pcoll.load(name, path, "IMAGE")
             else:
                 # return since without icon_prefix icons cannot be loaded
                 if icon_prefix is None:
@@ -109,7 +116,7 @@ class IconReader:
         for icon in icons:
             path = os.path.join(icon_dir, icon+'.png')
             name = icon
-            pcoll.load(name, path, "IMAGE")
+            pcoll.load(icon, path, "IMAGE")
 
     @staticmethod
     def reload_icons(pcoll_id, asset_type=None, icon_prefix=None) -> None:

@@ -37,6 +37,12 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
         default=True,
         description="checking automatically for dlc updates every time blender starts"
         )
+    
+    # auto load lists
+    auto_load_lists : BoolProperty(
+        default = True,
+        description="loads all the lists of the addon on on start up"
+    )
 
     #   two UIs : DLCs in the n panel
     two_dlc_ui_panels : BoolProperty()

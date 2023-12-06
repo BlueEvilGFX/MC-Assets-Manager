@@ -8,7 +8,7 @@ from MC_Assets_Manager.core.utils.github_connect import StatusEnum, GitHubReader
 
 def draw_online_tab(self, context, element=None):
     layout = self.layout
-    pcoll = icons.mcam_icons["McAM"]
+    pcoll = icons.mcam_icons[icons.PCOLL_MCAM_ID]
     smallHeader = layout.row()
     smallHeader.prop(self.main_props, "online_menu", expand = True)
     smallHeader.label(text="", icon="BLANK1")
@@ -28,7 +28,7 @@ def draw_online_tab(self, context, element=None):
 
     custom_icon = pcoll["discord"].icon_id
     colMain.operator("wm.url_open", text="", icon_value = custom_icon).url = "https://discord.com/invite/3mybvgB6wE"
-
+    
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 def get_icon(pcoll_id, dlc):

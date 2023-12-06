@@ -32,7 +32,13 @@ class McAMDlc(bpy.types.Panel):
 
         # return if no scripted dlc is installed since nothing will be shown
         if not script_dlcs:
-            # layout.label(text="no script based DLC is installed")
+            row = layout.row()
+            row.label(text="no script based DLC is installed")
+            row.operator(
+                "mcam.main_reload",
+                icon="FILE_REFRESH",
+                text =""
+            )
             return
 
         # ━━━━━━━━━━━━ import all DLC UIs
@@ -50,10 +56,17 @@ class McAMDlc(bpy.types.Panel):
         enum_selection_1 = McAMProps.scriptUIEnum
         row = layout.box().row()
         row.prop(McAMProps, "scriptUIEnum")
-        rr = row
-        self.displayOperator(rr)
+        row = row.row(align=True)
+        self.displayOperator(row)
+        row.operator(
+            "mcam.main_reload",
+            icon="FILE_REFRESH",
+            text =""
+        )
+
         try:
-            locals()[enum_selection_1].Panel.draw(self, context)
+            Panel = locals()[enum_selection_1].Panel
+            Panel.draw(self, context)
         except Exception as e: 
             print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
             print(str(e))
@@ -61,7 +74,8 @@ class McAMDlc(bpy.types.Panel):
         
         # ━━━━━━━━━━━━ 2 UI pananls check
         preferences = paths.McAM.get_addon_properties().main_props
-        if not preferences.two_dlc_ui_panels: return
+        if not preferences.two_dlc_ui_panels:
+            return
 
         self.layout.label(text="")
         self.layout.label(text="")
@@ -69,8 +83,7 @@ class McAMDlc(bpy.types.Panel):
         enum_selection_2 = McAMProps.scriptUIEnum2
         row = self.layout.box().row()
         row.prop(McAMProps, "scriptUIEnum2")
-        rr = row
-        self.displayOperator(rr)
+        self.displayOperator(row)
         try:
             locals()[enum_selection_2].Panel.draw(self, context)
         except Exception as e: 

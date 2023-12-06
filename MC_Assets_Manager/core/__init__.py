@@ -35,7 +35,9 @@ register_modules = [
 
 @persistent
 def load_handler(dummy):
-    bpy.ops.mcam.main_reload()
+    load_lists = utils.paths.McAM.get_addon_properties().main_props.auto_load_lists
+    if load_lists:
+        bpy.ops.mcam.main_reload()
     check = utils.paths.McAM.get_addon_properties().main_props.auto_check_dlc
     if check:
         utils.github_connect.GitHubReader().connect_threaded()

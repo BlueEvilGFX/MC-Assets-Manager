@@ -12,7 +12,7 @@ from MC_Assets_Manager.core.utils import icons, paths
 class StatusEnum(Enum):
     INSTALLED = auto()
     UPDATEABLE = auto()
-    INSTALLABLE  = auto()
+    INSTALLABLE = auto()
 
 @dataclass
 class DLCObject:

@@ -47,10 +47,18 @@ class OBJECT_MT_McAssets_ShiftA_submenu(bpy.types.Menu):
             text = "append rig"
         )
 
+        # asset browser
         element.operator(
             "mcam.split_close_area_asset_browser",
             icon="ASSET_MANAGER"
         )
+
+        # reload
+        element.operator(
+            "mcam.main_reload",
+            icon="FILE_REFRESH"
+        )
+
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #                   (un)register
