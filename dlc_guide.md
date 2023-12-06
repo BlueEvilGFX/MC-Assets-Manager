@@ -11,10 +11,11 @@
   * [Assets](#assets)
 * [Scripts](#scripts)
   * [Introduction to Scripts](#introduction-to-scripts)
-  * [Multifile Scripts](#mutlifile-scripts)
+  * [Multilfile Script](#multilfile-script)
   * [Defining the DLCs Addon Preferences Properties](#defining-the-dlcs-addon-preferences-properties)
   * [Displaying text/properties in the Addon Preferences Panel](#displaying-properties-in-the-addon-preferences-panel)
-  * [Accessing the DLCs addon preferences](#accessing-the-dlcs-addon-preferences) 
+  * [Accessing the DLCs addon preferences](#accessing-the-dlcs-addon-preferences)
+  * [Using custom icons for the DLC](#using-custom-icons-for-the-dlc)
 
 # File Structure
 
@@ -46,7 +47,11 @@ DLC
 │  │  └── icon_2.png
 │  ├── rig_1.blend
 │  └── rig_2.blend
-│  
+│
+├──● icons               // icons for the DLC itself
+│  ├── icon_1.png
+│  └── icon_2.png
+│
 ├── data.json           // contains all DLC data including version number, creator and type of DLC 
 ├── __init__.py         // if DLC has its own script you need to initialize it here
 └── icon.png            // the icon for the DLC
@@ -211,5 +216,20 @@ prop_access = getattr(addon_preferences, f"{dlc_name}_propGroup")
 self.layout.prop(prop_access, "test1", expand=true)
 value = prop_access.test1
 ```
+
+## Using custom icons for the DLC
+
+You can also use custom icons for the UI of a DLC. For this you need to put your icons in the icons folder directly in your `<DLC>` folder. The addressing name to the icon is composited by the DLC name and the icon name: `<DLC_name>:<icon_name>`. For the DLC `Thomas_Rig` and the icon `cape` it would be this: `Thomas_Rig:cape`
+
+First import the `icons.py` file from McAM, then you can use it like following:
+```py
+from MC_Assets_Manager.core.utils import icons
+
+pcoll = icons.mcam_icon[icons.PCOLL_DLC_ID]
+icon_id = pcoll["Thomas_Rig:cape"].icon_id
+
+row.label(text = "hey", icon_value = icon_id)
+```
+
         
 Except this, you can build your script like you want. This are the only restrictions / guidelines you need to follow.
