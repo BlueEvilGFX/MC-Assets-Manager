@@ -1529,10 +1529,10 @@ def unregister():
     updater.clear_state()  # Clear internal vars, avoids reloading oddities.
 
     global ran_auto_check_install_popup
-    ran_auto_check_install_popup = False
+    ran_auto_check_install_popup = True
 
     global ran_update_success_popup
-    ran_update_success_popup = False
+    ran_update_success_popup = True
 
     global ran_background_check
-    ran_background_check = False
+    ran_background_check = True

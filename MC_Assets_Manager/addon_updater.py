@@ -1044,11 +1044,10 @@ class SingletonUpdater:
         # Walk through the base addon folder for rules on pre-removing
         # but avoid removing/altering backup and updater file.
         for path, dirs, files in os.walk(base):
-            from MC_Assets_Manager.core.utils.paths import get_storage_dir
             
             # Prune ie skip updater folder.
             dirs[:] = [d for d in dirs
-                       if os.path.join(path, d) not in [self._updater_path, get_storage_dir()]]
+                       if os.path.join(path, d) not in [self._updater_path, 'storage']]
             for file in files:
                 for pattern in self.remove_pre_update_patterns:
                     if fnmatch.filter([file], pattern):
