@@ -37,14 +37,13 @@ class UpdateFunctionsIntern:
                 # register / unregister DLCs
                 try:
                     if self.active:
-                        try:
-                            locals()[dlc_name].register()
-                        except:
-                            pass
-                    else:   
+                        locals()[dlc_name].register()
+                    else:
                         locals()[dlc_name].unregister()
-                except Exception as e: 
-                    print(e)
+                except:
+                    # most likely if blender starts and sth unregistered cannot
+                    # be unregistered at all
+                    pass
 
                 # blenders prop dlc status value
                 data[dlc_name]["active"] = self.active
@@ -55,6 +54,8 @@ class UpdateFunctionsIntern:
                 if self.active:
                     self.active = False
                 data[dlc_name]["active"] = False
+        else:
+            data[dlc_name]['active'] = self.active
 
         # write active status to json file
         with open(dlc_json, "w") as file:
