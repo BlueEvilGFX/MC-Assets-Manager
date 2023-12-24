@@ -20,7 +20,7 @@ class UI_LIST_OT_IMPORT_ASSET_COMPOUND(Operator, ImportHelper):
     filter_glob : StringProperty(default = "*.zip;*.rar", options = {"HIDDEN"})
 
     def execute(self, context):
-        temp_path = os.path.join(paths.get_storage_dir(), "temp")
+        temp_path = os.path.join(paths.PathConstants.STORAGE_DIRECTORY, "temp")
         if os.path.exists(temp_path):
             shutil.rmtree(temp_path)
         os.mkdir(temp_path)

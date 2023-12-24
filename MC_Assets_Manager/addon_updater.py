@@ -1047,7 +1047,11 @@ class SingletonUpdater:
             
             # Prune ie skip updater folder.
             dirs[:] = [d for d in dirs
-                       if os.path.join(path, d) not in [self._updater_path, 'storage']]
+                       if os.path.join(path, d) not in 
+                            [
+                            self._updater_path,
+                            os.path.join(os.path.dirname(__file__), 'storage')
+                           ]]
             for file in files:
                 for pattern in self.remove_pre_update_patterns:
                     if fnmatch.filter([file], pattern):
