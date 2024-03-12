@@ -49,6 +49,6 @@ class DLC_OT_Remove(Operator):
 
         bpy.ops.mcam.main_reload()
         
-        github_connect.GitHubReader().connect()
+        github_connect.GitHubReader().connect_threaded()
         self.report({'INFO'}, "dlc successully removed")
         return{'FINISHED'}

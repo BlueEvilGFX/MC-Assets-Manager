@@ -1,4 +1,5 @@
 import os
+import json
 
 import bpy
 from bpy.props import StringProperty
@@ -19,7 +20,7 @@ class UI_LIST_OT_REMOVE(Operator):
     bl_idname = "mcam.ui_list_remove"
     bl_label = "remove"
 
-    asset_type : StringProperty()
+    asset_type : StringProperty() # type: ignore
 
     def execute(self, context):
         scene = context.scene
@@ -33,26 +34,40 @@ class UI_LIST_OT_REMOVE(Operator):
                                 self.asset_type,
                                 asset_dict.Selection.ui_list))
         item = asset_list[item_index]
-        name = item.name
-        icon = name
-        collection = item.collection
+        
+        # stored item
+        if not item.link:
+            name = item.name
+            icon = name
+            collection = item.collection
 
-        if collection:
-            name = name + "&&" + collection
+            if collection:
+                name = name + "&&" + collection
 
-        asset_path = os.path.join(asset_dir, name) + ".blend"
-        icon_path = os.path.join(icon_dir, icon) + ".png"
+            asset_path = os.path.join(asset_dir, name) + ".blend"
+            icon_path = os.path.join(icon_dir, icon) + ".png"
 
-        if os.path.exists(asset_path):
-            os.remove(asset_path)
+            if os.path.exists(asset_path):
+                os.remove(asset_path)
 
-        if os.path.exists(icon_path):
-            os.remove(icon_path)
+            if os.path.exists(icon_path):
+                os.remove(icon_path)
+        # linked item
+        else:
+            link_json = paths.User.get_links_json()
+
+            with open(link_json, 'r') as json_file:
+                data = json.load(json_file)
+            
+            data[self.asset_type].remove(item.link)
+
+            with open(link_json, 'w') as file:
+                json.dump(data, file, indent=4)
 
         asset_type = asset_dict.get_asset_types(
             self.asset_type,
             asset_dict.Selection.raw_type
             )
-        setattr(scene.mc_assets_manager_props, index, index - 1)
+        setattr(scene.mc_assets_manager_props, index, getattr(scene.mc_assets_manager_props, index) - 1)
         bpy.ops.mcam.ui_list_reload(asset_type=asset_type)
         return{'FINISHED'}

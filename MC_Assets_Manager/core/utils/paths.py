@@ -144,6 +144,13 @@ class User:
         :return: path to asset blend file from given asset with name
         """
         return os.path.join(User.get_sub_asset_directory(asset_type), name + ".blend")
+    
+    @staticmethod
+    def get_links_json() -> str:
+        """
+        :return: path to links_json which contains linked assets etc
+        """
+        return os.path.join(PathConstants.RESOURCES_DIRECTORY, 'links.json')
 
 
 class DLC:

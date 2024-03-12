@@ -84,7 +84,13 @@ class AssetAppender:
         index = getattr(props, asset_dict.get_ul_class(raw_type)[1])
         ui_list = getattr(props, asset_dict.get_asset_types(self.asset_type, asset_dict.Selection.ui_list))
         item = ui_list[index]
+        name = item.name
         blend_file = self.get_item(item)
+
+        # if link is invalid
+        if blend_file == {'CANCELLED'}:
+            self.op_ref.report({'ERROR'}, f'{name} has an invalid link. Link has been removed')
+            return {'CANCELLED'}
 
         if item.dlc and self.asset_type == paths.AssetTypes.ASSETS:
             self.append_dlc_asset(blend_file, item)
@@ -93,7 +99,7 @@ class AssetAppender:
         else:
             self.append_restrictioned(blend_file, item)
 
-        self.op_ref.report({'INFO'}, f"{self.asset_type} successfully appended")
+        self.op_ref.report({'INFO'}, f"{name} successfully appended")
 
     def get_item(self, item):
         """Returns the path to the blend file."""
@@ -105,6 +111,15 @@ class AssetAppender:
             blend_dir = paths.DLC.get_sub_asset_directory(item.dlc, self.asset_type)
         else:
             blend_dir = paths.User.get_sub_asset_directory(asset)
+
+        # check if file is linked
+        if getattr(item, "link"):
+            if os.path.exists(item.link):
+                return item.link
+            # remove if link is not valid
+            # index is correct since appending has selected item -> remove it
+            bpy.ops.mcam.ui_list_remove("INVOKE_DEFAULT", asset_type=asset)
+            return {'CANCELLED'}
 
         # Determine the file name based on the asset type and whether the item has a collection
         if self.asset_type == paths.AssetTypes.ASSETS:
@@ -137,26 +152,23 @@ class AssetAppender:
         )
 
     def append_normally(self, blend_file):
-        """Appends the collection if a collection exists, otherwise append the objects."""
+        """Appends the collection if a collection exists, otherwise appends the objects."""
         with bpy.data.libraries.load(blend_file, link=False) as (data_from, data_to):
             data_to.objects = data_from.objects
             data_to.collections = data_from.collections
 
         if data_to.collections:
-            main_collection = None
-            sub_collections = []
+            # set of names of collections to be removed
+            # contains the names of collections that are references by other collectoins as children
+            collections_to_remove = {coll.name for collection in data_to.collections for coll in collection.children_recursive}
 
-            for coll in data_to.collections:
-                if main_collection is None:
-                    main_collection = coll
-                else:
-                    sub_collections.append(coll)
-                bpy.context.scene.collection.children.link(coll)
+            # top_collections, excluding the names in collections_to_remove
+            top_collections = {item.name: item for item in data_to.collections if item.name not in collections_to_remove}
 
-            collection = bpy.context.view_layer.layer_collection.collection
-            if collection:
-                for coll in sub_collections:
-                    collection.children.unlink(coll)
+            # Link the collections to the scene
+            for collection in top_collections.values():
+                bpy.context.scene.collection.children.link(collection)
+
         else:
             for obj in data_to.objects:
                 if obj is not None:

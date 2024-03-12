@@ -1,4 +1,5 @@
 import json
+import os
 
 from bpy.props import EnumProperty
 from bpy.types import UIList
@@ -11,7 +12,7 @@ from . import commons
 class ASSET_UL_List(UIList):
     """Asset UIList."""
     # filter enum for normal dlc filtering
-    filter_enum : EnumProperty(items=commons.dlc_callback(paths.AssetTypes.ASSETS))
+    filter_enum : EnumProperty(items=commons.dlc_callback(paths.AssetTypes.ASSETS)) # type: ignore
 
     # filtering for categories -> categories written in json file
     category_file = paths.DLC.get_asset_categories_json()
@@ -22,7 +23,7 @@ class ASSET_UL_List(UIList):
             d = (x, x, '')
             categories.append(d)
     
-    category_enum : EnumProperty(items=categories)
+    category_enum : EnumProperty(items=categories) # type: ignore
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         # draw
@@ -31,6 +32,12 @@ class ASSET_UL_List(UIList):
         row.label(text=item.name, icon_value=custom_icon)
         row.label(text=item.dlc)
         row.label(text=item.category)
+        if item.link:
+            row.operator(
+                "mcam.ui_list_open_dir",
+                text = "",
+                icon = "LINKED"
+            ).asset_type = os.path.dirname(item.link)
     
     def filter_items(self, context, data, propname):
         filtered, ordered = commons.filter_items_name_dlc(self, context,

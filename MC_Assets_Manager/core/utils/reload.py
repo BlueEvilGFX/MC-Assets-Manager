@@ -79,6 +79,8 @@ class ReloadIntern:
         - checks for collection restrictions: unimportant for assets
         - it sets the icon property to the corresponding id
         """
+
+        # add stored files
         user_files = paths.User.get_sub_asset_list(asset_type)
         user_icons = paths.User.get_sub_icon_list(asset_type)
 
@@ -91,7 +93,32 @@ class ReloadIntern:
 
             if file in user_icons:
                 item.icon = asset_type + ':'+ item.name
+        
+        # add linked files
+        json_file = paths.User.get_links_json()
+        with open(json_file, "r") as file:
+            data = json.load(file) 
+        
+        invalid_links = False
+        for asset in data[asset_type]:
+            # invalid path -> remove
+            if not os.path.exists(asset):
+                invalid_links = True
+                data[asset_type].remove(asset)
+            item = ui_list.add()
+            item.link = asset # filepath
+            asset = os.path.splitext(asset)[0] # remove .blend extension
+            if "&&" in asset:
+                item.name, item.collection = os.path.basename(asset).split("&&")
+            else:
+                item.name = os.path.basename(asset)
 
+        # if invalid links detectedm push changes
+        if invalid_links:
+            with open(json_file, 'w') as file:
+                json.dump(data, file, indent=4)
+
+                
     @staticmethod
     def load_dlc_files(ui_list, asset_type):
         """

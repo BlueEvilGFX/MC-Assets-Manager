@@ -26,8 +26,9 @@ class UpdateFunctionsIntern:
             data = json.load(file)
         
         init_path = paths.DLC.get_sub_init(dlc_name)
-
-        if init_path:
+    	
+        # dlc has a script and is active
+        if init_path and data[dlc_name]["active"] == True:
             try:
                 locals()[dlc_name] = importlib.import_module(
                     name = f'.storage.dlcs.{dlc_name}',
@@ -64,6 +65,7 @@ class UpdateFunctionsIntern:
         reload.reload_addon_preferences()
         reload.reload_asset_list()
         reload.reload_preset_list()
+        reload.reload_rig_list()
 
     @staticmethod
     def scan_ui_dlc(self, context):
@@ -97,12 +99,12 @@ class MCAssetsManagerProperties(PropertyGroup):
         group of properties representing a dlc item in the ui list\n
         name | type | creator | active | version
         """
-        name : StringProperty()
-        type : StringProperty()
-        creator : StringProperty()
-        active : BoolProperty(default = True, update = UpdateFunctionsIntern.update_active)
-        version: StringProperty()
-        icon : BoolProperty()
+        name : StringProperty() # type: ignore
+        type : StringProperty() # type: ignore
+        creator : StringProperty() # type: ignore
+        active : BoolProperty(default = True, update = UpdateFunctionsIntern.update_active) # type: ignore
+        version: StringProperty() # type: ignore
+        icon : BoolProperty() # type: ignore
     
     class AssetListItem(PropertyGroup):
         """
@@ -112,12 +114,13 @@ class MCAssetsManagerProperties(PropertyGroup):
         --> collection not needed! category --> object or collection
         --> icon: name of file | if no icon --> empty
         """
-        name : StringProperty()
-        type : StringProperty()
-        category : StringProperty()
-        dlc : StringProperty()
-        icon : StringProperty()
-        collection : StringProperty()
+        name : StringProperty() # type: ignore
+        type : StringProperty() # type: ignore
+        category : StringProperty() # type: ignore
+        dlc : StringProperty() # type: ignore
+        icon : StringProperty() # type: ignore
+        collection : StringProperty() # type: ignore
+        link : StringProperty() # type: ignore
 
 
     class PresetListItem(PropertyGroup):
@@ -127,10 +130,11 @@ class MCAssetsManagerProperties(PropertyGroup):
         --> dlc: name of dlc to which the item belongs
         --> icon: name of file | if no icon --> empty
         """
-        name : StringProperty()
-        dlc : StringProperty()
-        icon : StringProperty()
-        collection : StringProperty()
+        name : StringProperty() # type: ignore
+        dlc : StringProperty() # type: ignore
+        icon : StringProperty() # type: ignore
+        collection : StringProperty() # type: ignore
+        link : StringProperty() # type: ignore
 
 
     class RigListItem(PropertyGroup):
@@ -140,25 +144,26 @@ class MCAssetsManagerProperties(PropertyGroup):
         --> dlc: name of dlc to which the item belongs
         --> icon: name of file | if no icon --> empty
         """
-        name : StringProperty()
-        dlc : StringProperty()
-        icon : StringProperty()
-        collection : StringProperty()
+        name : StringProperty() # type: ignore
+        dlc : StringProperty() # type: ignore
+        icon : StringProperty() # type: ignore
+        collection : StringProperty() # type: ignore
+        link : StringProperty() # type: ignore
 
     
-    dlc_index : IntProperty(name = "Index for dlc_list", default = 0)
-    preset_index : IntProperty(name = "Index for preset_list", default = 0)
-    asset_index : IntProperty(name = "Index for asset_list", default = 0)
-    rig_index : IntProperty(name = "Index for asset_list", default = 0)
-    item_unlock : BoolProperty(name = "(un)locked", default = False)
+    dlc_index : IntProperty(name = "Index for dlc_list", default = 0) # type: ignore
+    preset_index : IntProperty(name = "Index for preset_list", default = 0) # type: ignore
+    asset_index : IntProperty(name = "Index for asset_list", default = 0) # type: ignore
+    rig_index : IntProperty(name = "Index for asset_list", default = 0) # type: ignore
+    item_unlock : BoolProperty(name = "(un)locked", default = False) # type: ignore
 
-    preset_list : CollectionProperty(type = PresetListItem)
-    asset_list : CollectionProperty(type = AssetListItem)
-    dlc_list : CollectionProperty(type = DLCListItem)
-    rig_list : CollectionProperty(type = RigListItem)
+    preset_list : CollectionProperty(type = PresetListItem) # type: ignore
+    asset_list : CollectionProperty(type = AssetListItem) # type: ignore
+    dlc_list : CollectionProperty(type = DLCListItem) # type: ignore
+    rig_list : CollectionProperty(type = RigListItem) # type: ignore
 
-    scriptUIEnum : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name ="")
-    scriptUIEnum2 : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name="")
+    scriptUIEnum : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name ="") # type: ignore
+    scriptUIEnum2 : EnumProperty(items=UpdateFunctionsIntern.scan_ui_dlc, name="") # type: ignore
 
 def get_addon_prop():
     """

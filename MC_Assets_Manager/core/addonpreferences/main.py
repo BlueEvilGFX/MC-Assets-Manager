@@ -16,7 +16,7 @@ from MC_Assets_Manager.core.addonpreferences.properties import \
 class AddonPref(AddonPreferences):
     bl_idname = utils.paths.PathConstants.PACKAGE
 
-    main_props : PointerProperty(type=AddonPreferencesProps)
+    main_props : PointerProperty(type=AddonPreferencesProps) # type: ignore
 
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -24,34 +24,34 @@ class AddonPref(AddonPreferences):
     auto_check_update : bpy.props.BoolProperty(
         name="Auto-check for Update",
         description="If enabled, auto-check for updates using an interval",
-        default=True)
+        default=True) # type: ignore
 
     updater_interval_months : bpy.props.IntProperty(
         name='Months',
         description="Number of months between checking for updates",
         default=0,
-        min=0)
+        min=0) # type: ignore
 
     updater_interval_days : bpy.props.IntProperty(
         name='Days',
         description="Number of days between checking for updates",
         default=1,
         min=1,
-        max=31)
+        max=31) # type: ignore
 
     updater_interval_hours : bpy.props.IntProperty(
         name='Hours',
         description="Number of hours between checking for updates",
         default=0,
         min=0,
-        max=23)
+        max=23) # type: ignore
 
     updater_interval_minutes : bpy.props.IntProperty(
         name='Minutes',
         description="Number of minutes between checking for updates",
         default=0,
         min=0,
-        max=59)
+        max=59) # type: ignore
 
     # ━━━━━━━━━━━━ loading dlc preferences
     dlc_json = utils.paths.McAM.get_dlc_main_json()
@@ -62,6 +62,8 @@ class AddonPref(AddonPreferences):
     for dlc in data:
         if utils.paths.DLC.get_sub_init(dlc):
             try:
+                if data[dlc]["active"] == False:
+                    continue
                 if dlc in locals():
                     importlib.reload(dlc)
                 else:
@@ -80,7 +82,6 @@ class AddonPref(AddonPreferences):
                 #   creates PointerProperty to PropertyGroup
                 exec(f'{dlc+"_propGroup"} : {pointer}')
             except Exception:
-                print("HERE")
                 print(traceback.format_exc())
                 active_set_false.append(dlc)
     

@@ -14,7 +14,7 @@ class UI_LIST_OT_RELOAD(bpy.types.Operator):
     bl_idname = "mcam.ui_list_reload"
     bl_label = "reload"
 
-    asset_type : StringProperty()
+    asset_type : StringProperty() # type: ignore
 
     def execute(self, context):
         if self.asset_type == paths.AssetTypes.ASSETS:
