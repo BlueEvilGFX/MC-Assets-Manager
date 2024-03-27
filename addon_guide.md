@@ -18,6 +18,8 @@
 
 For adding assets you will go to the Assets tab as shown in the picture. There you will find three differnt sub-tabs, each dedicated to their own group of assets --> presets, assets and rigs.
 
+An asset must be a collection or an object inside a blend file. Only this will work, nothing else. For example a blend file with a hdri but not an object will do nothing or throw an error when you try to append it to your scene.
+
 For adding an asset to such a group, you go to the dedicated tab and click on the + next to the UI list above the - button. Then you will choose a filepath and then you confirm your addition to the "storage" of McAM. This can also be a .zip file, which contains blend files. Very important for this is that you have to make all external files internal. That means you need to pack your images etc. first. Quick tip: for this you can also select multiple blend files at once.
 
 For removing you will have to first unlock the remove operator with the little lock beneath it. Then you select the asset you want to remove in the list and click on the - to remvove it completely. This is an operation that can not be redo! So please only remove a file if you are sure you want to remove it. Therefore I suggest to let the lock be locked all the time when you do not want to remove any file. Then you will find the "export" button. You can export your personal assets here into a zip file. Assets from DLCs wont be exported since they are not created by you or maybe are privat.
