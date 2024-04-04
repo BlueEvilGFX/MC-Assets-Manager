@@ -28,32 +28,24 @@ class UpdateFunctionsIntern:
         init_path = paths.DLC.get_sub_init(dlc_name)
     	
         # dlc has a script and is active
-        if init_path and data[dlc_name]["active"] == True:
+        if init_path:
             try:
-                locals()[dlc_name] = importlib.import_module(
-                    name = f'.storage.dlcs.{dlc_name}',
-                    package = paths.PathConstants.PACKAGE
+                if dlc_name not in globals() and self.active:
+                    globals()[dlc_name] = importlib.import_module(
+                        name = f'.storage.dlcs.{dlc_name}',
+                        package = paths.PathConstants.PACKAGE
                     )
-
-                # register / unregister DLCs
-                try:
-                    if self.active:
-                        locals()[dlc_name].register()
-                    else:
-                        locals()[dlc_name].unregister()
-                except:
-                    # most likely if blender starts and sth unregistered cannot
-                    # be unregistered at all
-                    pass
+                    globals()[dlc_name].register()
+                if dlc_name in globals() and self.active == False:
+                    globals()[dlc_name].unregister()
+                    del globals()[dlc_name]
 
                 # blenders prop dlc status value
                 data[dlc_name]["active"] = self.active
-                
             except Exception:
                 print(traceback.format_exc())
                 # error -> set active status to False
-                if self.active:
-                    self.active = False
+                self.active = False
                 data[dlc_name]["active"] = False
         else:
             data[dlc_name]['active'] = self.active
@@ -73,15 +65,12 @@ class UpdateFunctionsIntern:
         function that returns the active scripted DLCs
         as enum items.
         """
-        dlc_json = paths.McAM.get_dlc_main_json()
-    
-        with open(dlc_json, "r") as json_file:
-            data = json.load(json_file)
-            enum = []
-            for dlc in data:
-                if paths.DLC.get_sub_init(dlc)and data[dlc]["active"]:
-                    enum_item = (dlc, dlc, '')
-                    enum.append(enum_item)
+        dlc_list = bpy.context.scene.mc_assets_manager_props.dlc_list
+        enum = []
+        for dlc in dlc_list:
+            if dlc.type == "script" and dlc.active and dlc.ui:
+                enum_item = (dlc.name, dlc.name, '')
+                enum.append(enum_item)
         return enum
 
    
@@ -105,6 +94,7 @@ class MCAssetsManagerProperties(PropertyGroup):
         active : BoolProperty(default = True, update = UpdateFunctionsIntern.update_active) # type: ignore
         version: StringProperty() # type: ignore
         icon : BoolProperty() # type: ignore
+        ui : BoolProperty() # type: ignore
     
     class AssetListItem(PropertyGroup):
         """

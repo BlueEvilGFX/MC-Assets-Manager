@@ -55,6 +55,7 @@ def reload_dlc_list() -> None:
             item.type = dlc_data["type"]
             item.creator = dlc_data["creator"]
             item.active = dlc_data["active"]
+            item.ui = dlc_data.get("ui", True)
             item.version = dlc_data["version"]
             icon_path = os.path.join(paths.DLC.get_directory(), dlc, "icon.png")
             item.icon = os.path.exists(icon_path)

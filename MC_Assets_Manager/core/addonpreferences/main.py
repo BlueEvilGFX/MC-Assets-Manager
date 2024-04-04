@@ -64,21 +64,19 @@ class AddonPref(AddonPreferences):
             try:
                 if data[dlc]["active"] == False:
                     continue
-                if dlc in locals():
-                    importlib.reload(dlc)
-                else:
-                    locals()[dlc] = importlib.import_module(
+
+                if dlc not in globals():
+                    globals()[dlc] = importlib.import_module(
                         name = f'.storage.dlcs.{dlc}',
                         package = utils.paths.PathConstants.PACKAGE
                     )
-
                 try:
-                    bpy.utils.register_class(locals()[dlc].PreferencesProperty)
-                except:
+                    bpy.utils.register_class(globals()[dlc].PreferencesProperty)
+                except ValueError: # already registered
                     pass
 
                 # dlc_propGroup: acces to property group
-                pointer = "bpy.props.PointerProperty(type=locals()[dlc].PreferencesProperty)"
+                pointer = "bpy.props.PointerProperty(type=globals()[dlc].PreferencesProperty)"
                 #   creates PointerProperty to PropertyGroup
                 exec(f'{dlc+"_propGroup"} : {pointer}')
             except Exception:

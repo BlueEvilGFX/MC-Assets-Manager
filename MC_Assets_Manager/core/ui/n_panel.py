@@ -27,7 +27,8 @@ class McAMDlc(bpy.types.Panel):
         script_dlcs = []
 
         for dlc in McAMProps.dlc_list:
-            if paths.DLC.get_sub_init(dlc.name) and dlc.active:
+            if paths.DLC.get_sub_init(dlc.name)\
+                and dlc.active and dlc.ui:
                 script_dlcs.append(dlc.name)
 
         # return if no scripted dlc is installed since nothing will be shown
@@ -43,11 +44,9 @@ class McAMDlc(bpy.types.Panel):
 
         # ━━━━━━━━━━━━ import all DLC UIs
         for dlc in script_dlcs:
-            if dlc in locals():
-                importlib.reload(dlc)
-            else:
+            if dlc not in globals():
                 module_name = ".storage.dlcs."+dlc
-                locals()[dlc] = importlib.import_module(
+                globals()[dlc] = importlib.import_module(
                     name = module_name,
                     package = paths.PathConstants.PACKAGE
                     )
@@ -65,12 +64,12 @@ class McAMDlc(bpy.types.Panel):
         )
 
         try:
-            Panel = locals()[enum_selection_1].Panel
+            Panel = globals()[enum_selection_1].Panel
             Panel.draw(self, context)
-        except Exception as e: 
+        except ExceptionGroup: 
             print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
-            print(str(e))
             traceback.print_exc()
+            layout.label(text="ERROR", icon="ERROR")
         
         # ━━━━━━━━━━━━ 2 UI pananls check
         preferences = paths.McAM.get_addon_properties().main_props
@@ -85,10 +84,9 @@ class McAMDlc(bpy.types.Panel):
         row.prop(McAMProps, "scriptUIEnum2")
         self.displayOperator(row)
         try:
-            locals()[enum_selection_2].Panel.draw(self, context)
-        except Exception as e: 
-            print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_2}")
-            print(str(e))
+            globals()[enum_selection_2].Panel.draw(self, context)
+        except Exception: 
+            print(f"McAM: UI - DLC-Panel-2 - Error: {enum_selection_2}")
             traceback.print_exc()
 
     # ━━━━━━━━━━━━ 

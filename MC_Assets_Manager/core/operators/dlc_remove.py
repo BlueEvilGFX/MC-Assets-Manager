@@ -32,7 +32,7 @@ class DLC_OT_Remove(Operator):
         try:
             if paths.DLC.get_sub_init(dlc):
                 module_name = ".storage.DLCs."+dlc
-                locals()[dlc] = importlib.import_module(
+                globals()[dlc] = importlib.import_module(
                     name = module_name,
                     package = paths.PathConstants.PACKAGE
                 )
@@ -41,7 +41,7 @@ class DLC_OT_Remove(Operator):
                 with open(json_file) as dataFile:
                     data = json.load(dataFile)
                     if data[dlc]["active"]:
-                        locals()[dlc].unregister()
+                        globals()[dlc].unregister()
         except:
             print(f"McAM: [DLC Unregistering] error: {dlc}")
 

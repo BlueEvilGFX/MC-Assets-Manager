@@ -49,16 +49,14 @@ def showDlcPreferences(self, context, layout):
             if self.data and active and paths.DLC.get_sub_init(dlc):                        #   if dlc exists & active & init file (script based)                
                 if dlc == str(dlc_list[index].name):
                     try:
-                        if dlc in locals():                                                 #   if already loaded
-                            importlib.reload(dlc)                                           #   reload module
-                        else:
+                        if not dlc in globals():
                             module_name = ".storage.dlcs."+dlc                              #   get module name for importing
-                            locals()[dlc] = importlib.import_module(
+                            globals()[dlc] = importlib.import_module(
                                 name = module_name,
                                 package = paths.PathConstants.PACKAGE
                             ) 
 
-                        locals()[dlc].CustomAddonPreferences.display(self, layout)          #   draw addon preferences from dlc
+                        globals()[dlc].CustomAddonPreferences.display(self, layout)          #   draw addon preferences from dlc
                     except Exception:
                         print(traceback.format_exc())
                         print(f'McAM: could not display addon preferences panel: {dlc}')

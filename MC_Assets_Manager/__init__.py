@@ -7,12 +7,12 @@ from . import addon_updater_ops
 bl_info = {
     "name": "[Minecraft Assets Manager]",
     "author": "BlueEvilGFX",
-    "version": (0, 4, 3),
+    "version": (0, 4, 4),
     "blender": (4, 0, 0),
     }  
     
 # ━━━━━━━
-if "core" in locals():
+if "core" in globals():
     import importlib
     importlib.reload(core)
 else:
