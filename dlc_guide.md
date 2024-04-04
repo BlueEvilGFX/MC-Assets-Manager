@@ -65,9 +65,11 @@ Your DLC does not need to contain all of the things above. Though it must contai
 {
     "type" : "presets",
     "creator" : "Grandpa Evil",
-    "version" : "[0, 1, 0]"
+    "version" : "[0, 1, 0]",
+    "ui" : false
 }
 ```
+The `ui` determines if the UI should be shown in the `McAM n-Panel` or not.
 
 The icon of the DLC is also optional. If you want to use one though it must be named `icon.png`. If the DLC does not contain an icon, Blender will use another Blender internal icon.
 
