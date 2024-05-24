@@ -21,20 +21,6 @@ if "core" in locals():
 else:
     from . import core
 
-
-## THOMAS DLC DEV ONLY
-if "ui" in locals():
-    import importlib
-    importlib.reload(ui)
-    importlib.reload(utils)
-    importlib.reload(properties)
-    importlib.reload(operators)
-else:
-    from .storage.dlcs.Thomas_Rig_Legacy import ui
-    from .storage.dlcs.Thomas_Rig_Legacy import utils
-    from .storage.dlcs.Thomas_Rig_Legacy import properties
-    from .storage.dlcs.Thomas_Rig_Legacy import operators
-
 # ━━━━━━━
 def register():
     addon_updater_ops.register(bl_info)
