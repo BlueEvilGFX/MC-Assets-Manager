@@ -24,6 +24,11 @@ def draw_settings_tab(self, context):
         "auto_check_dlc",
         text="checks for DLC updates during startup"
         )
+    row.prop(
+        self.main_props,
+        "dlc_news_interval",
+        text = "ignore interval"
+    )
     
     # auto lists loader during start up
     row = box.row()

@@ -1,7 +1,8 @@
-import bpy, urllib, os, zipfile
+import bpy, urllib, os, zipfile, json, datetime
 
 from MC_Assets_Manager.core import addonpreferences, utils
 from MC_Assets_Manager.core.utils.github_connect import GitHubReader
+from MC_Assets_Manager.core.utils import paths
 
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -40,7 +41,7 @@ class UpdateInstall(bpy.types.Operator):
         name = "data",
         description = "contains data",
         default = ''
-    )
+    ) # type: ignore
  
     def execute(self, context):
         github_reader = GitHubReader()
@@ -89,6 +90,16 @@ class GITHUB_OT_IGNORE(bpy.types.Operator):
     def execute(self, context):
         from MC_Assets_Manager.core.utils.github_connect import GitHubReader
         GitHubReader()._news = False
+
+        # read date file
+        dlc_date_file = paths.McAM.get_dlc_last_ignored_json_file()
+        with open(dlc_date_file, 'r') as fb:
+            data = json.load(fb)
+
+        # set new date
+        with open(dlc_date_file, 'w') as fb:
+            data["last_ignored"] = str(datetime.datetime.now().date())
+            json.dump(data, fb, indent=4,)
         return{'FINISHED'}
 
 def register():

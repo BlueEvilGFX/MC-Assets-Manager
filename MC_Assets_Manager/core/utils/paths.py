@@ -91,7 +91,13 @@ class McAM:
         :return: path to main_json which contains installed DLCs, status etc.
         """
         return os.path.join(PathConstants.RESOURCES_DIRECTORY, 'dlcs.json')
-
+    
+    @staticmethod
+    def get_dlc_last_ignored_json_file() -> str:
+        """
+        :return: path to dlc last check json file
+        """
+        return os.path.join(PathConstants.RESOURCES_DIRECTORY, 'dlc_last_ignored.json')
 
 class User:
     @staticmethod
@@ -160,7 +166,7 @@ class DLC:
         :return: path to storage dlc directory
         """
         return os.path.join(PathConstants.STORAGE_DIRECTORY, 'dlcs')
-    
+
     @staticmethod
     def get_sub_directory(dlc: str) -> str:
         """

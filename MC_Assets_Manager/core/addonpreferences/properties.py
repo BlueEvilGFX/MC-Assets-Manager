@@ -38,7 +38,15 @@ class AddonPreferencesProps(bpy.types.PropertyGroup):
         description="checking automatically for dlc updates every time blender starts"
         ) # type: ignore
     
-    # auto load lists
+    # auto check dlc updater interval
+    dlc_news_interval : IntProperty(
+        default = 7,
+        min = 0,
+        max = 31,
+        description="the interval in which the addon draw the news for dlc updates"
+    ) # type: ignore
+    
+    # auto load listss
     auto_load_lists : BoolProperty(
         default = True,
         description="loads all the lists of the addon on on start up"

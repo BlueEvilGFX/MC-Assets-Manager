@@ -4,6 +4,8 @@ import urllib
 from dataclasses import dataclass
 from enum import Enum, auto
 from threading import Thread
+import datetime
+import time
 
 import requests
 
@@ -175,7 +177,37 @@ class GitHubReader:
                 else:
                     dlc.status = StatusEnum.INSTALLED
 
-        self._news = any(dlc.status is not StatusEnum.INSTALLED for dlc in self._dlc_list)
+        # read date file
+        dlc_date_file = paths.McAM.get_dlc_last_ignored_json_file()
+        with open(dlc_date_file, 'r') as fb:
+            data = json.load(fb)
+        
+        # set news considering news interval
+        interval = paths.McAM.get_addon_properties().main_props.dlc_news_interval
+        
+        last_ignored_json = paths.McAM.get_dlc_last_ignored_json_file()
+        with open(last_ignored_json, 'r') as fb:
+            data = json.load(fb)
+            old_date = data.get('last_ignored')
+
+        # last ignored not set, set news and return
+        if old_date is None:
+            self._news = any(dlc.status is not StatusEnum.INSTALLED for dlc in self._dlc_list)
+            return True
+        
+        # get both dates
+        current_date = datetime.datetime.now().date()
+        old_date = datetime.datetime.strptime(old_date, "%Y-%m-%d").date()
+
+        difference = abs((current_date-old_date).days)
+
+        # we do not set the new date here because this will only do the ignore
+        # operator
+        print(difference, interval, difference>=interval)
+        if difference >= interval:
+            self._news = any(dlc.status is not StatusEnum.INSTALLED for dlc in self._dlc_list)
+        else:
+            self._news = False
         return True
     
     def _fetch_icons(self) -> None:
@@ -184,7 +216,10 @@ class GitHubReader:
             os.makedir(dir_github_icons)
 
         for file in os.listdir(dir_github_icons):
-            os.remove(os.path.join(dir_github_icons, file))
+            try:
+                os.remove(os.path.join(dir_github_icons, file))
+            except (PermissionError, FileNotFoundError):
+                pass
 
         success = True
         for dlc in self._dlc_list:

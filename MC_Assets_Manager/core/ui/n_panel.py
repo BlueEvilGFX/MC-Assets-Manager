@@ -66,7 +66,7 @@ class McAMDlc(bpy.types.Panel):
         try:
             Panel = globals()[enum_selection_1].Panel
             Panel.draw(self, context)
-        except ExceptionGroup: 
+        except Exception: 
             print(f"McAM: UI - DLC-Panel-1 - Error: {enum_selection_1}")
             traceback.print_exc()
             layout.label(text="ERROR", icon="ERROR")
